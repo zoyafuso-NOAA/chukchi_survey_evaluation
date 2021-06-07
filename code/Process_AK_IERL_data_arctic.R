@@ -1,25 +1,20 @@
 ###############################################################################
-## Project:       VAST Modelling, Chukchi Sea
+## Project:       Synthesize Alaska Bottom Trawl Arctic beam trawl survey data 
 ## Author:        Zack Oyafuso (zack.oyafuso@noaa.gov)
-## Description:   2012 Chukchi data
 ###############################################################################
 rm(list = ls())
-
-##################################################
-####   Set up directories
-##################################################
-wd <- "C:/Users/zack.oyafuso/Desktop/Arctic/"
 
 ##################################################
 ####  Import Libraries
 ##################################################
 library(dplyr)
+library(readxl)
 
 ##################################################
 ####  Import Data
 ##################################################
 master_haul <- as.data.frame(readxl::read_xlsx(
-  paste0(wd, "data/2017_2019_Beam/Hauls2017_2019.xlsx")))
+  "data/fish_data/2017_2019_Beam/Hauls2017_2019.xlsx"))
 master_haul <- subset(master_haul, 
                       select = c("Year" , "EVENT_EVENT_NUMBER",
                                  "BOTTOM_DEPTH_m", "AREA_SWEPT_KM_2",
@@ -28,7 +23,7 @@ master_haul <- subset(master_haul,
                                  "bottom_temp_C", "bottom_sal") )
 
 master_catch <- as.data.frame(readxl::read_xlsx(
-  paste0(wd, "data/2017_2019_Beam/Genetics_corrected_Catch.xlsx")))
+  "data/fish_data/2017_2019_Beam/Genetics_corrected_Catch.xlsx"))
 
 ##################################################
 ####  Subset catch data to selected fish species 
@@ -144,5 +139,5 @@ ierl_data_long$gear <- "beam"
 ####  Save
 ##################################################
 write.csv(x = ierl_data_long, 
-          file = paste0(wd, "data/ierl_data.csv"), 
+          file = "data/fish_data/2017_2019_Beam/ierl_data_processed.csv", 
           row.names = FALSE)

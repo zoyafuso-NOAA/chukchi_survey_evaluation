@@ -1,5 +1,5 @@
 ###############################################################################
-## Project:       Get AK survey data for arctic areas
+## Project:       Synthesize Alaska Bottom Trawl Arctic otter trawl survey data 
 ## Author:        Zack Oyafuso (zack.oyafuso@noaa.gov), modfied from 
 ##                Lewis Barnett (lewis.barnett@noaa.gov)
 ##
@@ -22,8 +22,8 @@ rm(list = ls())
 ##################################################
 ####   Set up directories
 ##################################################
-wd <- "C:/Users/zack.oyafuso/Desktop/data-raw/"
-output_wd <- "C:/Users/zack.oyafuso/Desktop/Arctic/data/"
+# wd <- "C:/Users/zack.oyafuso/Desktop/data-raw/"
+# output_wd <- "C:/Users/zack.oyafuso/Desktop/Arctic/data/"
 
 ##################################################
 ####   Import Libraries
@@ -33,9 +33,12 @@ library(dplyr)
 ##################################################
 ####   load flat files extracted from RACEBASE
 ##################################################
-cruise <- read.csv(file = paste0(wd, "cruise.csv"), stringsAsFactors = FALSE)
-haul <- read.csv(file = paste0(wd, "haul.csv"), stringsAsFactors = FALSE)
-catch <- read.csv(file = paste0(wd, "catch.csv"), stringsAsFactors = FALSE)
+cruise <- read.csv(file = "data/fish_data/otter_trawl/cruise.csv",
+                   stringsAsFactors = FALSE)
+haul <- read.csv(file = "data/fish_data/otter_trawl/haul.csv",
+                 stringsAsFactors = FALSE)
+catch <- read.csv(file = "data/fish_data/otter_trawl/catch_subsetted_BS.csv", 
+                  stringsAsFactors = FALSE)
 
 ##################################################
 ####   Break down date information from haul data (note that year conversion 
@@ -49,7 +52,7 @@ haul$YEAR <- lubridate::year(x = haul$DATE)
 ##################################################
 ####   Join with species names
 ##################################################
-species_codes <-  read.csv(file = paste0(wd, "species.csv"), 
+species_codes <-  read.csv(file = "data/fish_data/otter_trawl/species.csv", 
                            stringsAsFactors = FALSE)
 species_codes <- dplyr::select(.data = species_codes, -YEAR_ADDED)
 catch <- dplyr::left_join(x = catch, y = species_codes)
@@ -98,9 +101,6 @@ species_list <- c("Arctic cod", "saffron cod", "Pacific cod", "walleye pollock",
                   "green sea urchin", "notched brittlestar",
                   "purple-orange sea star", "northern nutclam", 
                   "common mud star", "Greenland cockle", "basketstar")
-
-# c("rainbow smelt", "circumpolar eualid", "shortscale eualid", 
-# "smooth nutclam", "brownscaled sea cucumber")
 
 dat <- dplyr::left_join(x = dat, y = catch) %>%
   dplyr::mutate(CPUE_KG = WEIGHT / (NET_HEIGHT * NET_WIDTH * 0.001), 
@@ -166,5 +166,5 @@ data_long$area_swept_km2 <- 1
 ####   Save
 ##################################################
 write.csv(x = data_long, 
-          file = paste0(output_wd, "AK_BTS_ARCTIC.csv"), 
+          file = "data/fish_data/otter_trawl/AK_BTS_Arctic_processed.csv", 
           row.names = FALSE)
