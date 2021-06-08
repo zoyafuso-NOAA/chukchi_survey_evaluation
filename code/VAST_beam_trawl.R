@@ -1,15 +1,9 @@
 ###############################################################################
 ## Project:       VAST Modelling, Chukchi Sea
 ## Author:        Zack Oyafuso (zack.oyafuso@noaa.gov)
-## Description:   2012 Chukchi data
+## Description:   Beam Trawl Data
 ###############################################################################
 rm(list = ls())
-
-##################################################
-####   Set up directories
-##################################################
-wd <- "C:/Users/zack.oyafuso/Desktop/Arctic/"
-output_wd <- paste0(wd, "VAST_model_output_2012_2019_BT/")
 
 ##################################################
 ####  Import Libraries
@@ -25,10 +19,10 @@ library(rgdal)
 ##################################################
 ####  Import Data
 ##################################################
-rb_data <- read.csv(paste0(wd, "data/AK_BTS_ARCTIC.csv"))
-ierl_data <- read.csv(paste0(wd, "data/ierl_data.csv"))
+rb_data <- read.csv("data/fish_data/otter_trawl/AK_BTS_Arctic_processed.csv")
+ierl_data <- read.csv("data/fish_data/2017_2019_Beam/ierl_data_processed.csv")
 
-extrapolation_grid <- read.csv(paste0(wd, "spatial_data/", 
+extrapolation_grid <- read.csv(paste0("data/spatial_data/", 
                                       "BS_Chukchi_extrapolation_grids/",
                                       "ChukchiThorsonGrid.csv"))
 extrapolation_grid$Area_km2 <- extrapolation_grid$Shape_Area / 1000 / 1000
@@ -80,7 +74,7 @@ data_geostat <- data.frame(
 ####  Model settings
 ##################################################
 settings <- FishStatsUtils::make_settings( 
-  n_x = 100,   # Number of knots
+  n_x = 200,   # Number of knots
   Region = "User", #User inputted extrapolation grid
   purpose = "index2",
   fine_scale = TRUE,
@@ -89,19 +83,11 @@ settings <- FishStatsUtils::make_settings(
                               "east_border" = Inf), 
   bias.correct = FALSE,
   FieldConfig = c(
-    "Omega1" = 3,   #Spatial random effect on occurence 
-    "Epsilon1" = 3, #Spatiotemporal random effect on occurence
-    "Omega2" = 3,   #Spatial random effect on positive response 
-    "Epsilon2" = 3  #Spatiotemporal random effect on positive response
+    "Omega1" = 1,   #Spatial random effect on occurence 
+    "Epsilon1" = 1, #Spatiotemporal random effect on occurence
+    "Omega2" = 1,   #Spatial random effect on positive response 
+    "Epsilon2" = 1  #Spatiotemporal random effect on positive response
   ), 
-  RhoConfig = c("Beta1" = 0, 
-                "Beta2" = 0, 
-                "Epsilon1" = 0, 
-                "Epsilon2" = 0), #Each year is a fixed effect
-  OverdispersionConfig = c("Eta1" = 0, 
-                           "Eta2" = 0), #Turn off overdispersion 
-  "Options" = c("Calculate_Range" = F, 
-                "Calculate_effective_area" = F),
   ObsModel = c(2, 1),
   max_cells = Inf,
   use_anisotropy = F)
@@ -132,7 +118,7 @@ for (irow in 1:nrow(model_settings)) {
     {
       FishStatsUtils::fit_model( 
         "settings" = settings,
-        "working_dir" = output_wd,
+        "working_dir" = paste0(getwd(), "/results/beam_trawl"),
         "Lat_i" = data_geostat_subset[, "Lat"],
         "Lon_i" = data_geostat_subset[, "Lon"],
         "t_i" = data_geostat_subset[, "Year"],
@@ -190,7 +176,7 @@ for (irow in 1:nrow(model_settings)) {
   ####   Save
   ##################################################
   write.csv(model_settings, 
-            file = paste0(output_wd, "model_settings.csv"),
+            file = "results/beam_trawl/model_settings.csv",
             row.names = F)
 }
 

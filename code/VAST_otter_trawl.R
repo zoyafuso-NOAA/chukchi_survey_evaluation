@@ -6,12 +6,6 @@
 rm(list = ls())
 
 ##################################################
-####   Set up directories
-##################################################
-wd <- "C:/Users/zack.oyafuso/Desktop/Arctic/"
-output_wd <- paste0(wd, "VAST_model_output_1990_2012_OT/")
-
-##################################################
 ####  Import Libraries
 ##################################################
 library(tidyr)
@@ -30,14 +24,13 @@ library(rgdal)
 ##################################################
 ####  Import Data
 ##################################################
-rb_data <- read.csv(paste0(wd, "data/AK_BTS_ARCTIC.csv"))
-ierl_data <- read.csv(paste0(wd, "data/ierl_data.csv"))
+rb_data <- read.csv("data/fish_data/otter_trawl/AK_BTS_Arctic_processed.csv")
+ierl_data <- read.csv("data/fish_data/2017_2019_Beam/ierl_data_processed.csv")
 
-extrapolation_grid <- read.csv(paste0(wd, "spatial_data/",
+extrapolation_grid <- read.csv(paste0("data/spatial_data/",
                                       "BS_Chukchi_extrapolation_grids/",
                                       "ChukchiThorsonGrid.csv"))
 extrapolation_grid$Area_km2 <- extrapolation_grid$Shape_Area / 1000 / 1000
-
 
 data_long <- rbind(rb_data, ierl_data[, names(rb_data)])
 data_long$cpue <- data_long$catch_kg / data_long$area_swept_km2
@@ -83,19 +76,20 @@ data_geostat <- data.frame(
 ####   VAST Model Settings
 ##################################################
 settings <- FishStatsUtils::make_settings( 
-  n_x = 100,   # Number of knots
+  n_x = 200,   # Number of knots
   Region = "User", #User inputted extrapolation grid
   purpose = "index2",
   bias.correct = FALSE,
   FieldConfig = c(
-    "Omega1" = 3,   #Spatial random effect on occurence 
-    "Epsilon1" = 2, #Spatiotemporal random effect on occurence
-    "Omega2" = 3,   #Spatial random effect on positive response 
-    "Epsilon2" = 0  #Spatiotemporal random effect on positive response
+    "Omega1" = 1,   #Spatial random effect on occurence 
+    "Epsilon1" = 1, #Spatiotemporal random effect on occurence
+    "Omega2" = 1,   #Spatial random effect on positive response 
+    "Epsilon2" = 1  #Spatiotemporal random effect on positive response
   ), 
   ObsModel = c(2, 1),
   max_cells = Inf,
-  use_anisotropy = F)
+  use_anisotropy = F, 
+  Version = "VAST_v12_0_0")
 
 ##################################################
 ####   Model result objects
@@ -110,6 +104,11 @@ model_settings <- expand.grid(Omega1 = 1,
 model_settings[, c("status", "max_grad", "rrmse")] <- NA
 
 ##################################################
+####   Create result directory if not created already
+##################################################
+if(!dir.exists("results/otter_trawl/")) dir.create("results/otter_trawl/")
+
+##################################################
 ####   Model fit
 ##################################################
 for (irow in 1:nrow(model_settings)) {
@@ -122,7 +121,7 @@ for (irow in 1:nrow(model_settings)) {
     {
       FishStatsUtils::fit_model( 
         "settings" = settings,
-        "working_dir" = output_wd,
+        "working_dir" = paste0(getwd(), "/results/otter_trawl/"),
         "Lat_i" = data_geostat_subset[, "Lat"],
         "Lon_i" = data_geostat_subset[, "Lon"],
         "t_i" = data_geostat_subset[, "Year"],
@@ -181,7 +180,7 @@ for (irow in 1:nrow(model_settings)) {
 ####   Save
 ##################################################
 write.csv(model_settings, 
-          file = paste0(output_wd, "model_settings.csv"),
+          file = paste0("results/otter_trawl/model_settings.csv"),
           row.names = F)
 
 ##################################################
