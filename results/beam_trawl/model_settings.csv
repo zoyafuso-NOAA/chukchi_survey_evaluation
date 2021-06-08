@@ -1,0 +1,57 @@
+"Omega1","Omega2","Epsilon1","Epsilon2","common_name","status","max_grad","rrmse"
+1,1,0,0,"Arctic cod","confirm_gradient",9.19162204127133e-08,1.56
+1,1,1,0,"Arctic cod","confirm_gradient",3.87514402788725e-08,1.435
+1,1,0,1,"Arctic cod",NA,NA,NA
+1,1,1,1,"Arctic cod",NA,NA,NA
+1,1,0,0,"Bering flounder","confirm_gradient",2.32806766531368e-07,2.812
+1,1,1,0,"Bering flounder","confirm_gradient",9.03022989717783e-10,2.812
+1,1,0,1,"Bering flounder","confirm_gradient",2.73553630858459e-08,2.722
+1,1,1,1,"Bering flounder",NA,NA,NA
+1,1,0,0,"saffron cod","confirm_gradient",9.5885286377495e-09,2.385
+1,1,1,0,"saffron cod",NA,NA,NA
+1,1,0,1,"saffron cod","confirm_gradient",1.19489973471332e-11,2.385
+1,1,1,1,"saffron cod",NA,NA,NA
+1,1,0,0,"snow crab",NA,NA,NA
+1,1,1,0,"snow crab",NA,NA,NA
+1,1,0,1,"snow crab",NA,NA,NA
+1,1,1,1,"snow crab",NA,NA,NA
+1,1,0,0,"walleye pollock",NA,NA,NA
+1,1,1,0,"walleye pollock",NA,NA,NA
+1,1,0,1,"walleye pollock",NA,NA,NA
+1,1,1,1,"walleye pollock",NA,NA,NA
+1,1,0,0,"yellowfin sole",NA,NA,NA
+1,1,1,0,"yellowfin sole",NA,NA,NA
+1,1,0,1,"yellowfin sole",NA,NA,NA
+1,1,1,1,"yellowfin sole",NA,NA,NA
+1,1,0,0,"Arctic staghorn sculpin",NA,NA,NA
+1,1,1,0,"Arctic staghorn sculpin",NA,NA,NA
+1,1,0,1,"Arctic staghorn sculpin",NA,NA,NA
+1,1,1,1,"Arctic staghorn sculpin",NA,NA,NA
+1,1,0,0,"circumboreal toad crab",NA,NA,NA
+1,1,1,0,"circumboreal toad crab",NA,NA,NA
+1,1,0,1,"circumboreal toad crab",NA,NA,NA
+1,1,1,1,"circumboreal toad crab",NA,NA,NA
+1,1,0,0,"fuzzy hermit crab",NA,NA,NA
+1,1,1,0,"fuzzy hermit crab",NA,NA,NA
+1,1,0,1,"fuzzy hermit crab",NA,NA,NA
+1,1,1,1,"fuzzy hermit crab",NA,NA,NA
+1,1,0,0,"hairy hermit crab",NA,NA,NA
+1,1,1,0,"hairy hermit crab",NA,NA,NA
+1,1,0,1,"hairy hermit crab",NA,NA,NA
+1,1,1,1,"hairy hermit crab",NA,NA,NA
+1,1,0,0,"northern nutclam",NA,NA,NA
+1,1,1,0,"northern nutclam",NA,NA,NA
+1,1,0,1,"northern nutclam",NA,NA,NA
+1,1,1,1,"northern nutclam",NA,NA,NA
+1,1,0,0,"notched brittlestar",NA,NA,NA
+1,1,1,0,"notched brittlestar",NA,NA,NA
+1,1,0,1,"notched brittlestar",NA,NA,NA
+1,1,1,1,"notched brittlestar",NA,NA,NA
+1,1,0,0,"shorthorn (=warty) sculpin",NA,NA,NA
+1,1,1,0,"shorthorn (=warty) sculpin",NA,NA,NA
+1,1,0,1,"shorthorn (=warty) sculpin",NA,NA,NA
+1,1,1,1,"shorthorn (=warty) sculpin",NA,NA,NA
+1,1,0,0,"slender eelblenny",NA,NA,NA
+1,1,1,0,"slender eelblenny",NA,NA,NA
+1,1,0,1,"slender eelblenny",NA,NA,NA
+1,1,1,1,"slender eelblenny",NA,NA,NA
