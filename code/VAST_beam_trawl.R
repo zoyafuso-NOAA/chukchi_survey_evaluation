@@ -30,31 +30,8 @@ extrapolation_grid$Area_km2 <- extrapolation_grid$Shape_Area / 1000 / 1000
 data_long <- rbind(rb_data, ierl_data[, names(rb_data)])
 data_long$cpue <- data_long$catch_kg / data_long$area_swept_km2
 
-# no_recs <- spread(data = aggregate(cpue ~  year + common_name,
-#                                    data = data_long,
-#                                    subset = gear == "beam",
-#                                    FUN = function(x) sum(x > 0, na.rm = T)),
-#                   value = "cpue",
-#                   key = "year"
-# )
-# 
-# spp_no_recs <- no_recs$common_name[apply(X = no_recs[, c("2012",
-#                                                          "2017",
-#                                                          "2019")],
-#                                          MARGIN = 1,
-#                                          FUN = function(x) !all(x > 10,
-#                                                                 na.rm = TRUE))]
-# 
-# spp_list <- no_recs$common_name[!no_recs$common_name %in% spp_no_recs]
-
-spp_list <- c(#"Alaska plaice",
-              "Arctic cod", "Bering flounder", "saffron cod", "snow crab", 
-              "walleye pollock" , "yellowfin sole",
-              "Arctic staghorn sculpin", "circumboreal toad crab",
-              "fuzzy hermit crab", "hairy hermit crab", "northern nutclam",
-              "notched brittlestar", "shorthorn (=warty) sculpin",
-              "slender eelblenny"
-              )
+spp_list <- c("Alaska plaice", "Arctic cod", "Bering flounder", "saffron cod",
+              "snow crab", "walleye pollock" , "yellowfin sole")
 
 data_long <- subset(x = data_long,
                     subset = gear == "beam" & 
@@ -73,7 +50,10 @@ data_geostat <- data.frame(
 ##################################################
 ####  Model settings
 ##################################################
+VAST_Version <- "VAST_v12_0_0"
+
 settings <- FishStatsUtils::make_settings( 
+  Version = VAST_Version,
   n_x = 200,   # Number of knots
   Region = "User", #User inputted extrapolation grid
   purpose = "index2",
@@ -90,7 +70,10 @@ settings <- FishStatsUtils::make_settings(
   ), 
   ObsModel = c(2, 1),
   max_cells = Inf,
-  use_anisotropy = F)
+  use_anisotropy = F,
+  Options = c('SD_site_logdensity' = FALSE, 'Calculate_Range' = FALSE,
+              'Calculate_effective_area' = FALSE, 'Calculate_Cov_SE' = FALSE,
+              'Calculate_Synchrony' = FALSE, 'Calculate_proportion' = FALSE))
 
 
 ##################################################
@@ -137,12 +120,6 @@ for (irow in 1:nrow(model_settings)) {
     },
     
     finally={
-      # NOTE:
-      # Here goes everything that should be executed at the end,
-      # regardless of success or error.
-      # If you want more than one expression to be executed, then you 
-      # need to wrap them in curly brackets ({...}); otherwise you could
-      # just have written 'finally=<expression>' 
       message( paste("Processed", model_settings$common_name[irow],
                      "with settings",
                      "Omega1 =", model_settings$Omega1[irow],
@@ -180,112 +157,56 @@ for (irow in 1:nrow(model_settings)) {
             row.names = F)
 }
 
+## Unlink Dynamic library
+dyn.unload(paste0("results/beam_trawl/", VAST_Version, ".dll"))
 
 ##################################################
-####   Mapping function
+####   Loop over species and fit the model with "best" field configurations
 ##################################################
-make_a_raster <- function(extrap_grid = extrapolation_grid,
-                          lat_lon_names = c("Lon", "Lat"),
-                          plot_what = fit$Report$D_gct[, 1, 1],
-                          raster_res = 0.11) {
+
+for (ispp in spp_list[-1]) { ## Loop over species -- start
   
-  plot_layer <- sp::SpatialPointsDataFrame(
-    coords = extrapolation_grid[, lat_lon_names],
-    data = data.frame(plot_this = plot_what) )
-  plot_ras <- raster::raster(x = plot_layer, 
-                             resolution = raster_res)
-  plot_ras <- raster::rasterize(x = plot_layer, 
-                                y = plot_ras, 
-                                field = "plot_this")
+  ## Subset data input for species ispp
+  data_geostat_subset <- subset(x = data_geostat, 
+                                subset = spp == ispp)
   
-  return(plot_ras)
-}
-
-###############################################################
-par(mfcol = c(2, length(spp_list)), 
-    mar = c(2.5, 3.5, 2.5, 3.5), 
-    oma = c(0, 0, 1, 0))
-for(iyear in c(1, 3)) {
-  for (which_spp_code in 1:length(spp_list)) {
+  ## Subset the model runs that converged with a low enough maximum gradient 
+  sub_df <- subset(x = model_settings, 
+                   subset = common_name == ispp & max_grad < 1e-4)
+  
+  ## If there is at least one converged model, run the model with the lowest
+  ## RRMSE in the density predictions
+  if (nrow(sub_df) > 0) {
+    field_config <- unlist(sub_df[which.min(sub_df$rrmse), 
+                                               c("Omega1", "Epsilon1", 
+                                                 "Omega2", "Epsilon2")])
+    settings$FieldConfig <- field_config
     
-    which_spp <- sort(spp_list)[which_spp_code]
-    plot_this <- fit$Report$D_gct[, which_spp_code, iyear]
+    ## Fit model
+    result_dir <- paste0(getwd(), "/results/beam_trawl/", ispp, "/")
+    fit <- FishStatsUtils::fit_model( 
+      "settings" = settings,
+      "working_dir" = result_dir,
+      "Lat_i" = data_geostat_subset[, "Lat"],
+      "Lon_i" = data_geostat_subset[, "Lon"],
+      "t_i" = data_geostat_subset[, "Year"],
+      "b_i" = data_geostat_subset[, "Catch_KG"],
+      "a_i" = data_geostat_subset[, "AreaSwept_km2"],
+      "getJointPrecision" = TRUE,
+      "newtonsteps" = 1,
+      "test_fit" = F,
+      "input_grid" = extrapolation_grid)
     
-    density_ras <- make_a_raster(plot_what = plot_this)
-    plot(density_ras, 
-         las = 1, 
-         main = ifelse(iyear == 1, which_spp, NA),
-         cex.main = 2)
+    ## Diagnostics
+    diagnostics <- plot(fit, working_dir = result_dir)
     
-    temp_df <- subset(x = data_wide,
-                      subset = year == c(2017:2019)[iyear],
-                      select = c("lat", "lon", "year", 
-                                 which_spp))
-    points(lat ~ lon,
-           data = temp_df[temp_df[, which_spp] == 0, ],
-           cex = 1,
-           pch = 16,
-           col = 'red')
-    points(lat ~ lon,
-           data = temp_df,
-           pch = 1,
-           cex = temp_df[, which_spp] / max(temp_df[, which_spp]) * 5 )
-    # plot(AK,
-    #      add = TRUE,
-    #      col = "tan",
-    #      border = F)
+    ## Save fit and diagnostics
+    fit_sub <- fit$Report
+    save(list = "fit_sub", file = paste0(result_dir, "/fit.RData"))
+    save(list = "diagnostics", file = paste0(result_dir, "/diagnostics.RData"))
+    
+    ## Unlink Dynamic library
+    dyn.unload(paste0(result_dir, "/", VAST_Version, ".dll"))
   }
-}
-
-par(mfcol = c(2, length(spp_list)), mar = c(3, 3.5, 2, 3.5))
-for(ipred in 1:2) {
-  for (which_spp_code in 1:length(spp_list)  ) {
-    which_spp <- sort(spp_list)[which_spp_code]
-    plot_this <- fit$Report[[paste0("Omega", 
-                                    ipred, 
-                                    "_gc")]][, which_spp_code]
-    
-    density_ras <- make_a_raster(plot_what = plot_this)
-    
-    plot(density_ras, 
-         las = 1, 
-         main = ifelse(ipred == 1, which_spp, NA),
-         cex.main = 2)
-    plot(AK,
-         add = TRUE,
-         col = "tan",
-         border = F)
-  }
-}
-
-par(mfcol = c(4, length(spp_list)), mar = c(3, 3.5, 2, 3.5))
-for(iyear in c(1, 3)) {
-  for(ipred in 1:2) {
-    for (which_spp_code in 1:length(spp_list)  ) {
-      which_spp <- sort(spp_list)[which_spp_code]
-      plot_this <- fit$Report[[paste0("Epsilon", 
-                                      ipred, 
-                                      "_gct")]][, which_spp_code, iyear]
-      
-      density_ras <- make_a_raster(plot_what = plot_this)
-      
-      plot(density_ras, 
-           las = 1, 
-           main = ifelse(ipred == 1, which_spp, NA),
-           cex.main = 2)
-      # plot(AK,
-      #      add = TRUE,
-      #      col = "tan",
-      #      border = F)
-    }
-  }
-}
-
-cov2cor(fit$Report$L_epsilon2_cf %*% t(fit$Report$L_epsilon2_cf))
-cov2cor(fit$Report$L_epsilon1_cf %*% t(fit$Report$L_epsilon1_cf))
-
-cov2cor(fit$Report$L_omega1_cf %*% t(fit$Report$L_omega1_cf))
-cov2cor(fit$Report$L_omega2_cf %*% t(fit$Report$L_omega2_cf))
-
-
-
+  
+} ## Loop over species -- end

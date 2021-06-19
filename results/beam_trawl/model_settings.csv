@@ -1,57 +1,29 @@
 "Omega1","Omega2","Epsilon1","Epsilon2","common_name","status","max_grad","rrmse"
-1,1,0,0,"Arctic cod","confirm_gradient",9.19162204127133e-08,1.56
-1,1,1,0,"Arctic cod","confirm_gradient",3.87514402788725e-08,1.435
+1,1,0,0,"Alaska plaice",NA,NA,NA
+1,1,1,0,"Alaska plaice",NA,NA,NA
+1,1,0,1,"Alaska plaice",NA,NA,NA
+1,1,1,1,"Alaska plaice",NA,NA,NA
+1,1,0,0,"Arctic cod","confirm_gradient",3.42593060587149e-08,1.56
+1,1,1,0,"Arctic cod","confirm_gradient",7.44429407006919e-10,1.435
 1,1,0,1,"Arctic cod",NA,NA,NA
-1,1,1,1,"Arctic cod",NA,NA,NA
-1,1,0,0,"Bering flounder","confirm_gradient",2.32806766531368e-07,2.812
-1,1,1,0,"Bering flounder","confirm_gradient",9.03022989717783e-10,2.812
-1,1,0,1,"Bering flounder","confirm_gradient",2.73553630858459e-08,2.722
+1,1,1,1,"Arctic cod","confirm_gradient",2.46909381829141e-10,1.435
+1,1,0,0,"Bering flounder","confirm_gradient",3.5258405450822e-07,2.812
+1,1,1,0,"Bering flounder","confirm_gradient",9.02222074827819e-10,2.812
+1,1,0,1,"Bering flounder",NA,NA,NA
 1,1,1,1,"Bering flounder",NA,NA,NA
-1,1,0,0,"saffron cod","confirm_gradient",9.5885286377495e-09,2.385
-1,1,1,0,"saffron cod",NA,NA,NA
-1,1,0,1,"saffron cod","confirm_gradient",1.19489973471332e-11,2.385
+1,1,0,0,"saffron cod","confirm_gradient",5.7663873676006e-12,2.385
+1,1,1,0,"saffron cod","confirm_gradient",8.02173039105014e-09,2.385
+1,1,0,1,"saffron cod","confirm_gradient",2.91836738108842e-09,2.385
 1,1,1,1,"saffron cod",NA,NA,NA
-1,1,0,0,"snow crab","confirm_gradient",1.37455180571067e-08,1.779
-1,1,1,0,"snow crab","confirm_gradient",5.75644665268271e-09,1.575
-1,1,0,1,"snow crab","confirm_gradient",1.98619449776061e-08,1.607
-1,1,1,1,"snow crab",NA,NA,NA
+1,1,0,0,"snow crab","confirm_gradient",3.73010640153382e-08,1.779
+1,1,1,0,"snow crab","confirm_gradient",5.7931107044773e-07,1.575
+1,1,0,1,"snow crab","confirm_gradient",2.16808828668036e-08,1.607
+1,1,1,1,"snow crab","confirm_gradient",1.54318405609644e-07,1.553
 1,1,0,0,"walleye pollock",NA,NA,NA
 1,1,1,0,"walleye pollock",NA,NA,NA
-1,1,0,1,"walleye pollock",NA,NA,NA
+1,1,0,1,"walleye pollock","confirm_gradient",0.552670849724876,2.8
 1,1,1,1,"walleye pollock",NA,NA,NA
 1,1,0,0,"yellowfin sole",NA,NA,NA
 1,1,1,0,"yellowfin sole",NA,NA,NA
-1,1,0,1,"yellowfin sole",NA,NA,NA
+1,1,0,1,"yellowfin sole","confirm_gradient",7.99268129603181e-06,2.04
 1,1,1,1,"yellowfin sole",NA,NA,NA
-1,1,0,0,"Arctic staghorn sculpin",NA,NA,NA
-1,1,1,0,"Arctic staghorn sculpin",NA,NA,NA
-1,1,0,1,"Arctic staghorn sculpin",NA,NA,NA
-1,1,1,1,"Arctic staghorn sculpin",NA,NA,NA
-1,1,0,0,"circumboreal toad crab",NA,NA,NA
-1,1,1,0,"circumboreal toad crab",NA,NA,NA
-1,1,0,1,"circumboreal toad crab",NA,NA,NA
-1,1,1,1,"circumboreal toad crab",NA,NA,NA
-1,1,0,0,"fuzzy hermit crab",NA,NA,NA
-1,1,1,0,"fuzzy hermit crab",NA,NA,NA
-1,1,0,1,"fuzzy hermit crab",NA,NA,NA
-1,1,1,1,"fuzzy hermit crab",NA,NA,NA
-1,1,0,0,"hairy hermit crab",NA,NA,NA
-1,1,1,0,"hairy hermit crab",NA,NA,NA
-1,1,0,1,"hairy hermit crab",NA,NA,NA
-1,1,1,1,"hairy hermit crab",NA,NA,NA
-1,1,0,0,"northern nutclam",NA,NA,NA
-1,1,1,0,"northern nutclam",NA,NA,NA
-1,1,0,1,"northern nutclam",NA,NA,NA
-1,1,1,1,"northern nutclam",NA,NA,NA
-1,1,0,0,"notched brittlestar",NA,NA,NA
-1,1,1,0,"notched brittlestar",NA,NA,NA
-1,1,0,1,"notched brittlestar",NA,NA,NA
-1,1,1,1,"notched brittlestar",NA,NA,NA
-1,1,0,0,"shorthorn (=warty) sculpin",NA,NA,NA
-1,1,1,0,"shorthorn (=warty) sculpin",NA,NA,NA
-1,1,0,1,"shorthorn (=warty) sculpin",NA,NA,NA
-1,1,1,1,"shorthorn (=warty) sculpin",NA,NA,NA
-1,1,0,0,"slender eelblenny",NA,NA,NA
-1,1,1,0,"slender eelblenny",NA,NA,NA
-1,1,0,1,"slender eelblenny",NA,NA,NA
-1,1,1,1,"slender eelblenny",NA,NA,NA

@@ -35,28 +35,8 @@ extrapolation_grid$Area_km2 <- extrapolation_grid$Shape_Area / 1000 / 1000
 data_long <- rbind(rb_data, ierl_data[, names(rb_data)])
 data_long$cpue <- data_long$catch_kg / data_long$area_swept_km2
 
-# no_recs <- spread(data = aggregate(cpue ~  year + common_name,
-#                                    data = data_long,
-#                                    subset = gear == "beam",
-#                                    FUN = function(x) sum(x > 0, na.rm = T)),
-#                   value = "cpue",
-#                   key = "year"
-# )
-# 
-# spp_no_recs <- no_recs$common_name[apply(X = no_recs[, c("2012", 
-#                                                          "2017", 
-#                                                          "2019")], 
-#                                          MARGIN = 1,
-#                                          FUN = function(x) !all(x > 10, 
-#                                                                 na.rm = TRUE))]
-
-spp_list <- c("Alaska plaice",
-              "Arctic cod", "Bering flounder", "saffron cod", "snow crab", 
-              "walleye pollock" , "yellowfin sole",
-              "Arctic staghorn sculpin", "circumboreal toad crab",
-              "fuzzy hermit crab", "hairy hermit crab", "northern nutclam",
-              "notched brittlestar", "shorthorn (=warty) sculpin",
-              "slender eelblenny")
+spp_list <- c("Alaska plaice", "Arctic cod", "Bering flounder", "saffron cod",
+              "snow crab", "walleye pollock" , "yellowfin sole")
 
 data_long <- subset(x = data_long,
                     subset = gear == "otter" & 
@@ -75,7 +55,9 @@ data_geostat <- data.frame(
 ##################################################
 ####   VAST Model Settings
 ##################################################
+VAST_Version <- "VAST_v12_0_0"
 settings <- FishStatsUtils::make_settings( 
+  Version = VAST_Version,
   n_x = 200,   # Number of knots
   Region = "User", #User inputted extrapolation grid
   purpose = "index2",
@@ -89,7 +71,9 @@ settings <- FishStatsUtils::make_settings(
   ObsModel = c(2, 1),
   max_cells = Inf,
   use_anisotropy = F, 
-  Version = "VAST_v12_0_0")
+  Options = c('SD_site_logdensity' = FALSE, 'Calculate_Range' = FALSE,
+              'Calculate_effective_area' = FALSE, 'Calculate_Cov_SE' = FALSE,
+              'Calculate_Synchrony' = FALSE, 'Calculate_proportion' = FALSE))
 
 ##################################################
 ####   Model result objects
@@ -176,6 +160,9 @@ for (irow in 1:nrow(model_settings)) {
   } else (model_settings[irow, c("status", "rrmse", "max_grad")] <- NA)
 }
 
+## Unlink Dynamic library
+dyn.unload(paste0("results/otter_trawl//", VAST_Version, ".dll"))
+
 ##################################################
 ####   Save
 ##################################################
@@ -184,117 +171,52 @@ write.csv(model_settings,
           row.names = F)
 
 ##################################################
-####   Mapping function
+####   Loop over species and fit the model with "best" field configurations
 ##################################################
-make_a_raster <- function(extrap_grid = extrapolation_grid,
-                          lat_lon_names = c("Lon", "Lat"),
-                          plot_what = fit$Report$D_gct[, 1, 1],
-                          raster_res = 0.11) {
+
+for (ispp in spp_list[3:7]) { ## Loop over species -- start
   
-  plot_layer <- sp::SpatialPointsDataFrame(
-    coords = extrapolation_grid[, lat_lon_names],
-    data = data.frame(plot_this = plot_what) )
-  plot_ras <- raster::raster(x = plot_layer, 
-                             resolution = raster_res)
-  plot_ras <- raster::rasterize(x = plot_layer, 
-                                y = plot_ras, 
-                                field = "plot_this")
+  ## Subset data input for species ispp
+  data_geostat_subset <- subset(x = data_geostat, 
+                                subset = spp == ispp)
   
-  return(plot_ras)
-}
-
-
-
-###################################################
-par(mfcol = c(2, 2), mar = c(3, 3.5, 2, 3.5))
-for (which_spp_code in 1:length(spp_list)) {
-  for(iyear in c(1, 23)) {
-    which_spp <- sort(spp_list)[which_spp_code]
-    plot_this <- fit$Report$D_gct[, which_spp_code, iyear]
+  ## Subset the model runs that converged with a low enough maximum gradient 
+  sub_df <- subset(x = model_settings, 
+                   subset = common_name == ispp & max_grad < 1e-4)
+  
+  ## If there is at least one converged model, run the model with the lowest
+  ## RRMSE in the density predictions
+  if (nrow(sub_df) > 0) {
+    field_config <- unlist(sub_df[which.min(sub_df$rrmse), 
+                                  c("Omega1", "Epsilon1", 
+                                    "Omega2", "Epsilon2")])
+    settings$FieldConfig <- field_config
     
-    density_ras <- make_a_raster(plot_what = plot_this)
-    image(density_ras, 
-          asp = 1,
-          las = 1, 
-          main = ifelse(iyear == 1, which_spp, NA),
-          cex.main = 2)
+    ## Fit model
+    result_dir <- paste0(getwd(), "/results/otter_trawl/", ispp, "/")
+    fit <- FishStatsUtils::fit_model( 
+      "settings" = settings,
+      "working_dir" = result_dir,
+      "Lat_i" = data_geostat_subset[, "Lat"],
+      "Lon_i" = data_geostat_subset[, "Lon"],
+      "t_i" = data_geostat_subset[, "Year"],
+      "b_i" = data_geostat_subset[, "Catch_KG"],
+      "a_i" = data_geostat_subset[, "AreaSwept_km2"],
+      "getJointPrecision" = TRUE,
+      "newtonsteps" = 1,
+      "test_fit" = F,
+      "input_grid" = extrapolation_grid)
     
-    temp_df <- subset(x = data_wide,
-                      subset = YEAR == c(1990:2012)[iyear],
-                      select = c("MEAN_LATITUDE", "MEAN_LONGITUDE", "YEAR", 
-                                 which_spp))
-    points(MEAN_LATITUDE ~ MEAN_LONGITUDE,
-           data = temp_df,
-           cex = 1,
-           pch = 16,
-           col = ifelse(temp_df[, which_spp] == 0, "red", "NA"))
-    points(MEAN_LATITUDE ~ MEAN_LONGITUDE,
-           data = temp_df,
-           pch = 1,
-           cex = temp_df[, which_spp] / max(temp_df[, which_spp]) * 5 )
-    # plot(AK,
-    #      add = TRUE,
-    #      col = "tan",
-    #      border = F)
+    ## Diagnostics
+    diagnostics <- plot(fit, working_dir = result_dir)
+    
+    ## Save fit and diagnostics
+    fit <- fit[c("parameter_estimates", "data_frame", "data_list", "Report")]
+    save(list = "fit", file = paste0(result_dir, "/fit.RData"))
+    save(list = "diagnostics", file = paste0(result_dir, "/diagnostics.RData"))
+    
+    ## Unlink Dynamic library
+    dyn.unload(paste0(result_dir, "/", VAST_Version, ".dll"))
   }
-}
-
-par(mfcol = c(2, 6), mar = c(3, 3.5, 2, 3.5))
-for(ipred in 1:2) {
-  for (which_spp_code in c(2,3, 4,5, 1,6)  ) {
-    which_spp <- sort(spp_list)[which_spp_code]
-    plot_this <- fit$Report[[paste0("Omega", 
-                                    ipred, 
-                                    "_gc")]][, which_spp_code]
-    
-    density_ras <- make_a_raster(plot_what = plot_this)
-    
-    plot(density_ras, 
-         las = 1, 
-         main = ifelse(ipred == 1, which_spp, NA),
-         cex.main = 2)
-    # plot(AK,
-    #      add = TRUE,
-    #      col = "tan",
-    #      border = F)
-  }
-}
-
-par(mfcol = c(4, 6), mar = c(3, 3.5, 2, 3.5))
-for(iyear in c(1, 23)) {
-  for(ipred in 1:2) {
-    for (which_spp_code in c(2,3, 4,5, 1,6)  ) {
-      which_spp <- sort(spp_list)[which_spp_code]
-      plot_this <- fit$Report[[paste0("Epsilon", 
-                                      ipred, 
-                                      "_gct")]][, which_spp_code, iyear]
-      
-      density_ras <- make_a_raster(plot_what = plot_this)
-      
-      plot(density_ras, 
-           las = 1, 
-           main = ifelse(ipred == 1, which_spp, NA),
-           cex.main = 2)
-      # plot(AK,
-      #      add = TRUE,
-      #      col = "tan",
-      #      border = F)
-    }
-  }
-}
-
-FishStatsUtils::plot_factors(fit,
-                             Report = fit$Report,
-                             ParHat = fit$ParHat,
-                             Data = fit$data_list,
-                             Obj = fit$tmb_list$Obj,
-                             SD = fit$parameter_estimates$SD,
-                             year_labels = fit$year_labels,
-                             category_names = spp_list,
-                             RotationMethod = "Varimax",
-                             mapdetails_list = NULL,
-                             Dim_year = NULL,
-                             Dim_species = NULL,
-                             projargs = fit$extrapolation_list$projargs,
-                             plotdir = paste0(output_wd,"output_plots/"),
-                             land_color = "grey")
+  
+} ## Loop over species -- end

@@ -1,9 +1,11 @@
 $par
-    beta1_ft     beta1_ft     beta1_ft   L_omega1_z    logkappa1     beta2_ft     beta2_ft     beta2_ft   L_omega2_z L_epsilon2_z    logkappa2    logSigmaM 
-  0.61808409   0.85314630   0.86971410   0.44591275  -3.65783911   4.09301221   5.52723558   4.78340402   1.26963746   1.01800238  -4.00221705   0.07806005 
+     beta1_ft      beta1_ft      beta1_ft    L_omega1_z  L_epsilon1_z     logkappa1      beta2_ft      beta2_ft      beta2_ft    L_omega2_z  L_epsilon2_z 
+-2.136391e+00 -3.799378e+00 -4.328890e+00  2.812915e+00  1.601701e-06 -4.377472e+00 -2.918269e-01  3.740091e+00  4.332561e+00  1.016173e-06 -1.219506e+00 
+    logkappa2     logSigmaM 
+-3.584374e+00 -7.080606e+00 
 
 $objective
-[1] 992.8677
+[1] 116.8741
 attr(,"logarithm")
 [1] TRUE
 
@@ -12,61 +14,39 @@ $iterations
 
 $evaluations
 function gradient 
-       2        1 
+      12        1 
 
 $time_for_MLE
-Time difference of 3.299165 secs
+Time difference of 9.492378 secs
 
 $max_gradient
-[1] 1.986194e-08
+[1] 5.815189e-06
 
 $Convergence_check
 [1] "There is no evidence that the model is not converged"
 
 $number_of_coefficients
  Total  Fixed Random 
-  2562     12   2550 
+  4603     13   4590 
 
 $AIC
-[1] 2009.735
+[1] 259.7483
 attr(,"logarithm")
 [1] TRUE
 
 $diagnostics
-          Param starting_value     Lower         MLE     Upper final_gradient
-1      beta1_ft     0.61809076      -Inf  0.61808409       Inf  -1.443503e-09
-2      beta1_ft     0.85315978      -Inf  0.85314630       Inf  -3.243328e-09
-3      beta1_ft     0.86971502      -Inf  0.86971410       Inf   6.989991e-10
-4    L_omega1_z     0.44592459      -Inf  0.44591275       Inf  -6.886931e-09
-5     logkappa1    -3.65783538 -5.728812 -3.65783911 -2.156649   5.283511e-10
-6      beta2_ft     4.09298443      -Inf  4.09301221       Inf   7.213421e-10
-7      beta2_ft     5.52717112      -Inf  5.52723558       Inf   9.798722e-10
-8      beta2_ft     4.78336217      -Inf  4.78340402       Inf   8.834027e-10
-9    L_omega2_z     1.26965458      -Inf  1.26963746       Inf  -1.069433e-08
-10 L_epsilon2_z     1.01800278      -Inf  1.01800238       Inf   3.641357e-09
-11    logkappa2    -4.00221510 -5.728812 -4.00221705 -2.156649  -5.921193e-09
-12    logSigmaM     0.07805818      -Inf  0.07806005 10.000000   1.986194e-08
-
-$SD
-sdreport(.) result
-                Estimate Std. Error
-beta1_ft      0.61808409  0.2457529
-beta1_ft      0.85314630  0.2238321
-beta1_ft      0.86971410  0.2601772
-L_omega1_z    0.44591275  0.2866109
-logkappa1    -3.65783911  0.7184772
-beta2_ft      4.09301221  0.6749000
-beta2_ft      5.52723558  0.6477512
-beta2_ft      4.78340402  0.6513349
-L_omega2_z    1.26963746  0.3704503
-L_epsilon2_z  1.01800238  0.3023936
-logkappa2    -4.00221705  0.4144224
-logSigmaM     0.07806005  0.1164574
-Maximum gradient component: 1.986194e-08 
-
-$time_for_sdreport
-Time difference of 8.328539 secs
-
-$time_for_run
-Time difference of 11.83515 secs
+          Param starting_value     Lower           MLE     Upper final_gradient
+1      beta1_ft  -2.136116e+00      -Inf -2.136391e+00       Inf   4.470348e-08
+2      beta1_ft  -3.799116e+00      -Inf -3.799378e+00       Inf  -2.685090e-06
+3      beta1_ft  -4.328563e+00      -Inf -4.328890e+00       Inf  -3.266672e-06
+4    L_omega1_z   2.812793e+00      -Inf  2.812915e+00       Inf  -5.450565e-07
+5  L_epsilon1_z   1.022155e-04      -Inf  1.601701e-06       Inf   1.311372e-06
+6     logkappa1  -4.377347e+00 -5.728812 -4.377472e+00 -2.156649  -1.729466e-06
+7      beta2_ft  -2.918036e-01      -Inf -2.918269e-01       Inf   3.974419e-07
+8      beta2_ft   3.740128e+00      -Inf  3.740091e+00       Inf   9.902869e-07
+9      beta2_ft   4.332636e+00      -Inf  4.332561e+00       Inf   1.025386e-06
+10   L_omega2_z  -4.004047e-05      -Inf  1.016173e-06       Inf   2.584984e-06
+11 L_epsilon2_z  -1.219522e+00      -Inf -1.219506e+00       Inf  -4.586531e-06
+12    logkappa2  -3.584439e+00 -5.728812 -3.584374e+00 -2.156649  -2.816378e-06
+13    logSigmaM  -6.657970e+00      -Inf -7.080606e+00 10.000000   5.815189e-06
 
