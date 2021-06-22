@@ -148,10 +148,16 @@ for (ispp in spp_list) {
     
     file_name <- paste0("results/", igear, "_trawl/", ispp, "/fit.RData")
     if(file.exists(file_name)) {
-      load(file = file_name)
+      load(file = file_name, verbose = T)
       
       for (iyear in years_to_include) {
-        plot(make_a_raster(fit_sub$D_gct[, , iyear]))
+        plot_this <- switch(igear,
+                            "beam" = fit_sub$D_gct[, , iyear],
+                            "otter" = fit$Report$D_gct[, , iyear])
+        
+        print(summary(plot_this))
+
+        plot(make_a_raster(plot_what = plot_this))
         mtext(side = 3, text = paste(igear, "trawl,", years_labels[iyear]))
       }
       
