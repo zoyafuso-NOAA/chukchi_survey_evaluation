@@ -10,10 +10,14 @@ rm(list = ls())
 ##################################################
 library(tidyr)
 library(reshape)
-library(VAST)
+
 library(raster)
 library(sp)
 library(rgdal)
+
+# library(devtools)
+# devtools::install_github("James-Thorson-NOAA/VAST@3.7.1") #for a specific VAST package version
+library(VAST)
 
 ##################################################
 ####  Import Spatial data
@@ -24,7 +28,7 @@ library(rgdal)
 ##################################################
 ####  Import Data
 ##################################################
-rb_data <- read.csv("data/fish_data/otter_trawl/AK_BTS_Arctic_processed.csv")
+rb_data <- read.csv("data/fish_data/otter_trawl/AK_BTS_Arctic_processed_long.csv")
 ierl_data <- read.csv("data/fish_data/2017_2019_Beam/ierl_data_processed.csv")
 
 extrapolation_grid <- read.csv(paste0("data/spatial_data/",
@@ -32,7 +36,10 @@ extrapolation_grid <- read.csv(paste0("data/spatial_data/",
                                       "ChukchiThorsonGrid.csv"))
 extrapolation_grid$Area_km2 <- extrapolation_grid$Shape_Area / 1000 / 1000
 
-data_long <- rbind(rb_data, ierl_data[, names(rb_data)])
+data_long <- rbind(rb_data[, c("year", "area_swept_km2", "lat", "lon", 
+                               "common_name", "catch_kg", "gear")],
+                   ierl_data[, c("year", "area_swept_km2", "lat", "lon", 
+                                 "common_name", "catch_kg", "gear")])
 data_long$cpue <- data_long$catch_kg / data_long$area_swept_km2
 
 spp_list <- c("Alaska plaice", "Arctic cod", "Bering flounder", "saffron cod",
@@ -55,7 +62,7 @@ data_geostat <- data.frame(
 ##################################################
 ####   VAST Model Settings
 ##################################################
-VAST_Version <- "VAST_v12_0_0"
+VAST_Version <- "VAST_v13_1_0"
 settings <- FishStatsUtils::make_settings( 
   Version = VAST_Version,
   n_x = 200,   # Number of knots
@@ -73,19 +80,29 @@ settings <- FishStatsUtils::make_settings(
   use_anisotropy = F, 
   Options = c('SD_site_logdensity' = FALSE, 'Calculate_Range' = FALSE,
               'Calculate_effective_area' = FALSE, 'Calculate_Cov_SE' = FALSE,
-              'Calculate_Synchrony' = FALSE, 'Calculate_proportion' = FALSE))
+              'Calculate_Synchrony' = FALSE, 'Calculate_proportion' = FALSE,
+              "report_additional_variables"=TRUE ))
+
 
 ##################################################
 ####   Model result objects
 ##################################################
-model_settings <- expand.grid(Omega1 = 1,
-                              Omega2 = 1,
+model_settings <- expand.grid(common_name = spp_list,
+                              Omega1 = 0:1,
+                              Omega2 = 0:1,
                               Epsilon1 = 0:1,
                               Epsilon2 = 0:1,
-                              common_name = spp_list,
                               stringsAsFactors = FALSE)
+model_settings[, c("Beta1","Beta2")] <- 0
 
-model_settings[, c("status", "max_grad", "rrmse")] <- NA
+null_model_idx <- apply(X = model_settings[, c("Omega1", "Epsilon1",
+                                               "Omega2", "Epsilon2")],
+                        MARGIN = 1, 
+                        FUN = function(x) all(x == 0))
+
+model_settings[null_model_idx, c("Beta1","Beta2")] <- 3
+
+model_settings[, c("status", "max_grad", "rrmse", "deviance")] <- NA
 
 ##################################################
 ####   Create result directory if not created already
@@ -98,6 +115,9 @@ if(!dir.exists("results/otter_trawl/")) dir.create("results/otter_trawl/")
 for (irow in 1:nrow(model_settings)) {
   settings$FieldConfig <- unlist(model_settings[irow, c("Omega1", "Epsilon1",
                                                         "Omega2", "Epsilon2")])
+  settings$RhoConfig[c("Beta1","Beta2")] <- 
+    unlist(model_settings[irow, c("Beta1","Beta2")])
+  
   data_geostat_subset <- subset(x = data_geostat, 
                                 subset = spp == model_settings$common_name[irow])
   
@@ -120,7 +140,7 @@ for (irow in 1:nrow(model_settings)) {
       message("Did not converge. Here's the original error message:")
       message(cond)
       # Choose a return value in case of error
-      return(NA)
+      return(NULL)
     },
     
     finally={
@@ -142,7 +162,7 @@ for (irow in 1:nrow(model_settings)) {
   ##################################################
   ####   Did the model fit fun produce an error?
   ##################################################
-  model_settings$status[irow] <- ifelse(test = is.na(fit), 
+  model_settings$status[irow] <- ifelse(test = (length(fit$Report) == 1) | (is.null(fit) == T) , 
                                         yes = "no_convergence",
                                         no = "confirm_gradient")
   
@@ -157,7 +177,12 @@ for (irow in 1:nrow(model_settings)) {
     rrmse <- sqrt(mean((obs_cpue - pred_cpue)^2)) / mean(obs_cpue)
     
     model_settings$rrmse[irow] <- round(rrmse, 3)
-  } else (model_settings[irow, c("status", "rrmse", "max_grad")] <- NA)
+    
+    ## Deviance and AIC
+    model_settings$deviance[irow] <- fit$Report$deviance
+    model_settings$AIC[irow] <- fit$parameter_estimates$opt$AIC
+    
+  } else (model_settings[irow, c("status", "rrmse", "max_grad", "deviance")] <- NA)
 }
 
 ## Unlink Dynamic library
@@ -174,7 +199,7 @@ write.csv(model_settings,
 ####   Loop over species and fit the model with "best" field configurations
 ##################################################
 
-for (ispp in spp_list[3:7]) { ## Loop over species -- start
+for (ispp in spp_list) { ## Loop over species -- start
   
   ## Subset data input for species ispp
   data_geostat_subset <- subset(x = data_geostat, 
@@ -184,13 +209,19 @@ for (ispp in spp_list[3:7]) { ## Loop over species -- start
   sub_df <- subset(x = model_settings, 
                    subset = common_name == ispp & max_grad < 1e-4)
   
-  ## If there is at least one converged model, run the model with the lowest
-  ## RRMSE in the density predictions
+  ## If there is at least one converged model, run the model with the 
+  ## highest deviance explained
   if (nrow(sub_df) > 0) {
-    field_config <- unlist(sub_df[which.min(sub_df$rrmse), 
+    
+    best_model_idx <- which.max(1 - sub_df$deviance/max(sub_df$deviance))
+    
+    field_config <- unlist(sub_df[best_model_idx, 
                                   c("Omega1", "Epsilon1", 
                                     "Omega2", "Epsilon2")])
+    rho_config <-  unlist(sub_df[best_model_idx, 
+                                 c("Beta1", "Beta2")])
     settings$FieldConfig <- field_config
+    settings$RhoConfig[c("Beta1", "Beta2")] <- rho_config
     
     ## Fit model
     result_dir <- paste0(getwd(), "/results/otter_trawl/", ispp, "/")
@@ -214,9 +245,7 @@ for (ispp in spp_list[3:7]) { ## Loop over species -- start
     fit <- fit[c("parameter_estimates", "data_frame", "data_list", "Report")]
     save(list = "fit", file = paste0(result_dir, "/fit.RData"))
     save(list = "diagnostics", file = paste0(result_dir, "/diagnostics.RData"))
-    
-    ## Unlink Dynamic library
-    dyn.unload(paste0(result_dir, "/", VAST_Version, ".dll"))
+
   }
   
 } ## Loop over species -- end

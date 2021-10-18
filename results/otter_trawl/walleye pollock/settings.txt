@@ -1,5 +1,5 @@
 $Version
-[1] "VAST_v12_0_0"
+[1] "VAST_v13_1_0"
 
 $n_x
 [1] 200
@@ -16,7 +16,7 @@ $zone
 
 $FieldConfig
   Omega1 Epsilon1   Omega2 Epsilon2 
-       1        0        1        1 
+       1        0        0        1 
 
 $RhoConfig
    Beta1    Beta2 Epsilon1 Epsilon2 
@@ -37,8 +37,10 @@ $vars_to_correct
 [1] "Index_cyl" "Index_ctl"
 
 $Options
-      SD_site_logdensity          Calculate_Range Calculate_effective_area         Calculate_Cov_SE      Calculate_Synchrony     Calculate_proportion 
-                   FALSE                    FALSE                    FALSE                    FALSE                    FALSE                    FALSE 
+         SD_site_logdensity             Calculate_Range    Calculate_effective_area            Calculate_Cov_SE         Calculate_Synchrony 
+                      FALSE                       FALSE                       FALSE                       FALSE                       FALSE 
+       Calculate_proportion report_additional_variables 
+                      FALSE                        TRUE 
 
 $grid_size_km
 [1] 25

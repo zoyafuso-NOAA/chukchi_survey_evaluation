@@ -121,6 +121,7 @@ dat$MEAN_LONGITUDE <- rowMeans(dat[, c("START_LONGITUDE", "END_LONGITUDE")])
 dat <- subset(dat,
               select = c(SURVEY_NAME, YEAR, GEAR_CAT,
                          STATIONID, MEAN_LONGITUDE, MEAN_LATITUDE,
+                         DATE, MONTH, DAY, YEAR,
                          GEAR_DEPTH, GEAR_TEMPERATURE,
                          COMMON_NAME, SPECIES_NAME, CPUE_KG, CPUE_N))
 
@@ -142,7 +143,8 @@ cpue_wide <- cpue_wide[order(cpue_wide$GEAR_CAT,
 ## attach station specific data to data_wide
 ##################################################
 station_data <- dat[!duplicated(dat$STATION_ID), 
-                    c("SURVEY_NAME", "YEAR", "GEAR_CAT", "STATION_ID", 
+                    c("SURVEY_NAME", "DATE", "YEAR", "MONTH", "DAY", 
+                      "GEAR_CAT", "STATION_ID", 
                       "MEAN_LONGITUDE", "MEAN_LATITUDE") ]
 station_data <- station_data[order(station_data$GEAR_CAT,
                                    station_data$STATION_ID), ]
@@ -154,17 +156,22 @@ data_wide <- cbind(station_data,
 #### "lengthen" wide dataset to long-form to match VAST data input 
 ##################################################
 data_long <- reshape::melt(
-  data = data_wide[, c("YEAR", "GEAR_CAT", "MEAN_LONGITUDE", 
-                       "MEAN_LATITUDE", unique(dat$COMMON_NAME))],
+  data = data_wide[, c("YEAR", "MONTH", "DAY", "GEAR_CAT", 
+                       "MEAN_LONGITUDE", "MEAN_LATITUDE", 
+                       unique(dat$COMMON_NAME))],
   measure.vars = unique(dat$COMMON_NAME),
   variable_name = "COMMON_NAME")
 
-names(data_long) <- c("year", "gear", "lon", "lat", "common_name", "catch_kg")
+names(data_long) <- c("year", "month", "day",
+                      "gear", "lon", "lat", "common_name", "catch_kg")
 data_long$area_swept_km2 <- 1
 
 ##################################################
 ####   Save
 ##################################################
 write.csv(x = data_long, 
-          file = "data/fish_data/otter_trawl/AK_BTS_Arctic_processed.csv", 
+          file = "data/fish_data/otter_trawl/AK_BTS_Arctic_processed_long.csv", 
+          row.names = FALSE)
+write.csv(x = data_wide, 
+          file = "data/fish_data/otter_trawl/AK_BTS_Arctic_processed_wide.csv", 
           row.names = FALSE)
