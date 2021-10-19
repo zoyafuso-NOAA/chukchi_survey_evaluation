@@ -37,6 +37,7 @@ data_long <- subset(x = data_long,
                     subset = gear == "beam" & 
                       common_name %in% spp_list &
                       year %in% c(2012, 2017, 2019))
+data_long <- na.omit(data_long)
 
 data_geostat <- data.frame( 
   spp = as.factor(data_long$common_name),
@@ -44,7 +45,9 @@ data_geostat <- data.frame(
   Catch_KG = data_long$cpue,
   AreaSwept_km2 = 1,
   Lat = data_long$lat,
-  Lon = data_long$lon, 
+  Lon = data_long$lon,
+  Depth = scale(data_long$bot_depth),
+  Temp = scale(data_long$bot_temp),
   stringsAsFactors = T)
 
 ##################################################
@@ -79,10 +82,11 @@ settings <- FishStatsUtils::make_settings(
 ##################################################
 ####   Model result objects
 ##################################################
-model_settings <- expand.grid(Omega1 = 1,
-                              Omega2 = 1,
+model_settings <- expand.grid(Omega1 = 0:1,
+                              Omega2 = 0:1,
                               Epsilon1 = 0:1,
                               Epsilon2 = 0:1,
+                              dens_covar = c("TRUE", "FALSE"),
                               common_name = spp_list,
                               stringsAsFactors = FALSE)
 
@@ -98,19 +102,42 @@ for (irow in 1:nrow(model_settings)) {
                                 subset = spp == model_settings$common_name[irow])
   
   fit <- tryCatch(
-    {
-      FishStatsUtils::fit_model( 
-        "settings" = settings,
-        "working_dir" = paste0(getwd(), "/results/beam_trawl"),
-        "Lat_i" = data_geostat_subset[, "Lat"],
-        "Lon_i" = data_geostat_subset[, "Lon"],
-        "t_i" = data_geostat_subset[, "Year"],
-        "b_i" = data_geostat_subset[, "Catch_KG"],
-        "a_i" = data_geostat_subset[, "AreaSwept_km2"],
-        "getJointPrecision" = TRUE,
-        "newtonsteps" = 1,
-        "test_fit" = F,
-        "input_grid" = extrapolation_grid)
+    {switch(paste0(model_settings$dens_covar[irow]),
+            "TRUE" = FishStatsUtils::fit_model( 
+              "settings" = settings,
+              "working_dir" = paste0(getwd(), "/results/beam_trawl/"),
+              "Lat_i" = data_geostat_subset[, "Lat"],
+              "Lon_i" = data_geostat_subset[, "Lon"],
+              "t_i" = data_geostat_subset[, "Year"],
+              "b_i" = data_geostat_subset[, "Catch_KG"],
+              "a_i" = data_geostat_subset[, "AreaSwept_km2"],
+              "getJointPrecision" = TRUE,
+              "newtonsteps" = 1,
+              "test_fit" = F,
+              "input_grid" = extrapolation_grid,
+              
+              "X1_formula" =  "Catch_KG ~ Depth + Temp",
+              "X2_formula" =  "Catch_KG ~ Depth + Temp",
+              "covariate_data" = cbind(data_geostat_subset[, c("Lat",
+                                                        "Lon",
+                                                        "Catch_KG",
+                                                        "Depth",
+                                                        "Temp")],
+                                       Year = NA)),
+            
+            "FALSE" = FishStatsUtils::fit_model( 
+              "settings" = settings,
+              "working_dir" = paste0(getwd(), "/results/beam_trawl/"),
+              "Lat_i" = data_geostat_subset[, "Lat"],
+              "Lon_i" = data_geostat_subset[, "Lon"],
+              "t_i" = data_geostat_subset[, "Year"],
+              "b_i" = data_geostat_subset[, "Catch_KG"],
+              "a_i" = data_geostat_subset[, "AreaSwept_km2"],
+              "getJointPrecision" = TRUE,
+              "newtonsteps" = 1,
+              "test_fit" = F,
+              "input_grid" = extrapolation_grid)
+    )
     },
     error = function(cond) {
       message("Did not converge. Here's the original error message:")
@@ -120,6 +147,12 @@ for (irow in 1:nrow(model_settings)) {
     },
     
     finally={
+      # NOTE:
+      # Here goes everything that should be executed at the end,
+      # regardless of success or error.
+      # If you want more than one expression to be executed, then you 
+      # need to wrap them in curly brackets ({...}); otherwise you could
+      # just have written 'finally=<expression>' 
       message( paste("Processed", model_settings$common_name[irow],
                      "with settings",
                      "Omega1 =", model_settings$Omega1[irow],
@@ -149,6 +182,7 @@ for (irow in 1:nrow(model_settings)) {
     model_settings$rrmse[irow] <- round(rrmse, 3)
   } else (model_settings[irow, c("status", "rrmse", "max_grad")] <- NA)
   
+  
   ##################################################
   ####   Save
   ##################################################
@@ -158,13 +192,27 @@ for (irow in 1:nrow(model_settings)) {
 }
 
 ## Unlink Dynamic library
-dyn.unload(paste0("results/beam_trawl/", VAST_Version, ".dll"))
+dyn.unload(paste0(getwd(), "/results/beam_trawl//", VAST_Version, ".dll"))
+
+for (ispp in spp_list) { ## Loop over species -- start
+  
+  ## Subset the model runs that converged with a low enough maximum gradient 
+  sub_df <- subset(x = model_settings, 
+                   subset = common_name == ispp & max_grad < 1e-4)
+  
+  ## If there is at least one converged model, run the model with the lowest
+  ## RRMSE in the density predictions
+  if (nrow(sub_df) > 0) {
+    print( sub_df[which.min(sub_df$rrmse), ] )
+  }
+}
+
 
 ##################################################
 ####   Loop over species and fit the model with "best" field configurations
 ##################################################
 
-for (ispp in spp_list[-1]) { ## Loop over species -- start
+for (ispp in spp_list) { ## Loop over species -- start
   
   ## Subset data input for species ispp
   data_geostat_subset <- subset(x = data_geostat, 
@@ -178,24 +226,51 @@ for (ispp in spp_list[-1]) { ## Loop over species -- start
   ## RRMSE in the density predictions
   if (nrow(sub_df) > 0) {
     field_config <- unlist(sub_df[which.min(sub_df$rrmse), 
-                                               c("Omega1", "Epsilon1", 
-                                                 "Omega2", "Epsilon2")])
+                                  c("Omega1", "Epsilon1", 
+                                    "Omega2", "Epsilon2")])
     settings$FieldConfig <- field_config
+    
+    depth_in_model <- paste0(sub_df$dens_covar[which.min(sub_df$rrmse)])
     
     ## Fit model
     result_dir <- paste0(getwd(), "/results/beam_trawl/", ispp, "/")
-    fit <- FishStatsUtils::fit_model( 
-      "settings" = settings,
-      "working_dir" = result_dir,
-      "Lat_i" = data_geostat_subset[, "Lat"],
-      "Lon_i" = data_geostat_subset[, "Lon"],
-      "t_i" = data_geostat_subset[, "Year"],
-      "b_i" = data_geostat_subset[, "Catch_KG"],
-      "a_i" = data_geostat_subset[, "AreaSwept_km2"],
-      "getJointPrecision" = TRUE,
-      "newtonsteps" = 1,
-      "test_fit" = F,
-      "input_grid" = extrapolation_grid)
+    fit <- switch(depth_in_model,
+                  "TRUE" = FishStatsUtils::fit_model( 
+                    "settings" = settings,
+                    "working_dir" = result_dir,
+                    "Lat_i" = data_geostat_subset[, "Lat"],
+                    "Lon_i" = data_geostat_subset[, "Lon"],
+                    "t_i" = data_geostat_subset[, "Year"],
+                    "b_i" = data_geostat_subset[, "Catch_KG"],
+                    "a_i" = data_geostat_subset[, "AreaSwept_km2"],
+                    "getJointPrecision" = TRUE,
+                    "newtonsteps" = 1,
+                    "test_fit" = F,
+                    "input_grid" = extrapolation_grid,
+                    
+                    "X1_formula" =  "Catch_KG ~ Depth + I(Depth^2) + Temp + I(Temp^2)",
+                    "X2_formula" =  "Catch_KG ~ Depth + I(Depth^2) + Temp + I(Temp^2)",
+                    "covariate_data" = cbind(data_geostat_subset[, c("Lat",
+                                                              "Lon",
+                                                              "Catch_KG",
+                                                              "Depth",
+                                                              "Temp")],
+                                             Year = NA)),
+                  
+                  "FALSE" = FishStatsUtils::fit_model( 
+                    "settings" = settings,
+                    "working_dir" = result_dir,
+                    "Lat_i" = data_geostat_subset[, "Lat"],
+                    "Lon_i" = data_geostat_subset[, "Lon"],
+                    "t_i" = data_geostat_subset[, "Year"],
+                    "b_i" = data_geostat_subset[, "Catch_KG"],
+                    "a_i" = data_geostat_subset[, "AreaSwept_km2"],
+                    "getJointPrecision" = TRUE,
+                    "newtonsteps" = 1,
+                    "test_fit" = F,
+                    "input_grid" = extrapolation_grid)
+    )
+    
     
     ## Diagnostics
     diagnostics <- plot(fit, working_dir = result_dir)
@@ -210,3 +285,4 @@ for (ispp in spp_list[-1]) { ## Loop over species -- start
   }
   
 } ## Loop over species -- end
+

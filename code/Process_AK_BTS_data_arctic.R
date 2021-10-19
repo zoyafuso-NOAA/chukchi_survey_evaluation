@@ -91,16 +91,19 @@ dat$GEAR_CAT <- as.factor(dat$GEAR_CAT)
 ##################################################
 species_list <- c("Arctic cod", "saffron cod", "Pacific cod", "walleye pollock",
                   "snow crab", "yellowfin sole","Alaska plaice", 
-                  "Bering flounder", "starry flounder", 
-                  "Arctic staghorn sculpin",  "Pacific herring", 
-                  "slender eelblenny", "blue king crab", 
-                  "shorthorn (=warty) sculpin", "circumboreal toad crab", 
-                  "fuzzy hermit crab", "hairy hermit crab", "humpy shrimp", 
-                  "sculptured shrimp", "helmet crab",
-                  "Arctic argid", "kuro argid",  
-                  "green sea urchin", "notched brittlestar",
-                  "purple-orange sea star", "northern nutclam", 
-                  "common mud star", "Greenland cockle", "basketstar")
+                  "Bering flounder"
+                  # ,
+                  # "starry flounder", 
+                  # "Arctic staghorn sculpin",  "Pacific herring", 
+                  # "slender eelblenny", "blue king crab", 
+                  # "shorthorn (=warty) sculpin", "circumboreal toad crab", 
+                  # "fuzzy hermit crab", "hairy hermit crab", "humpy shrimp", 
+                  # "sculptured shrimp", "helmet crab",
+                  # "Arctic argid", "kuro argid",  
+                  # "green sea urchin", "notched brittlestar",
+                  # "purple-orange sea star", "northern nutclam", 
+                  # "common mud star", "Greenland cockle", "basketstar"
+                  )
 
 dat <- dplyr::left_join(x = dat, y = catch) %>%
   dplyr::mutate(CPUE_KG = WEIGHT / (NET_HEIGHT * NET_WIDTH * 0.001), 
@@ -143,9 +146,15 @@ cpue_wide <- cpue_wide[order(cpue_wide$GEAR_CAT,
 ## attach station specific data to data_wide
 ##################################################
 station_data <- dat[!duplicated(dat$STATION_ID), 
+<<<<<<< Updated upstream
                     c("SURVEY_NAME", "DATE", "YEAR", "MONTH", "DAY", 
                       "GEAR_CAT", "STATION_ID", 
                       "MEAN_LONGITUDE", "MEAN_LATITUDE") ]
+=======
+                    c("SURVEY_NAME", "YEAR", "GEAR_CAT", "STATION_ID", 
+                      "MEAN_LONGITUDE", "MEAN_LATITUDE",
+                      "GEAR_DEPTH", "GEAR_TEMPERATURE") ]
+>>>>>>> Stashed changes
 station_data <- station_data[order(station_data$GEAR_CAT,
                                    station_data$STATION_ID), ]
 
@@ -156,14 +165,24 @@ data_wide <- cbind(station_data,
 #### "lengthen" wide dataset to long-form to match VAST data input 
 ##################################################
 data_long <- reshape::melt(
+<<<<<<< Updated upstream
   data = data_wide[, c("YEAR", "MONTH", "DAY", "GEAR_CAT", 
                        "MEAN_LONGITUDE", "MEAN_LATITUDE", 
+=======
+  data = data_wide[, c("YEAR", "GEAR_CAT", "MEAN_LONGITUDE", 
+                       "MEAN_LATITUDE", "GEAR_DEPTH", "GEAR_TEMPERATURE",
+>>>>>>> Stashed changes
                        unique(dat$COMMON_NAME))],
   measure.vars = unique(dat$COMMON_NAME),
   variable_name = "COMMON_NAME")
 
+<<<<<<< Updated upstream
 names(data_long) <- c("year", "month", "day",
                       "gear", "lon", "lat", "common_name", "catch_kg")
+=======
+names(data_long) <- c("year", "gear", "lon", "lat", "bot_depth", "bot_temp"
+                      ,"common_name", "catch_kg")
+>>>>>>> Stashed changes
 data_long$area_swept_km2 <- 1
 
 ##################################################
@@ -175,3 +194,4 @@ write.csv(x = data_long,
 write.csv(x = data_wide, 
           file = "data/fish_data/otter_trawl/AK_BTS_Arctic_processed_wide.csv", 
           row.names = FALSE)
+

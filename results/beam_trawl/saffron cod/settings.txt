@@ -16,7 +16,7 @@ $zone
 
 $FieldConfig
   Omega1 Epsilon1   Omega2 Epsilon2 
-       1        0        1        0 
+       0        1        1        1 
 
 $RhoConfig
    Beta1    Beta2 Epsilon1 Epsilon2 

@@ -1,9 +1,16 @@
 $par
     beta1_ft     beta1_ft L_epsilon1_z    logkappa1     beta2_ft     beta2_ft    logSigmaM 
+<<<<<<< Updated upstream
    -2.987427    -3.648583    -2.471803    -4.641816     2.577343     1.996386    -0.456067 
 
 $objective
 [1] 112.3792
+=======
+  -3.9994796   -3.9579829   -2.8475711   -5.1831725    3.1304337    2.0261733   -0.4640029 
+
+$objective
+[1] 103.5018
+>>>>>>> Stashed changes
 attr(,"logarithm")
 [1] TRUE
 
@@ -15,10 +22,17 @@ function gradient
        2        1 
 
 $time_for_MLE
+<<<<<<< Updated upstream
 Time difference of 1.095197 secs
 
 $max_gradient
 [1] 3.598011e-11
+=======
+Time difference of 2.282975 secs
+
+$max_gradient
+[1] 2.354326e-08
+>>>>>>> Stashed changes
 
 $Convergence_check
 [1] "There is no evidence that the model is not converged"
@@ -28,11 +42,16 @@ $number_of_coefficients
   5918      7   5911 
 
 $AIC
+<<<<<<< Updated upstream
 [1] 238.7583
+=======
+[1] 221.0036
+>>>>>>> Stashed changes
 attr(,"logarithm")
 [1] TRUE
 
 $diagnostics
+<<<<<<< Updated upstream
          Param starting_value     Lower       MLE     Upper final_gradient
 1     beta1_ft     -2.9874266      -Inf -2.987427       Inf   1.998401e-14
 2     beta1_ft     -3.6485840      -Inf -3.648583       Inf   8.228973e-13
@@ -59,4 +78,32 @@ Time difference of 6.515826 secs
 
 $time_for_run
 Time difference of 7.721554 secs
+=======
+         Param starting_value     Lower        MLE     Upper final_gradient
+1     beta1_ft     -3.9997275      -Inf -3.9994796       Inf   1.509534e-09
+2     beta1_ft     -3.9581387      -Inf -3.9579829       Inf   1.276894e-10
+3 L_epsilon1_z     -2.8477263      -Inf -2.8475711       Inf   1.472438e-08
+4    logkappa1     -5.1831965 -5.728812 -5.1831725 -2.156649  -2.116336e-08
+5     beta2_ft      3.1303899      -Inf  3.1304337       Inf   2.354326e-08
+6     beta2_ft      2.0261573      -Inf  2.0261733       Inf  -1.038206e-08
+7    logSigmaM     -0.4640154      -Inf -0.4640029 10.000000   2.099028e-08
+
+$SD
+sdreport(.) result
+               Estimate Std. Error
+beta1_ft     -3.9994796  3.5550972
+beta1_ft     -3.9579829  3.4394488
+L_epsilon1_z -2.8475711  1.4868491
+logkappa1    -5.1831725  0.6044993
+beta2_ft      3.1304337  0.7091855
+beta2_ft      2.0261733  0.2895701
+logSigmaM    -0.4640029  0.2535922
+Maximum gradient component: 2.354326e-08 
+
+$time_for_sdreport
+Time difference of 14.70639 secs
+
+$time_for_run
+Time difference of 17.25357 secs
+>>>>>>> Stashed changes
 

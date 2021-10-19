@@ -45,9 +45,11 @@ master_catch <- aggregate(catch_kg ~ common_name + station_id,
 idx <- match(master_catch$station_id,
              master_haul$EVENT_EVENT_NUMBER)
 
-master_catch[, c("year", "station_id", "area_swept_km2", "lat", "lon")] <-
+master_catch[, c("year", "station_id", "area_swept_km2", "lat", "lon",
+                 "bot_temp", "bot_depth")] <-
   master_haul[idx, c("Year", "EVENT_EVENT_NUMBER", "AREA_SWEPT_KM_2",
-                     "LAT_DD_ON_BOTTOM", "LON_DD_ON_BOTTOM")]
+                     "LAT_DD_ON_BOTTOM", "LON_DD_ON_BOTTOM", 
+                     "bottom_temp_C", "BOTTOM_DEPTH_m")]
 
 ##################################################
 #### Create a wide df with zeros filled for stations where species not observed
@@ -132,7 +134,7 @@ data_long$common_name <- unlist(sapply(
 ##################################################
 ierl_data_long <- subset(x = data_long, 
                          select = -station_id)
-names(ierl_data_long)[6] <- "catch_kg"
+names(ierl_data_long)[8] <- "catch_kg"
 ierl_data_long$gear <- "beam"
 
 ##################################################
