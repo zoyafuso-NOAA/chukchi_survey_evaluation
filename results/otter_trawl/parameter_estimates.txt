@@ -1,41 +1,24 @@
 $par
-     beta1_ft      beta1_ft    L_omega1_z  L_epsilon1_z     logkappa1      beta2_ft      beta2_ft    L_omega2_z  L_epsilon2_z     logkappa2     logSigmaM 
-<<<<<<< Updated upstream
--8.6257600242 -5.8381615561  2.7259382342  5.7695298835 -4.0707064486  0.4145445745 -2.2763367120 -1.9208197918 -0.0007462381 -1.5551615054 -6.5271501021 
+    beta1_ft     beta1_ft   L_omega1_z L_epsilon1_z    logkappa1     beta2_ft     beta2_ft   L_omega2_z L_epsilon2_z    logkappa2    logSigmaM 
+-5.058622913 -3.587297512  3.780746763 -0.002838208 -4.459832648  0.889440009 -0.178356955 -3.976687810  0.001951888 -2.156253794 -9.760580847 
 
 $objective
-[1] 133.1527
-=======
--4.699558e+00 -2.771692e+00 -2.229800e+00 -5.056942e+00 -2.613809e+00  8.533550e-02 -2.329390e+00 -1.405932e-06 -3.610555e-06 -2.154617e+00 -1.012230e+01 
-
-$objective
-[1] 101.2366
->>>>>>> Stashed changes
+[1] 129.7619
 attr(,"logarithm")
 [1] TRUE
 
 $iterations
-[1] 1
+[1] 2
 
 $evaluations
 function gradient 
-<<<<<<< Updated upstream
       13        2 
 
 $time_for_MLE
-Time difference of 14.34727 secs
+Time difference of 1.36232 mins
 
 $max_gradient
-[1] 0.7462221
-=======
-      14        1 
-
-$time_for_MLE
-Time difference of 19.85688 secs
-
-$max_gradient
-[1] 0.01640632
->>>>>>> Stashed changes
+[1] 0.1153133
 
 $Convergence_check
 [1] "The model is likely not converged"
@@ -45,39 +28,21 @@ $number_of_coefficients
  12347     11  12336 
 
 $AIC
-<<<<<<< Updated upstream
-[1] 288.3054
-=======
-[1] 224.4731
->>>>>>> Stashed changes
+[1] 281.5238
 attr(,"logarithm")
 [1] TRUE
 
 $diagnostics
-          Param starting_value     Lower           MLE     Upper final_gradient
-<<<<<<< Updated upstream
-1      beta1_ft   -8.647858753      -Inf -8.6257600242       Inf   1.585901e-03
-2      beta1_ft   -5.879626953      -Inf -5.8381615561       Inf   2.089027e-03
-3    L_omega1_z    2.589855179      -Inf  2.7259382342       Inf  -7.968892e-03
-4  L_epsilon1_z    5.882075285      -Inf  5.7695298835       Inf  -2.838506e-02
-5     logkappa1   -4.059526053 -5.728812 -4.0707064486 -2.156649  -1.645811e-01
-6      beta2_ft    0.416368286      -Inf  0.4145445745       Inf  -4.930727e-02
-7      beta2_ft   -2.302192636      -Inf -2.2763367120       Inf   5.558674e-01
-8    L_omega2_z   -1.327506120      -Inf -1.9208197918       Inf   4.387483e-01
-9  L_epsilon2_z   -0.001126916      -Inf -0.0007462381       Inf   1.208663e-04
-10    logkappa2   -2.156648942 -5.728812 -1.5551615054 -2.156649   7.462221e-01
-11    logSigmaM   -6.287554809      -Inf -6.5271501021 10.000000   8.873669e-06
-=======
-1      beta1_ft  -4.700925e+00      -Inf -4.699558e+00       Inf  -3.501282e-05
-2      beta1_ft  -2.772060e+00      -Inf -2.771692e+00       Inf  -6.766953e-06
-3    L_omega1_z  -2.233966e+00      -Inf -2.229800e+00       Inf  -7.181402e-06
-4  L_epsilon1_z  -5.051073e+00      -Inf -5.056942e+00       Inf   1.273664e-04
-5     logkappa1  -2.615021e+00 -5.728812 -2.613809e+00 -2.156649   5.975180e-06
-6      beta2_ft   8.532831e-02      -Inf  8.533550e-02       Inf   2.174432e-05
-7      beta2_ft  -2.329433e+00      -Inf -2.329390e+00       Inf  -9.479769e-05
-8    L_omega2_z  -8.726503e-06      -Inf -1.405932e-06       Inf  -6.999419e-03
-9  L_epsilon2_z  -1.744254e-05      -Inf -3.610555e-06       Inf  -1.640632e-02
-10    logkappa2  -2.156649e+00 -5.728812 -2.154617e+00 -2.156649  -4.996773e-08
-11    logSigmaM  -1.012156e+01      -Inf -1.012230e+01 10.000000   2.441999e-05
->>>>>>> Stashed changes
+          Param starting_value     Lower          MLE     Upper final_gradient
+1      beta1_ft  -5.0599720995      -Inf -5.058622913       Inf   9.099253e-03
+2      beta1_ft  -3.5849754663      -Inf -3.587297512       Inf  -9.338886e-03
+3    L_omega1_z   3.7798705716      -Inf  3.780746763       Inf  -1.961321e-03
+4  L_epsilon1_z   0.0018429311      -Inf -0.002838208       Inf  -7.255617e-03
+5     logkappa1  -4.4621233842 -5.728812 -4.459832648 -2.156649   4.118323e-03
+6      beta2_ft   0.8918053010      -Inf  0.889440009       Inf  -8.910000e-04
+7      beta2_ft  -0.1799406441      -Inf -0.178356955       Inf   3.411502e-03
+8    L_omega2_z  -3.9780385662      -Inf -3.976687810       Inf   4.382277e-03
+9  L_epsilon2_z   0.0006413768      -Inf  0.001951888       Inf   2.909829e-04
+10    logkappa2  -2.1566489423 -5.728812 -2.156253794 -2.156649  -1.153133e-01
+11    logSigmaM  -9.7668633496      -Inf -9.760580847 10.000000  -1.061656e-05
 
