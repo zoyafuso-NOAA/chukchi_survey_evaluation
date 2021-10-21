@@ -21,7 +21,7 @@ package versions used:
 | raster          | 3.4.5          | 
 | sp              | 1.4.5          | 
 | rgdal           | 1.5.23         | 
-|                 |            | 
+|                 |                | 
 
 ## Species List
 
@@ -31,18 +31,8 @@ package versions used:
 ## VAST Model Settings
 Four versions of random field configurations were conducted for each 
 single-species run. The converged models (e.g., max convergence < 1e-4)
-with the lowest RRMSE of the density predictions were kept as the 
-best model. No density or catchability covariates were used (to be 
-updated, possibly).
-
-| Spatial 1st Pred (Omega_1)| Spatial 2nd Pred (Omega_2)| Spatiotemporal 1st Pred (Epsilon_1)| Spatiotemporal 2nd Pred (Epsilon_2)|
-|---------------------------|---------------------------|------------------------------------|------------------------------------|
-| X                         | X                         |                                    |                                    | 
-| X                         | X                         | X                                  |                                    | 
-| X                         | X                         |                                    | X                                  | 
-| X                         | X                         | X                                  | X                                  | 
-
-200 knots were used for each run.
+with the lowest AIC was the best candidate model. No density or catchability
+covariates were used at the moment. 200 spatial knots were used.
 
 ## Estimated Precision
 |                            |      | Beam   Trawl |      |   | Otter   Trawl |      |
@@ -51,10 +41,10 @@ updated, possibly).
 | Number of stations         | 42   | 58           | 45   |   | 69            | 72   |
 |                            |      |              |      |   |               |      |
 | Species                    |      |              |      |   |               |      |
-| Alaska plaice              |      |              |      |   | 0.91          | 0.26 |
-| Arctic cod                 | 0.23 | 0.2          | 0.25 |   | 0.49          | 0.16 |
+| Alaska plaice              |      |              |      |   | 0.83          | 0.23 |
+| Arctic cod                 | 0.23 | 0.2          | 0.25 |   | 0.60          | 0.13 |
 | Bering flounder            | 0.25 | 0.4          | 0.31 |   | 0.25          | 0.19 |
-| saffron cod                | 0.62 | 0.57         | 0.58 |   | 0.98          | 0.34 |
-| snow crab                  | 0.24 | 0.2          | 0.25 |   |               |      |
+| saffron cod                | 0.62 | 0.57         | 0.58 |   | 1.94          | 0.83 |
+| snow crab                  | 0.24 | 0.2          | 0.25 |   | 0.29          | 0.26 |
 | walleye pollock            |      |              |      |   | 0.45          | 0.24 |
-| yellowfin sole             | 0.97 | 1.14         | 1.04 |   |               |      |
+| yellowfin sole             | 0.97 | 1.14         | 1.04 |   | 0.91          | 0.39 |
