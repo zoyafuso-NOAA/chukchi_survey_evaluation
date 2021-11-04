@@ -245,7 +245,8 @@ for (ispp in spp_list) { ## Loop over species -- start
     diagnostics <- plot(fit, working_dir = paste0(result_dir, "/"))
     
     ## Save fit and diagnostics
-    fit <- fit[c("parameter_estimates", "data_frame", "data_list", "Report")]
+    saveRDS(fit, paste0(result_dir, "/fit_full.rds")) # save all outputs locally
+    fit <- fit[c("parameter_estimates", "data_frame", "data_list", "Report")] # partial output to sync to remote
     save(list = "fit", file = paste0(result_dir, "/fit.RData"))
     save(list = "diagnostics", file = paste0(result_dir, "/diagnostics.RData"))
     
