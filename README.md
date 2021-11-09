@@ -25,8 +25,11 @@ package versions used:
 
 ## Species List
 
-## Spatiotemporal Extent of Stations
-![Location of stations for each gear and year surveyed](graphics/map_of_stations.png)
+## Spatiotemporal Extent of Beam Trawl Stations
+![Location of stations for each gear and year surveyed via beam trawl](graphics/map_of_beamtrawl_stations.png)
+
+## Spatiotemporal Extent of Otter Trawl Stations
+![Location of stations for each gear and year surveyed via otter trawl](graphics/map_of_ottertrawl_stations.png)
 
 ## VAST Model Settings
 Four versions of random field configurations were conducted for each 
@@ -34,7 +37,7 @@ single-species run. The converged models (e.g., max convergence < 1e-4)
 with the lowest AIC was the best candidate model. No density or catchability
 covariates were used at the moment. 200 spatial knots were used.
 
-## Estimated Precision
+## Estimated Precision (pre-November 2021)
 |                            |      | Beam   Trawl |      |   | Otter   Trawl |      |
 |----------------------------|------|--------------|------|---|---------------|------|
 |                            | 2012 | 2017         | 2019 |   | 1990          | 2012 |
