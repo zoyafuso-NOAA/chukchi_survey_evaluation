@@ -134,7 +134,8 @@ dat <- subset(dat,
 dat$STATION_ID <- with(dat, paste(MEAN_LONGITUDE, MEAN_LATITUDE))
 
 cpue_wide <- tidyr::spread(
-  data = dat[, c("YEAR", "STATION_ID", "CPUE_KG", "COMMON_NAME", "GEAR_CAT")], 
+  data = dat[, c("YEAR", "MONTH", "DAY", "DATE",
+                 "STATION_ID", "CPUE_KG", "COMMON_NAME", "GEAR_CAT")], 
   key = COMMON_NAME, 
   value = "CPUE_KG", 
   fill = 0)
@@ -146,15 +147,10 @@ cpue_wide <- cpue_wide[order(cpue_wide$GEAR_CAT,
 ## attach station specific data to data_wide
 ##################################################
 station_data <- dat[!duplicated(dat$STATION_ID), 
-<<<<<<< Updated upstream
-                    c("SURVEY_NAME", "DATE", "YEAR", "MONTH", "DAY", 
-                      "GEAR_CAT", "STATION_ID", 
+                    c("STATION_ID", "SURVEY_NAME", "DATE", "YEAR", "MONTH", "DAY", 
+                      "GEAR_CAT", "GEAR_DEPTH", "GEAR_TEMPERATURE",  
                       "MEAN_LONGITUDE", "MEAN_LATITUDE") ]
-=======
-                    c("SURVEY_NAME", "YEAR", "GEAR_CAT", "STATION_ID", 
-                      "MEAN_LONGITUDE", "MEAN_LATITUDE",
-                      "GEAR_DEPTH", "GEAR_TEMPERATURE") ]
->>>>>>> Stashed changes
+
 station_data <- station_data[order(station_data$GEAR_CAT,
                                    station_data$STATION_ID), ]
 
@@ -165,24 +161,15 @@ data_wide <- cbind(station_data,
 #### "lengthen" wide dataset to long-form to match VAST data input 
 ##################################################
 data_long <- reshape::melt(
-<<<<<<< Updated upstream
-  data = data_wide[, c("YEAR", "MONTH", "DAY", "GEAR_CAT", 
+  data = data_wide[, c("YEAR", "MONTH", "DAY", "DATE", "GEAR_CAT", 
                        "MEAN_LONGITUDE", "MEAN_LATITUDE", 
-=======
-  data = data_wide[, c("YEAR", "GEAR_CAT", "MEAN_LONGITUDE", 
-                       "MEAN_LATITUDE", "GEAR_DEPTH", "GEAR_TEMPERATURE",
->>>>>>> Stashed changes
+                       "GEAR_DEPTH", "GEAR_TEMPERATURE",
                        unique(dat$COMMON_NAME))],
   measure.vars = unique(dat$COMMON_NAME),
   variable_name = "COMMON_NAME")
 
-<<<<<<< Updated upstream
-names(data_long) <- c("year", "month", "day",
-                      "gear", "lon", "lat", "common_name", "catch_kg")
-=======
-names(data_long) <- c("year", "gear", "lon", "lat", "bot_depth", "bot_temp"
-                      ,"common_name", "catch_kg")
->>>>>>> Stashed changes
+names(data_long) <- c("year", "month", "day", "date", "gear", "lon", "lat", 
+                      "bot_depth", "bot_temp", "common_name", "catch_kg")
 data_long$area_swept_km2 <- 1
 
 ##################################################
