@@ -20,12 +20,6 @@
 rm(list = ls())
 
 ##################################################
-####   Set up directories
-##################################################
-# wd <- "C:/Users/zack.oyafuso/Desktop/data-raw/"
-# output_wd <- "C:/Users/zack.oyafuso/Desktop/Arctic/data/"
-
-##################################################
 ####   Import Libraries
 ##################################################
 library(dplyr)
@@ -33,27 +27,39 @@ library(dplyr)
 ##################################################
 ####   load flat files extracted from RACEBASE
 ##################################################
-cruise <- read.csv(file = "data/fish_data/otter_trawl/cruise.csv",
+cruise <- read.csv(file = "data/fish_data/AK_BTS_OtterAndBeam/cruise.csv",
                    stringsAsFactors = FALSE)
-haul <- read.csv(file = "data/fish_data/otter_trawl/haul.csv",
+haul <- read.csv(file = "data/fish_data/AK_BTS_OtterAndBeam/haul.csv",
                  stringsAsFactors = FALSE)
-catch <- read.csv(file = "data/fish_data/otter_trawl/catch_subsetted_BS.csv", 
+catch <- read.csv(file = "data/fish_data/AK_BTS_OtterAndBeam/catch_subsetted_BS.csv", 
                   stringsAsFactors = FALSE)
 
 ##################################################
+####   Some manipulations of the haul dataframe:
+####
 ####   Break down date information from haul data (note that year conversion 
 ####   for years prior to 1969 are incorrectly assigned to 2000s)
+####   
+####   Filter to include HAUL_TYPE 3 (standard planned haul), 0 (opportunistic,
+####   haul), and 23 (gear performance hauls)
+####
+####   Include Good Performance hauls (PERFORMANCE >= 0)
 ##################################################
 haul$DATE <- as.Date(x = haul$START_TIME, format = "%d-%b-%y")
 haul$MONTH <- lubridate::month(x = haul$DATE)
 haul$DAY <- lubridate::day(x = haul$DATE)
 haul$YEAR <- lubridate::year(x = haul$DATE) 
 
+haul <- subset(x = haul, 
+               subset = PERFORMANCE >= 0 
+               & HAUL_TYPE %in% c(0, 3, 23))
+
 ##################################################
 ####   Join with species names
 ##################################################
-species_codes <-  read.csv(file = "data/fish_data/otter_trawl/species.csv", 
-                           stringsAsFactors = FALSE)
+species_codes <- 
+  read.csv(file = "data/fish_data/AK_BTS_OtterAndBeam/species.csv", 
+           stringsAsFactors = FALSE)
 species_codes <- dplyr::select(.data = species_codes, -YEAR_ADDED)
 catch <- dplyr::left_join(x = catch, y = species_codes)
 dat <- dplyr::left_join(x = haul, y = cruise, by = 'CRUISEJOIN')
@@ -76,38 +82,17 @@ dat <- dat %>%
 
 dat$GEAR_CAT <- as.factor(dat$GEAR_CAT)
 
-# exploring catches by species
-# catch_rank <- dplyr::left_join(dat, catch) %>%
-#   dplyr::group_by(COMMON_NAME) %>%
-#   dplyr::summarize(sum_n = sum(NUMBER_FISH, na.rm = TRUE)) %>%
-#   dplyr::arrange(desc(sum_n))
-# print(catch_rank, n=300)
-
 ##################################################
-####   Join haul and catch data for selected species, summarize CPUE in numbers
-####   or kg per square km currently including shrimps, crabs, and other mobile 
-####   (non-molluscan) epifauna in top 40 total catch numbers, along with blue 
-####   king crab
+####   Join haul and catch data for selected species in species_list, 
+####   summarize CPUE in numbers or kg per square km currently 
 ##################################################
 species_list <- c("Arctic cod", "saffron cod", "Pacific cod", "walleye pollock",
                   "snow crab", "yellowfin sole","Alaska plaice", 
-                  "Bering flounder"
-                  # ,
-                  # "starry flounder", 
-                  # "Arctic staghorn sculpin",  "Pacific herring", 
-                  # "slender eelblenny", "blue king crab", 
-                  # "shorthorn (=warty) sculpin", "circumboreal toad crab", 
-                  # "fuzzy hermit crab", "hairy hermit crab", "humpy shrimp", 
-                  # "sculptured shrimp", "helmet crab",
-                  # "Arctic argid", "kuro argid",  
-                  # "green sea urchin", "notched brittlestar",
-                  # "purple-orange sea star", "northern nutclam", 
-                  # "common mud star", "Greenland cockle", "basketstar"
-                  )
+                  "Bering flounder")
 
 dat <- dplyr::left_join(x = dat, y = catch) %>%
-  dplyr::mutate(CPUE_KG = WEIGHT / (NET_HEIGHT * NET_WIDTH * 0.001), 
-                CPUE_N = NUMBER_FISH / (NET_HEIGHT * NET_WIDTH * 0.001)) %>%
+  dplyr::mutate(CPUE_KG = WEIGHT / (DISTANCE_FISHED * NET_WIDTH * 0.001), 
+                CPUE_N = NUMBER_FISH / (DISTANCE_FISHED * NET_WIDTH * 0.001)) %>%
   dplyr::filter(COMMON_NAME %in% species_list,
                 !is.na(CPUE_KG),
                 !is.na(CPUE_N))
@@ -147,7 +132,8 @@ cpue_wide <- cpue_wide[order(cpue_wide$GEAR_CAT,
 ## attach station specific data to data_wide
 ##################################################
 station_data <- dat[!duplicated(dat$STATION_ID), 
-                    c("STATION_ID", "SURVEY_NAME", "DATE", "YEAR", "MONTH", "DAY", 
+                    c("STATION_ID", "SURVEY_NAME", 
+                      "DATE", "YEAR", "MONTH", "DAY", 
                       "GEAR_CAT", "GEAR_DEPTH", "GEAR_TEMPERATURE",  
                       "MEAN_LONGITUDE", "MEAN_LATITUDE") ]
 
@@ -169,16 +155,16 @@ data_long <- reshape::melt(
   variable_name = "COMMON_NAME")
 
 names(data_long) <- c("year", "month", "day", "date", "gear", "lon", "lat", 
-                      "bot_depth", "bot_temp", "common_name", "catch_kg")
+                      "bot_depth", "bot_temp", "common_name", "cpue_kg_km2")
 data_long$area_swept_km2 <- 1
 
 ##################################################
 ####   Save
 ##################################################
 write.csv(x = data_long, 
-          file = "data/fish_data/otter_trawl/AK_BTS_Arctic_processed_long.csv", 
+          file = "data/fish_data/AK_BTS_OtterAndBeam/AK_BTS_Arctic_processed_long.csv", 
           row.names = FALSE)
 write.csv(x = data_wide, 
-          file = "data/fish_data/otter_trawl/AK_BTS_Arctic_processed_wide.csv", 
+          file = "data/fish_data/AK_BTS_OtterAndBeam/AK_BTS_Arctic_processed_wide.csv", 
           row.names = FALSE)
 
