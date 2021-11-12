@@ -3,15 +3,17 @@
 ## Author:        Zack Oyafuso (zack.oyafuso@noaa.gov)
 ## Description:   1990 and 2012 Chukchi data
 ## 
-## Notes:         R Version 4.0.2
-##                VAST 3.6.1; FishStatsUtils 2.8.10
-###############################################################################
+## Notes:         Versions to use
 rm(list = ls())
 r_version <- "R version 4.0.2 (2020-06-22)"
 vast_version <- "3.6.1"
 fishstatsutils_version <- "2.8.0"
 vast_cpp_version <- "VAST_v12_0_0"
+###############################################################################
 
+##################################################
+####  Check that versions of R and relevant packages are consistent 
+##################################################
 ifelse(test = sessionInfo()$R.version$version.string == r_version &
          packageVersion("VAST") == vast_version &
          packageVersion("FishStatsUtils") == fishstatsutils_version &
@@ -19,17 +21,9 @@ ifelse(test = sessionInfo()$R.version$version.string == r_version &
        yes = "versions are good to go", 
        no = "check your versions")
 
-
 ##################################################
 ####  Import Libraries
 ##################################################
-# library(tidyr)
-# library(reshape)
-# 
-# library(raster)
-# library(sp)
-# library(rgdal)
-
 # library(devtools)
 # devtools::install_local("C:/Users/zack.oyafuso/Downloads/FishStatsUtils-2.8.0")
 # devtools::install_github("James-Thorson-NOAA/VAST@3.6.1") #for a specific VAST package version
@@ -38,20 +32,21 @@ library(VAST)
 ##################################################
 ####  Import CPUE Data and Grid
 ##################################################
-spp_list <- c("Alaska plaice", "Arctic cod", "Bering flounder", "saffron cod",
-              "walleye pollock", "yellowfin sole", "snow crab")
-
-rb_data <- read.csv("data/fish_data/otter_trawl/AK_BTS_Arctic_processed.csv")
+rb_data <- read.csv("data/fish_data/AK_BTS_OtterAndBeam/AK_BTS_Arctic_processed_long.csv")
 
 extrapolation_grid <- read.csv(paste0("data/spatial_data/",
                                       "BS_Chukchi_extrapolation_grids/",
                                       "ChukchiThorsonGrid.csv"))
 extrapolation_grid$Area_km2 <- extrapolation_grid$Shape_Area / 1000 / 1000
 
-data_long <- subset(x = rb_data, 
-                    subset = gear == "otter" & common_name %in% spp_list) 
-data_long$cpue <- data_long$catch_kg / data_long$area_swept_km2
+load("data/covariate_data/covariate_df.RData")
+names(covar_df)[1] <- "Year"
+
+data_long <- subset(x = rb_data, subset = gear == "otter") 
 data_long <- na.omit(data_long)
+
+data_long$year[data_long$year == 2012] <- 1991
+covar_df$Year[covar_df$Year == 2012] <- 1991
 
 data_geostat <- data.frame( 
   spp = as.factor(data_long$common_name),
@@ -60,8 +55,6 @@ data_geostat <- data.frame(
   AreaSwept_km2 = 1,
   Lat = data_long$lat,
   Lon = data_long$lon,
-  Depth = scale(data_long$bot_depth),
-  Temp = scale(data_long$bot_temp),
   stringsAsFactors = T)
 
 ##################################################
@@ -90,12 +83,13 @@ settings <- FishStatsUtils::make_settings(
 ##################################################
 ####   Model result objects
 ##################################################
+spp_list <- sort(unique(data_long$common_name))
 model_settings <- expand.grid(common_name = spp_list,
                               Omega1 = 0:1,
                               Omega2 = 0:1,
                               Epsilon1 = 0:1,
                               Epsilon2 = 0:1,
-                              dens_covar = c("FALSE"),
+                              dens_covar = c("FALSE", "TRUE"),
                               stringsAsFactors = FALSE)
 
 model_settings[, c("status", "max_grad", "rrmse", "aic")] <- NA
@@ -108,12 +102,20 @@ if(!dir.exists("results/otter_trawl/")) dir.create("results/otter_trawl/")
 ##################################################
 ####   Model fit
 ##################################################
-for (irow in 1:nrow(model_settings)) {
+for (irow in nrow(model_settings):1) {
+  
   settings$FieldConfig <- unlist(model_settings[irow, c("Omega1", "Epsilon1",
                                                         "Omega2", "Epsilon2")])
   
   data_geostat_subset <- subset(x = data_geostat, 
                                 subset = spp == model_settings$common_name[irow])
+  
+  X1_formula_ <- X2_formula_ <- switch(model_settings$dens_covar[irow],
+                                       "FALSE" = "~ 0",
+                                       "TRUE" = "~ temp + salt")
+  covariate_data <- switch(model_settings$dens_covar[irow],
+                           "FALSE" = NULL,
+                           "TRUE" = covar_df)
   
   fit <- tryCatch( {FishStatsUtils::fit_model( 
     "settings" = settings,
@@ -126,7 +128,12 @@ for (irow in 1:nrow(model_settings)) {
     "getJointPrecision" = TRUE,
     "newtonsteps" = 1,
     "test_fit" = F,
-    "input_grid" = extrapolation_grid)
+    "input_grid" = extrapolation_grid,
+    
+    "X1_formula" = X1_formula_,
+    "X2_formula" = X2_formula_, 
+    "covariate_data" = covariate_data
+  )
   },
   error = function(cond) {
     message("Did not converge. Here's the original error message:")
@@ -203,55 +210,78 @@ model_settings <- read.csv(paste0("results/otter_trawl/model_settings.csv"))
 ####   Loop over species and fit the model with "best" field configurations
 ##################################################
 
-for (ispp in spp_list) { ## Loop over species -- start
+for (covar in c(FALSE, TRUE)) { ## Loop over density covariates -- start
   
-  ## Subset data input for species ispp
-  data_geostat_subset <- subset(x = data_geostat, 
-                                subset = spp == ispp)
+  X1_formula_ <- X2_formula_ <- switch(paste0(covar),
+                                       "FALSE" = "~ 0",
+                                       "TRUE" = "~ temp + salt")
+  covariate_data <- switch(paste0(covar),
+                           "FALSE" = NULL,
+                           "TRUE" = covar_df)
   
-  ## Subset the model runs that converged with a low enough maximum gradient 
-  sub_df <- subset(x = model_settings, 
-                   subset = common_name == ispp & max_grad < 1e-4)
-  
-  ## If there is at least one converged model, run the model with the lowest AIC
-  if (nrow(sub_df) > 0) {
+  for (ispp in spp_list) { ## Loop over species -- start
+    ## Subset data input for species ispp
+    data_geostat_subset <- subset(x = data_geostat, 
+                                  subset = spp == ispp)
     
-    # best_model_idx <- which.max(1 - sub_df$deviance/max(sub_df$deviance))
+    ## Subset the model runs that converged with a low enough maximum gradient 
+    sub_df <- subset(x = model_settings, 
+                     subset = common_name == ispp 
+                     & dens_covar == covar
+                     & max_grad < 1e-4)
     
-    best_model_idx <- which.min(sub_df$aic)
-    field_config <- unlist(sub_df[best_model_idx, 
-                                  c("Omega1", "Epsilon1", 
-                                    "Omega2", "Epsilon2")])
-    settings$FieldConfig <- field_config
-    
-    ## Fit model
-    result_dir <- paste0(getwd(), "/results/otter_trawl/", ispp)
-    fit <- FishStatsUtils::fit_model( 
-      "settings" = settings,
-      "working_dir" = result_dir,
-      "Lat_i" = data_geostat_subset[, "Lat"],
-      "Lon_i" = data_geostat_subset[, "Lon"],
-      "t_i" = data_geostat_subset[, "Year"],
-      "b_i" = data_geostat_subset[, "Catch_KG"],
-      "a_i" = data_geostat_subset[, "AreaSwept_km2"],
-      "getJointPrecision" = TRUE,
-      "newtonsteps" = 1,
-      "test_fit" = F,
-      "input_grid" = extrapolation_grid)
-    
-    # dyn.unload(paste0(result_dir, "/", vast_cpp_version, ".dll"))
-    # dyn.load("C:/Users/zack.oyafuso/Work/GitHub/Arctic_GF_OM/results/otter_trawl/Alaska plaice/VAST_v12_0_0.dll")
-    ## Diagnostics
-    diagnostics <- plot(fit, working_dir = paste0(result_dir, "/"))
-    
-    ## Save fit and diagnostics
-    saveRDS(fit, paste0(result_dir, "/fit_full.rds")) # save all outputs locally
-    fit <- fit[c("parameter_estimates", "data_frame", "data_list", "Report")] # partial output to sync to remote
-    save(list = "fit", file = paste0(result_dir, "/fit.RData"))
-    save(list = "diagnostics", file = paste0(result_dir, "/diagnostics.RData"))
-    
-    dyn.unload(paste0(result_dir, "/", vast_cpp_version, ".dll"))
-    
-  }
-  
-} ## Loop over species -- end
+    ## If there is at least one converged model, run the model with the lowest AIC
+    if (nrow(sub_df) > 0) {
+      
+      best_model_idx <- which.min(sub_df$aic)
+      field_config <- unlist(sub_df[best_model_idx, 
+                                    c("Omega1", "Epsilon1", 
+                                      "Omega2", "Epsilon2")])
+      settings$FieldConfig <- field_config
+      
+      ## Fit model directory, copy VAST cpp files
+      result_dir <- paste0(getwd(), "/results/otter_trawl/", ispp,
+                           ifelse(test = covar == TRUE, 
+                                  yes = "_covar", 
+                                  no = ""))
+      dir.create(result_dir)
+      file.copy(from = c(paste0("results/otter_trawl/", 
+                              vast_cpp_version, c(".o", ".cpp", ".dll")),
+                         paste0("results/otter_trawl/Kmeans-", 
+                                settings$n_x, ".RData")),
+                to = result_dir)
+
+      
+      fit <- FishStatsUtils::fit_model( 
+        "settings" = settings,
+        "working_dir" = result_dir,
+        "Lat_i" = data_geostat_subset[, "Lat"],
+        "Lon_i" = data_geostat_subset[, "Lon"],
+        "t_i" = data_geostat_subset[, "Year"],
+        "b_i" = data_geostat_subset[, "Catch_KG"],
+        "a_i" = data_geostat_subset[, "AreaSwept_km2"],
+        "getJointPrecision" = TRUE,
+        "newtonsteps" = 1,
+        "test_fit" = F,
+        "input_grid" = extrapolation_grid,
+        
+        "X1_formula" = X1_formula_,
+        "X2_formula" = X2_formula_, 
+        "covariate_data" = covariate_data )
+      
+      # dyn.unload(paste0(result_dir, "/", vast_cpp_version, ".dll"))
+      # dyn.load("C:/Users/zack.oyafuso/Work/GitHub/Arctic_GF_OM/results/otter_trawl/Alaska plaice/VAST_v12_0_0.dll")
+      ## Diagnostics
+      diagnostics <- plot(fit, working_dir = paste0(result_dir, "/"))
+      
+      ## Save fit and diagnostics
+      saveRDS(fit, paste0(result_dir, "/fit_full.rds")) # save all outputs locally
+      fit <- fit[c("parameter_estimates", "data_frame", "data_list", "Report")] # partial output to sync to remote
+      save(list = "fit", file = paste0(result_dir, "/fit.RData"))
+      save(list = "diagnostics", file = paste0(result_dir, "/diagnostics.RData"))
+      
+      dyn.unload(paste0(result_dir, "/", vast_cpp_version, ".dll"))
+      
+    }
+  }  ## Loop over species -- end
+}  ## Loop over density covariates -- end 
