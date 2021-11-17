@@ -25,12 +25,14 @@ sql_to_rqry <- function(sql_path) {
   in_string <- readr::read_file(sql_path)
   in_string <- sub("/*.*/", "", in_string)
   out_string <- stringr::str_replace_all(in_string, pattern = "\r\n", replacement = " ") # or pattern = "\n" for some files
-  
+
   return(out_string)
 }
 
 haul <- data.frame(RODBC::sqlQuery(channel, sql_to_rqry("code/data_processing/nbs_hauls_query_kotwicki_forR.sql")))
-saveRDS(haul, "data/fish_data/AK_BTS_OtterAndBeam/nbs_kotwicki_hauls.rds")
+#saveRDS(haul, "data/fish_data/AK_BTS_OtterAndBeam/nbs_kotwicki_hauls.rds")
+# or, once query above is conducted and saved, can load directly via
+#haul <-  readRDS("data/fish_data/AK_BTS_OtterAndBeam/nbs_kotwicki_hauls.rds")
 
 ## alternative queries from Jason
 # haul_jason <- RODBC::sqlQuery(channel, 
