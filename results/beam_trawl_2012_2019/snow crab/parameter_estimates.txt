@@ -1,0 +1,68 @@
+$par
+    beta1_ft     beta1_ft     beta1_ft     beta2_ft     beta2_ft     beta2_ft   L_omega2_z L_epsilon2_z    logkappa2    logSigmaM 
+  0.71984935   0.81919973   0.78719501   5.87492812   5.63706220   4.92951947  -1.35041877  -0.98565850  -3.91850591   0.04710761 
+
+$objective
+[1] 1040.494
+attr(,"logarithm")
+[1] TRUE
+
+$iterations
+[1] 1
+
+$evaluations
+function gradient 
+       2        1 
+
+$time_for_MLE
+Time difference of 1.450334 secs
+
+$max_gradient
+[1] 5.239932e-09
+
+$Convergence_check
+[1] "There is no evidence that the model is not converged"
+
+$number_of_coefficients
+ Total  Fixed Random 
+  2305     10   2295 
+
+$AIC
+[1] 2100.988
+attr(,"logarithm")
+[1] TRUE
+
+$diagnostics
+          Param starting_value     Lower         MLE     Upper final_gradient
+1      beta1_ft     0.71985548      -Inf  0.71984935       Inf   1.602807e-10
+2      beta1_ft     0.81919934      -Inf  0.81919973       Inf   8.954615e-12
+3      beta1_ft     0.78719465      -Inf  0.78719501       Inf   3.277378e-11
+4      beta2_ft     5.87492073      -Inf  5.87492812       Inf   2.970602e-11
+5      beta2_ft     5.63705848      -Inf  5.63706220       Inf   9.045209e-12
+6      beta2_ft     4.92951486      -Inf  4.92951947       Inf   4.177103e-11
+7    L_omega2_z    -1.35041998      -Inf -1.35041877       Inf  -1.240099e-09
+8  L_epsilon2_z    -0.98565283      -Inf -0.98565850       Inf   1.416151e-09
+9     logkappa2    -3.91851247 -5.728812 -3.91850591 -2.156649   3.334658e-09
+10    logSigmaM     0.04710789      -Inf  0.04710761 10.000000  -5.239932e-09
+
+$SD
+sdreport(.) result
+                Estimate Std. Error
+beta1_ft      0.71984935  0.2032804
+beta1_ft      0.81919973  0.1703877
+beta1_ft      0.78719501  0.1918953
+beta2_ft      5.87492812  0.6346497
+beta2_ft      5.63706220  0.6068764
+beta2_ft      4.92951947  0.6019976
+L_omega2_z   -1.35041877  0.3317601
+L_epsilon2_z -0.98565850  0.2984406
+logkappa2    -3.91850591  0.3638835
+logSigmaM     0.04710761  0.1176772
+Maximum gradient component: 5.239932e-09 
+
+$time_for_sdreport
+Time difference of 3.422629 secs
+
+$time_for_run
+Time difference of 4.934856 secs
+
