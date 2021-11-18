@@ -204,13 +204,15 @@ lapply(X = split.data.frame(x = model_settings,
          return(temp_df[min_idx, ])
        })
 
-model_settings <- read.csv(paste0("results/otter_trawl/model_settings.csv"))
+# model_settings <- read.csv(paste0("results/otter_trawl/model_settings.csv"))
 
 ##################################################
 ####   Loop over species and fit the model with "best" field configurations
 ##################################################
 
-for (covar in c(FALSE, TRUE)) { ## Loop over density covariates -- start
+for (covar in c(FALSE
+                # , TRUE
+)) { ## Loop over density covariates -- start
   
   X1_formula_ <- X2_formula_ <- switch(paste0(covar),
                                        "FALSE" = "~ 0",
@@ -220,6 +222,7 @@ for (covar in c(FALSE, TRUE)) { ## Loop over density covariates -- start
                            "TRUE" = covar_df)
   
   for (ispp in spp_list) { ## Loop over species -- start
+    
     ## Subset data input for species ispp
     data_geostat_subset <- subset(x = data_geostat, 
                                   subset = spp == ispp)
@@ -246,12 +249,14 @@ for (covar in c(FALSE, TRUE)) { ## Loop over density covariates -- start
                                   no = ""))
       dir.create(result_dir)
       file.copy(from = c(paste0("results/otter_trawl/", 
-                              vast_cpp_version, c(".o", ".cpp", ".dll")),
+                                vast_cpp_version, c(".o", ".cpp", ".dll")),
                          paste0("results/otter_trawl/Kmeans-", 
                                 settings$n_x, ".RData")),
                 to = result_dir)
-
       
+      ##################################################
+      ####   Fit the model and save output
+      ##################################################
       fit <- FishStatsUtils::fit_model( 
         "settings" = settings,
         "working_dir" = result_dir,
@@ -269,18 +274,91 @@ for (covar in c(FALSE, TRUE)) { ## Loop over density covariates -- start
         "X2_formula" = X2_formula_, 
         "covariate_data" = covariate_data )
       
-      # dyn.unload(paste0(result_dir, "/", vast_cpp_version, ".dll"))
-      # dyn.load("C:/Users/zack.oyafuso/Work/GitHub/Arctic_GF_OM/results/otter_trawl/Alaska plaice/VAST_v12_0_0.dll")
       ## Diagnostics
       diagnostics <- plot(fit, working_dir = paste0(result_dir, "/"))
+      save(list = "diagnostics", 
+           file = paste0(result_dir, "/diagnostics.RData"))
       
       ## Save fit and diagnostics
-      saveRDS(fit, paste0(result_dir, "/fit_full.rds")) # save all outputs locally
-      fit <- fit[c("parameter_estimates", "data_frame", "data_list", "Report")] # partial output to sync to remote
+      saveRDS(fit, paste0(result_dir, "/fit_full.rds"))
+      
+      ## partial output to sync to remote
+      fit <- fit[c("parameter_estimates", "data_frame", "data_list", "Report")] 
       save(list = "fit", file = paste0(result_dir, "/fit.RData"))
-      save(list = "diagnostics", file = paste0(result_dir, "/diagnostics.RData"))
       
       dyn.unload(paste0(result_dir, "/", vast_cpp_version, ".dll"))
+      
+      ##################################################
+      ####   Refit the model with grid locations attached to data in order
+      ####       to simulate density values
+      ##################################################
+      ## Prediction Grid: df of the grid to simulate data onto
+      grid_df <- data.frame()
+      for(itime in sort(unique(data_long$year))) {
+        grid_df <- 
+          rbind(grid_df,
+                data.frame(spp = ispp,
+                           Year = rep(itime, nrow(extrapolation_grid)),
+                           Catch_KG = mean(data_geostat_subset$Catch_KG),
+                           AreaSwept_km2 = extrapolation_grid$Area_km2,
+                           Lat = extrapolation_grid$Lat,
+                           Lon = extrapolation_grid$Lon,
+                           stringsAsFactors = T)
+          )
+      }
+      
+      ###################################################
+      ## Add New Points: set catch to NAs?
+      ###################################################
+      data_geostat_with_grid <- rbind(data_geostat_subset[, names(grid_df)],
+                                      grid_df)
+      
+      pred_TF <- rep(1, nrow(data_geostat_with_grid))
+      pred_TF[1:nrow(data_geostat_subset)] <- 0
+      
+      fit_sim <- FishStatsUtils::fit_model( 
+        "settings" = settings,
+        "working_dir" = result_dir,
+        "Lat_i" = data_geostat_with_grid[, "Lat"],
+        "Lon_i" = data_geostat_with_grid[, "Lon"],
+        "t_i" = data_geostat_with_grid[, "Year"],
+        "b_i" = data_geostat_with_grid[, "Catch_KG"],
+        "a_i" = data_geostat_with_grid[, "AreaSwept_km2"],
+        "getJointPrecision" = TRUE,
+        "newtonsteps" = 1,
+        "test_fit" = F,
+        "input_grid" = extrapolation_grid, 
+        "PredTF_i" = pred_TF,
+        
+        "X1_formula" = X1_formula_,
+        "X2_formula" = X2_formula_, 
+        "covariate_data" = covariate_data )
+      
+      ## Save fit and diagnostics
+      saveRDS(fit, paste0(result_dir, "/fit_sim_full.rds"))
+      
+      ##################################################
+      ####   Simulate 1000 iterations of densities
+      ####   Simulat_data() function produces simulated biomasses, and we 
+      ####      divide by the cell areas to calculate simulated desniteis
+      ##################################################
+      sim_data <- array(data = NA, dim = c(nrow(extrapolation_grid),
+                                           length(unique(data_long$year)),
+                                           1000))
+      
+      for (isim in 1:1000) {
+        Sim1 <- FishStatsUtils::simulate_data(fit = fit_sim, 
+                                              type = 1, 
+                                              random_seed = isim)
+        sim_data[, , isim] <- matrix(data = Sim1$b_i[pred_TF == 1] / 
+                                       extrapolation_grid$Area_km2, 
+                                     nrow = nrow(extrapolation_grid), 
+                                     ncol = length(unique(data_long$year)))
+        if(isim%%100 == 0) print(paste("Done with", ispp, "Iteration", isim))
+      }
+      
+      save(sim_data, file = paste0(result_dir, "/simulated_data.RData"))
+      
       
     }
   }  ## Loop over species -- end
