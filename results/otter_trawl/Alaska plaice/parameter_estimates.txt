@@ -15,10 +15,10 @@ function gradient
        2        1 
 
 $time_for_MLE
-Time difference of 1.047828 secs
+Time difference of 0.648056 secs
 
 $max_gradient
-[1] 2.877736e-08
+[1] 6.557421e-12
 
 $Convergence_check
 [1] "There is no evidence that the model is not converged"
@@ -34,29 +34,29 @@ attr(,"logarithm")
 
 $diagnostics
        Param starting_value     Lower       MLE     Upper final_gradient
-1   beta1_ft     -3.6664545      -Inf -3.666245       Inf  -1.883815e-09
-2   beta1_ft     -3.5855411      -Inf -3.585312       Inf   2.935872e-09
-3 L_omega1_z     -2.0739390      -Inf -2.073923       Inf   9.930972e-09
-4  logkappa1     -5.0777842 -5.728812 -5.077773 -2.156649  -2.877736e-08
-5   beta2_ft      3.5352243      -Inf  3.535225       Inf  -2.123995e-09
-6   beta2_ft      2.7952870      -Inf  2.795285       Inf   8.720342e-09
-7  logSigmaM     -0.4717189      -Inf -0.471719 10.000000   1.666583e-08
+1   beta1_ft     -3.6662451      -Inf -3.666245       Inf   3.526068e-13
+2   beta1_ft     -3.5853120      -Inf -3.585312       Inf   1.305622e-13
+3 L_omega1_z     -2.0739227      -Inf -2.073923       Inf  -4.085621e-13
+4  logkappa1     -5.0777729 -5.728812 -5.077773 -2.156649   6.557421e-12
+5   beta2_ft      3.5352251      -Inf  3.535225       Inf  -2.553513e-15
+6   beta2_ft      2.7952850      -Inf  2.795285       Inf   5.351275e-14
+7  logSigmaM     -0.4717191      -Inf -0.471719 10.000000  -1.634096e-12
 
 $SD
 sdreport(.) result
             Estimate Std. Error
-beta1_ft   -3.666245  2.3019013
-beta1_ft   -3.585312  2.2804168
-L_omega1_z -2.073923  0.8005329
-logkappa1  -5.077773  0.5083241
-beta2_ft    3.535225  0.3550053
-beta2_ft    2.795285  0.2828489
+beta1_ft   -3.666245  2.3019064
+beta1_ft   -3.585312  2.2804254
+L_omega1_z -2.073923  0.8005336
+logkappa1  -5.077773  0.5083244
+beta2_ft    3.535225  0.3550052
+beta2_ft    2.795285  0.2828486
 logSigmaM  -0.471719  0.1994438
-Maximum gradient component: 2.877736e-08 
+Maximum gradient component: 6.557421e-12 
 
 $time_for_sdreport
-Time difference of 3.993184 secs
+Time difference of 2.119418 secs
 
 $time_for_run
-Time difference of 5.145733 secs
+Time difference of 2.819953 secs
 

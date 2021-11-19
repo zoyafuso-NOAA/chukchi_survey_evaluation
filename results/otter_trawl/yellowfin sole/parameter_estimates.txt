@@ -1,6 +1,6 @@
 $par
   beta1_ft   beta1_ft L_omega1_z  logkappa1   beta2_ft   beta2_ft  logSigmaM 
--3.7481491 -2.7955039 -2.3279707 -4.7188336  1.4129628  3.6814286  0.2922774 
+-3.7481491 -2.7955039  2.3279707 -4.7188336  1.4129628  3.6814286  0.2922774 
 
 $objective
 [1] 142.727
@@ -15,10 +15,10 @@ function gradient
        2        1 
 
 $time_for_MLE
-Time difference of 0.466192 secs
+Time difference of 0.879848 secs
 
 $max_gradient
-[1] 3.146892e-08
+[1] 4.650059e-07
 
 $Convergence_check
 [1] "There is no evidence that the model is not converged"
@@ -34,29 +34,29 @@ attr(,"logarithm")
 
 $diagnostics
        Param starting_value     Lower        MLE     Upper final_gradient
-1   beta1_ft     -3.7481492      -Inf -3.7481491       Inf   2.371285e-09
-2   beta1_ft     -2.7955039      -Inf -2.7955039       Inf  -3.825586e-09
-3 L_omega1_z     -2.3279707      -Inf -2.3279707       Inf   1.944203e-09
-4  logkappa1     -4.7188336 -5.728812 -4.7188336 -2.156649  -3.146892e-08
-5   beta2_ft      1.4129628      -Inf  1.4129628       Inf   6.837797e-10
-6   beta2_ft      3.6814286      -Inf  3.6814286       Inf   2.241110e-08
-7  logSigmaM      0.2922774      -Inf  0.2922774 10.000000  -2.544769e-08
+1   beta1_ft     -3.7481494      -Inf -3.7481491       Inf   6.698418e-09
+2   beta1_ft     -2.7955041      -Inf -2.7955039       Inf  -1.520114e-08
+3 L_omega1_z      2.3279708      -Inf  2.3279707       Inf   8.236039e-09
+4  logkappa1     -4.7188336 -5.728812 -4.7188336 -2.156649  -4.650059e-07
+5   beta2_ft      1.4129628      -Inf  1.4129628       Inf   3.108626e-09
+6   beta2_ft      3.6814285      -Inf  3.6814286       Inf   6.017101e-08
+7  logSigmaM      0.2922774      -Inf  0.2922774 10.000000   2.658690e-08
 
 $SD
 sdreport(.) result
              Estimate Std. Error
 beta1_ft   -3.7481491  1.8773813
 beta1_ft   -2.7955039  1.7737856
-L_omega1_z -2.3279707  0.8079844
+L_omega1_z  2.3279707  0.8079844
 logkappa1  -4.7188336  0.4171064
 beta2_ft    1.4129628  0.6320044
 beta2_ft    3.6814286  0.6235287
 logSigmaM   0.2922774  0.1396065
-Maximum gradient component: 3.146892e-08 
+Maximum gradient component: 4.650059e-07 
 
 $time_for_sdreport
-Time difference of 0.9486189 secs
+Time difference of 2.62495 secs
 
 $time_for_run
-Time difference of 1.440861 secs
+Time difference of 3.582952 secs
 
