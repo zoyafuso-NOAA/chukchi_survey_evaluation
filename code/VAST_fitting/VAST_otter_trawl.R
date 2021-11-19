@@ -221,7 +221,7 @@ for (covar in c(FALSE
                            "FALSE" = NULL,
                            "TRUE" = covar_df)
   
-  for (ispp in spp_list) { ## Loop over species -- start
+  for (ispp in spp_list[6:8]) { ## Loop over species -- start
     
     ## Subset data input for species ispp
     data_geostat_subset <- subset(x = data_geostat, 
@@ -294,7 +294,7 @@ for (covar in c(FALSE
       ##################################################
       ## Prediction Grid: df of the grid to simulate data onto
       grid_df <- data.frame()
-      for(itime in sort(unique(data_long$year))) {
+      for(itime in sort(unique(data_long$year))[2] ) {
         grid_df <- 
           rbind(grid_df,
                 data.frame(spp = ispp,
@@ -335,30 +335,32 @@ for (covar in c(FALSE
         "covariate_data" = covariate_data )
       
       ## Save fit and diagnostics
-      saveRDS(fit, paste0(result_dir, "/fit_sim_full.rds"))
+      saveRDS(fit_sim, paste0(result_dir, "/fit_sim_full.rds"))
       
       ##################################################
-      ####   Simulate 1000 iterations of densities
+      ####   Simulate 500 iterations of densities
       ####   Simulat_data() function produces simulated biomasses, and we 
       ####      divide by the cell areas to calculate simulated desniteis
       ##################################################
       sim_data <- array(data = NA, dim = c(nrow(extrapolation_grid),
-                                           length(unique(data_long$year)),
-                                           1000))
+                                           500))
       
-      for (isim in 1:1000) {
+      for (isim in 1:500) {
         Sim1 <- FishStatsUtils::simulate_data(fit = fit_sim, 
                                               type = 1, 
                                               random_seed = isim)
-        sim_data[, , isim] <- matrix(data = Sim1$b_i[pred_TF == 1] / 
-                                       extrapolation_grid$Area_km2, 
-                                     nrow = nrow(extrapolation_grid), 
-                                     ncol = length(unique(data_long$year)))
-        if(isim%%100 == 0) print(paste("Done with", ispp, "Iteration", isim))
+        sim_data[, isim] <- Sim1$b_i[pred_TF == 1] / extrapolation_grid$Area_km2
+        if(isim%%50 == 0) print(paste("Done with", ispp, "Iteration", isim))
       }
       
       save(sim_data, file = paste0(result_dir, "/simulated_data.RData"))
       
+      
+      ## partial output to sync to remote
+      fit_sim <- fit_sim[c("parameter_estimates", "data_frame", "data_list", "Report")] 
+      save(list = "fit_sim", file = paste0(result_dir, "/fit_sim.RData"))
+      
+      dyn.unload(paste0(result_dir, "/", vast_cpp_version, ".dll"))
       
     }
   }  ## Loop over species -- end
