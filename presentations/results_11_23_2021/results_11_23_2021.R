@@ -1,3 +1,13 @@
+###############################################################################
+## Project:       For 23 Nov 2021 Updates
+## Author:        Zack Oyafuso (zack.oyafuso@noaa.gov)
+## Description:   Otter Trawl STRS optimization preliminary results
+###############################################################################
+rm(list = ls())
+
+##################################
+##  Import Library
+##################################
 library(raster)
 library(sp)
 
@@ -10,9 +20,8 @@ load("data/survey_opt_data/optimization_data_otter.RData")
 load("results/otter_trawl/survey_opt/MS/Run_14/result_list.RData")
 
 ##################################
-## Performances
+## Performance Metrics
 ##################################
-
 png(filename = "presentations/results_11_23_2021/rb.png",
     width = 6, height = 6, units = "in", res = 500)
 par(mfrow = c(3, 2), mar = c(3, 3, 1.5, 1), oma = c(2, 2, 0, 0))
@@ -20,7 +29,6 @@ for (ispp in 1:n_spp) {
   boxplot(100 * rb[ispp, , ], ylim = c(-100, 200), las = 1, main = spp_list[ispp])
   abline(h = 0)
 }
-
 mtext(side = 1, text = "Survey Design (n = 71)", outer = T, font = 2)
 mtext(side = 2, text = "Percent Bias", outer = T, font = 2)
 dev.off()
@@ -84,7 +92,6 @@ dev.off()
 ##################################
 ## Single Species Optimizations
 ##################################
-
 png(filename = "presentations/results_11_23_2021/ss_solns.png",
     width = 4, height = 6, units = "in", res = 500)
 par(mfrow = c(3, 2), mar = c(1, 1, 1, 1), oma = c(0, 0, 0, 0))
@@ -118,6 +125,9 @@ for (ispp in 1:n_spp) {
 }
 dev.off()
 
+##################################
+## Multispecies Solution
+##################################
 png(filename = "presentations/results_11_23_2021/ms_solns.png",
     width = 6, height = 6, units = "in", res = 500)
 par(mfrow = c(1, 1), mar = c(1, 1, 1, 1), oma = c(0, 0, 0, 0))
