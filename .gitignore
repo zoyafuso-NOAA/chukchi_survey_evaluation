@@ -3,3 +3,4 @@
 .RData
 .Ruserdata
 **/fit_full.rds
+*.rds
