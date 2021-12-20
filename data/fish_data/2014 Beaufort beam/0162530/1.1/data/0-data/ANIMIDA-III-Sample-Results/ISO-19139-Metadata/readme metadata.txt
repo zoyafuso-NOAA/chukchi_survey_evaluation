@@ -1,0 +1,1 @@
+These ISO 19139 metadata files were exported from the Esri file geodatabase containing sampling results using ArcGIS for Desktop version 10.3.1.  For metadata on the project as a whole, please see the metadata document associated with the NCEI accession.

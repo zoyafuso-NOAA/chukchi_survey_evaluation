@@ -1,0 +1,933 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gmi:MI_Metadata xmlns:gmi="http://www.isotc211.org/2005/gmi" xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:gmx="http://www.isotc211.org/2005/gmx" xmlns:gsr="http://www.isotc211.org/2005/gsr" xmlns:gss="http://www.isotc211.org/2005/gss" xmlns:gts="http://www.isotc211.org/2005/gts" xmlns:srv="http://www.isotc211.org/2005/srv" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.isotc211.org/2005/gmi http://www.ngdc.noaa.gov/metadata/published/xsd/schema.xsd">
+  <gmd:fileIdentifier>
+    <gco:CharacterString>PDLP9P</gco:CharacterString>
+  </gmd:fileIdentifier>
+  <gmd:language>
+    <gco:CharacterString>eng; USA</gco:CharacterString>
+  </gmd:language>
+  <gmd:characterSet>
+    <gmd:MD_CharacterSetCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_CharacterSetCode" codeListValue="utf8">utf8</gmd:MD_CharacterSetCode>
+  </gmd:characterSet>
+  <gmd:hierarchyLevel>
+    <gmd:MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml" codeListValue="dataset">dataset</gmd:MD_ScopeCode>
+  </gmd:hierarchyLevel>
+  <gmd:hierarchyLevelName>
+    <gco:CharacterString>dataset</gco:CharacterString>
+  </gmd:hierarchyLevelName>
+  <gmd:contact>
+    <gmd:CI_ResponsibleParty>
+      <gmd:individualName>
+        <gco:CharacterString>Timothy Whiteaker</gco:CharacterString>
+      </gmd:individualName>
+      <gmd:organisationName>
+        <gmx:Anchor>The University of Texas at Austin</gmx:Anchor>
+      </gmd:organisationName>
+      <gmd:contactInfo>
+        <gmd:CI_Contact>
+          <gmd:phone>
+            <gmd:CI_Telephone>
+              <gmd:voice>
+                <gco:CharacterString>5124710570</gco:CharacterString>
+              </gmd:voice>
+              <gmd:facsimile>
+                <gco:CharacterString/>
+              </gmd:facsimile>
+            </gmd:CI_Telephone>
+          </gmd:phone>
+          <gmd:address>
+            <gmd:CI_Address>
+              <gmd:deliveryPoint>
+                <gco:CharacterString>10100 Burnet Rd.</gco:CharacterString>
+              </gmd:deliveryPoint>
+              <gmd:deliveryPoint>
+                <gco:CharacterString/>
+              </gmd:deliveryPoint>
+              <gmd:city>
+                <gco:CharacterString>Austin</gco:CharacterString>
+              </gmd:city>
+              <gmd:administrativeArea>
+                <gco:CharacterString>TX</gco:CharacterString>
+              </gmd:administrativeArea>
+              <gmd:postalCode>
+                <gco:CharacterString>78758</gco:CharacterString>
+              </gmd:postalCode>
+              <gmd:country>
+                <gmx:Anchor xlink:href="http://www.nodc.noaa.gov/cgi-bin/OAS/prd/country/details/73" xlink:actuate="onRequest">UNITED STATES</gmx:Anchor>
+              </gmd:country>
+            </gmd:CI_Address>
+          </gmd:address>
+        </gmd:CI_Contact>
+      </gmd:contactInfo>
+      <gmd:role>
+        <gmd:CI_RoleCode codeList="http://www.ngdc.noaa.gov/metadata/published/xsd/schema/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="resourceProvider">resourceProvider</gmd:CI_RoleCode>
+      </gmd:role>
+    </gmd:CI_ResponsibleParty>
+  </gmd:contact>
+  <gmd:dateStamp>
+    <gco:Date>2017-04-28</gco:Date>
+  </gmd:dateStamp>
+  <gmd:metadataStandardName>
+    <gco:CharacterString>ISO 19115-2 Geographic Information - Metadata - Part 2: Extensions for Imagery and Gridded Data</gco:CharacterString>
+  </gmd:metadataStandardName>
+  <gmd:metadataStandardVersion>
+    <gco:CharacterString>ISO 19115-2:2009(E)</gco:CharacterString>
+  </gmd:metadataStandardVersion>
+  <gmd:identificationInfo>
+    <gmd:MD_DataIdentification>
+      <gmd:citation>
+        <gmd:CI_Citation>
+          <gmd:title>
+            <gco:CharacterString>Ecosystem monitoring information collected from Norseman II in Beaufort Sea for the ANIMIDA III project from 2014-07-31 to 2015-08-12</gco:CharacterString>
+          </gmd:title>
+          <gmd:date gco:nilReason="unknown"/>
+          <gmd:citedResponsibleParty>
+            <gmd:CI_ResponsibleParty>
+              <gmd:individualName>
+                <gco:CharacterString>Jeremy Kasper</gco:CharacterString>
+              </gmd:individualName>
+              <gmd:organisationName>
+                <gmx:Anchor>Institute of Northern Engineering, University of Alaska Fairbanks</gmx:Anchor>
+              </gmd:organisationName>
+              <gmd:contactInfo>
+                <gmd:CI_Contact>
+                  <gmd:address>
+                    <gmd:CI_Address>
+                      <gmd:electronicMailAddress>
+                        <gco:CharacterString/>
+                      </gmd:electronicMailAddress>
+                    </gmd:CI_Address>
+                  </gmd:address>
+                </gmd:CI_Contact>
+              </gmd:contactInfo>
+              <gmd:role>
+                <gmd:CI_RoleCode codeList="http://www.ngdc.noaa.gov/metadata/published/xsd/schema/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="principalInvestigator">principalInvestigator</gmd:CI_RoleCode>
+              </gmd:role>
+            </gmd:CI_ResponsibleParty>
+          </gmd:citedResponsibleParty>
+          <gmd:citedResponsibleParty>
+            <gmd:CI_ResponsibleParty>
+              <gmd:individualName>
+                <gco:CharacterString>Ken Dunton</gco:CharacterString>
+              </gmd:individualName>
+              <gmd:organisationName>
+                <gmx:Anchor>The University of Texas at Austin</gmx:Anchor>
+              </gmd:organisationName>
+              <gmd:contactInfo>
+                <gmd:CI_Contact>
+                  <gmd:address>
+                    <gmd:CI_Address>
+                      <gmd:electronicMailAddress>
+                        <gco:CharacterString/>
+                      </gmd:electronicMailAddress>
+                    </gmd:CI_Address>
+                  </gmd:address>
+                </gmd:CI_Contact>
+              </gmd:contactInfo>
+              <gmd:role>
+                <gmd:CI_RoleCode codeList="http://www.ngdc.noaa.gov/metadata/published/xsd/schema/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="collaborator">collaborator</gmd:CI_RoleCode>
+              </gmd:role>
+            </gmd:CI_ResponsibleParty>
+          </gmd:citedResponsibleParty>
+          <gmd:citedResponsibleParty>
+            <gmd:CI_ResponsibleParty>
+              <gmd:individualName>
+                <gco:CharacterString>Bodil Bluhm</gco:CharacterString>
+              </gmd:individualName>
+              <gmd:organisationName>
+                <gmx:Anchor>The Arctic University of Norway; University of Alaska Fairbanks</gmx:Anchor>
+              </gmd:organisationName>
+              <gmd:contactInfo>
+                <gmd:CI_Contact>
+                  <gmd:address>
+                    <gmd:CI_Address>
+                      <gmd:electronicMailAddress>
+                        <gco:CharacterString/>
+                      </gmd:electronicMailAddress>
+                    </gmd:CI_Address>
+                  </gmd:address>
+                </gmd:CI_Contact>
+              </gmd:contactInfo>
+              <gmd:role>
+                <gmd:CI_RoleCode codeList="http://www.ngdc.noaa.gov/metadata/published/xsd/schema/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="collaborator">collaborator</gmd:CI_RoleCode>
+              </gmd:role>
+            </gmd:CI_ResponsibleParty>
+          </gmd:citedResponsibleParty>
+          <gmd:citedResponsibleParty>
+            <gmd:CI_ResponsibleParty>
+              <gmd:individualName>
+                <gco:CharacterString>John Trefry</gco:CharacterString>
+              </gmd:individualName>
+              <gmd:organisationName>
+                <gmx:Anchor>Department of Marine &amp; Environmental Systems Florida Institute of Technology</gmx:Anchor>
+              </gmd:organisationName>
+              <gmd:contactInfo>
+                <gmd:CI_Contact>
+                  <gmd:address>
+                    <gmd:CI_Address>
+                      <gmd:electronicMailAddress>
+                        <gco:CharacterString/>
+                      </gmd:electronicMailAddress>
+                    </gmd:CI_Address>
+                  </gmd:address>
+                </gmd:CI_Contact>
+              </gmd:contactInfo>
+              <gmd:role>
+                <gmd:CI_RoleCode codeList="http://www.ngdc.noaa.gov/metadata/published/xsd/schema/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="collaborator">collaborator</gmd:CI_RoleCode>
+              </gmd:role>
+            </gmd:CI_ResponsibleParty>
+          </gmd:citedResponsibleParty>
+          <gmd:citedResponsibleParty>
+            <gmd:CI_ResponsibleParty>
+              <gmd:individualName>
+                <gco:CharacterString>Greg Durell</gco:CharacterString>
+              </gmd:individualName>
+              <gmd:organisationName>
+                <gmx:Anchor>NewFields LLC</gmx:Anchor>
+              </gmd:organisationName>
+              <gmd:contactInfo>
+                <gmd:CI_Contact>
+                  <gmd:address>
+                    <gmd:CI_Address>
+                      <gmd:electronicMailAddress>
+                        <gco:CharacterString/>
+                      </gmd:electronicMailAddress>
+                    </gmd:CI_Address>
+                  </gmd:address>
+                </gmd:CI_Contact>
+              </gmd:contactInfo>
+              <gmd:role>
+                <gmd:CI_RoleCode codeList="http://www.ngdc.noaa.gov/metadata/published/xsd/schema/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="collaborator">collaborator</gmd:CI_RoleCode>
+              </gmd:role>
+            </gmd:CI_ResponsibleParty>
+          </gmd:citedResponsibleParty>
+          <gmd:citedResponsibleParty>
+            <gmd:CI_ResponsibleParty>
+              <gmd:individualName>
+                <gco:CharacterString>Sheyna Wisdom</gco:CharacterString>
+              </gmd:individualName>
+              <gmd:organisationName>
+                <gmx:Anchor>Olgoonik Fairweather LLC</gmx:Anchor>
+              </gmd:organisationName>
+              <gmd:contactInfo>
+                <gmd:CI_Contact>
+                  <gmd:address>
+                    <gmd:CI_Address>
+                      <gmd:electronicMailAddress>
+                        <gco:CharacterString/>
+                      </gmd:electronicMailAddress>
+                    </gmd:CI_Address>
+                  </gmd:address>
+                </gmd:CI_Contact>
+              </gmd:contactInfo>
+              <gmd:role>
+                <gmd:CI_RoleCode codeList="http://www.ngdc.noaa.gov/metadata/published/xsd/schema/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="collaborator">collaborator</gmd:CI_RoleCode>
+              </gmd:role>
+            </gmd:CI_ResponsibleParty>
+          </gmd:citedResponsibleParty>
+          <gmd:citedResponsibleParty>
+            <gmd:CI_ResponsibleParty>
+              <gmd:individualName>
+                <gco:CharacterString>Scott Libby</gco:CharacterString>
+              </gmd:individualName>
+              <gmd:organisationName>
+                <gmx:Anchor/>
+              </gmd:organisationName>
+              <gmd:contactInfo>
+                <gmd:CI_Contact>
+                  <gmd:address>
+                    <gmd:CI_Address>
+                      <gmd:electronicMailAddress>
+                        <gco:CharacterString/>
+                      </gmd:electronicMailAddress>
+                    </gmd:CI_Address>
+                  </gmd:address>
+                </gmd:CI_Contact>
+              </gmd:contactInfo>
+              <gmd:role>
+                <gmd:CI_RoleCode codeList="http://www.ngdc.noaa.gov/metadata/published/xsd/schema/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="collaborator">collaborator</gmd:CI_RoleCode>
+              </gmd:role>
+            </gmd:CI_ResponsibleParty>
+          </gmd:citedResponsibleParty>
+          <gmd:citedResponsibleParty>
+            <gmd:CI_ResponsibleParty>
+              <gmd:individualName>
+                <gco:CharacterString>Susan Schonberg</gco:CharacterString>
+              </gmd:individualName>
+              <gmd:organisationName>
+                <gmx:Anchor>The University of Texas at Austin</gmx:Anchor>
+              </gmd:organisationName>
+              <gmd:contactInfo>
+                <gmd:CI_Contact>
+                  <gmd:address>
+                    <gmd:CI_Address>
+                      <gmd:electronicMailAddress>
+                        <gco:CharacterString/>
+                      </gmd:electronicMailAddress>
+                    </gmd:CI_Address>
+                  </gmd:address>
+                </gmd:CI_Contact>
+              </gmd:contactInfo>
+              <gmd:role>
+                <gmd:CI_RoleCode codeList="http://www.ngdc.noaa.gov/metadata/published/xsd/schema/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="collaborator">collaborator</gmd:CI_RoleCode>
+              </gmd:role>
+            </gmd:CI_ResponsibleParty>
+          </gmd:citedResponsibleParty>
+          <gmd:citedResponsibleParty>
+            <gmd:CI_ResponsibleParty>
+              <gmd:individualName>
+                <gco:CharacterString>Timothy Whiteaker</gco:CharacterString>
+              </gmd:individualName>
+              <gmd:organisationName>
+                <gmx:Anchor>The University of Texas at Austin</gmx:Anchor>
+              </gmd:organisationName>
+              <gmd:contactInfo>
+                <gmd:CI_Contact>
+                  <gmd:address>
+                    <gmd:CI_Address>
+                      <gmd:electronicMailAddress>
+                        <gco:CharacterString>whiteaker@utexas.edu</gco:CharacterString>
+                      </gmd:electronicMailAddress>
+                    </gmd:CI_Address>
+                  </gmd:address>
+                </gmd:CI_Contact>
+              </gmd:contactInfo>
+              <gmd:role>
+                <gmd:CI_RoleCode codeList="http://www.ngdc.noaa.gov/metadata/published/xsd/schema/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="pointOfContact">pointOfContact</gmd:CI_RoleCode>
+              </gmd:role>
+            </gmd:CI_ResponsibleParty>
+          </gmd:citedResponsibleParty>
+        </gmd:CI_Citation>
+      </gmd:citation>
+      <gmd:abstract>
+        <gco:CharacterString>This accession contains physical, chemical, and biological data collected during research cruises for the Arctic Nearshore Impact Monitoring in Development Area (ANIMIDA) III Study.  The study occurred at 107 stations in the Beaufort Sea area in July and August of 2014 and 2015, and involved measurements and sampling of water, sediment, and biota conducted by investigators from several universities and research organizations.  The study also includes a spring river survey conducted in May, 2015.  The dataset includes more than 50,000 data values across 300+ variables, 500+ taxonomic names, 20+ collection methods, and 40+ lab analysis methods.  Seawater samples include variables such as salinity, total suspended solids, and dissolved elements.  Samples from the benthic zone include taxonomic counts and biomass. Sediment samples include variables such as hydrocarbons, metals, grain size distribution, and stable isotope ratios. All samples include numerical data value, date of sample collection, location in latitude and longitude coordinates, station identifier, sampling method, and the researcher responsible for the measurement. Furthermore, these data were harmonized according to a community driven set of controlled vocabularies for variable names, chemical speciations, units of measure, sample mediums, and sample types maintained by the Consortium of Universities for the Advancement of Hydrologic Science, Inc.  The data are accompanied by an entity relationship diagram and data dictionary explaining the data structure. CTD, ADCP, and thermosalinograph sensor data are also provided following NCEI's netCDF templates for such data. All data are provided under the Creative Commons Attribution 3.0 United States (CC BY 3.0 US) license which states that the data are available for all to use provided that proper credit is given.</gco:CharacterString>
+      </gmd:abstract>
+      <gmd:purpose>
+        <gco:CharacterString>The Arctic Nearshore Impact Monitoring in Development Area (ANIMIDA) III program broadens understanding of contaminants, sources, and bioaccumulation in the Beaufort Sea area. The program includes a comprehensive sampling plan to characterize the lease area and surrounding area's chemistry and biota, generating data that are comparable to current and past sampling efforts in the lease area (e.g., past ANIMIDA and cANIMIDA work). </gco:CharacterString>
+      </gmd:purpose>
+      <gmd:credit>
+        <gmx:Anchor>Related Funding Agency: US DOI; Bureau of Ocean Energy Management (Bureau of Ocean Energy Management - BOEM)</gmx:Anchor>
+      </gmd:credit>
+      <gmd:credit>
+        <gmx:Anchor>Suggested Author List: Kasper, J., K. H. Dunton, B. A. Bluhm, J. H. Trefry, G. Durell, S. Wisdom, S. Libby, S. Schonberg, and T. Whiteaker</gmx:Anchor>
+      </gmd:credit>
+      <gmd:descriptiveKeywords>
+        <gmd:MD_Keywords>
+          <gmd:keyword>
+            <gmx:Anchor xlink:href="http://www.nodc.noaa.gov/cgi-bin/OAS/prd/seaname/details/46" xlink:actuate="onRequest">Beaufort Sea</gmx:Anchor>
+          </gmd:keyword>
+          <gmd:type>
+            <gmd:MD_KeywordTypeCode codeList="http://www.ngdc.noaa.gov/metadata/published/xsd/schema/resources/Codelist/gmxCodelists.xml#MD_KeywordTypeCode" codeListValue="place">place</gmd:MD_KeywordTypeCode>
+          </gmd:type>
+          <gmd:thesaurusName>
+            <gmd:CI_Citation>
+              <gmd:title>
+                <gco:CharacterString>NODC SEA AREA NAMES THESAURUS</gco:CharacterString>
+              </gmd:title>
+              <gmd:date gco:nilReason="inapplicable"/>
+            </gmd:CI_Citation>
+          </gmd:thesaurusName>
+        </gmd:MD_Keywords>
+      </gmd:descriptiveKeywords>
+      <gmd:descriptiveKeywords>
+        <gmd:MD_Keywords>
+          <gmd:keyword>
+            <gmx:Anchor>Methylmercury</gmx:Anchor>
+          </gmd:keyword>
+          <gmd:type>
+            <gmd:MD_KeywordTypeCode codeList="http://www.ngdc.noaa.gov/metadata/published/xsd/schema/resources/Codelist/gmxCodelists.xml#MD_KeywordTypeCode" codeListValue="theme">theme</gmd:MD_KeywordTypeCode>
+          </gmd:type>
+          <gmd:thesaurusName>
+            <gmd:CI_Citation>
+              <gmd:title>
+                <gco:CharacterString>Data Types</gco:CharacterString>
+              </gmd:title>
+              <gmd:date gco:nilReason="inapplicable"/>
+            </gmd:CI_Citation>
+          </gmd:thesaurusName>
+        </gmd:MD_Keywords>
+      </gmd:descriptiveKeywords>
+      <gmd:descriptiveKeywords>
+        <gmd:MD_Keywords>
+          <gmd:keyword>
+            <gmx:Anchor xlink:href="http://www.nodc.noaa.gov/cgi-bin/OAS/prd/datatype/details/98" xlink:actuate="onRequest">CURRENT SPEED - EAST/WEST COMPONENT (U)</gmx:Anchor>
+          </gmd:keyword>
+          <gmd:keyword>
+            <gmx:Anchor xlink:href="http://www.nodc.noaa.gov/cgi-bin/OAS/prd/datatype/details/99" xlink:actuate="onRequest">CURRENT SPEED - NORTH/SOUTH COMPONENT (V)</gmx:Anchor>
+          </gmd:keyword>
+          <gmd:keyword>
+            <gmx:Anchor xlink:href="http://www.nodc.noaa.gov/cgi-bin/OAS/prd/datatype/details/147" xlink:actuate="onRequest">FLUORESCENCE</gmx:Anchor>
+          </gmd:keyword>
+          <gmd:keyword>
+            <gmx:Anchor xlink:href="http://www.nodc.noaa.gov/cgi-bin/OAS/prd/datatype/details/272" xlink:actuate="onRequest">PHOTOSYNTHETIC ACTIVE RADIATION (PAR)</gmx:Anchor>
+          </gmd:keyword>
+          <gmd:keyword>
+            <gmx:Anchor xlink:href="http://www.nodc.noaa.gov/cgi-bin/OAS/prd/datatype/details/307" xlink:actuate="onRequest">SALINITY</gmx:Anchor>
+          </gmd:keyword>
+          <gmd:keyword>
+            <gmx:Anchor xlink:href="http://www.nodc.noaa.gov/cgi-bin/OAS/prd/datatype/details/373" xlink:actuate="onRequest">WATER TEMPERATURE</gmx:Anchor>
+          </gmd:keyword>
+          <gmd:keyword>
+            <gmx:Anchor xlink:href="http://www.nodc.noaa.gov/cgi-bin/OAS/prd/datatype/details/393" xlink:actuate="onRequest">turbidity</gmx:Anchor>
+          </gmd:keyword>
+          <gmd:keyword>
+            <gmx:Anchor xlink:href="http://www.nodc.noaa.gov/cgi-bin/OAS/prd/datatype/details/116" xlink:actuate="onRequest">DISSOLVED OXYGEN</gmx:Anchor>
+          </gmd:keyword>
+          <gmd:keyword>
+            <gmx:Anchor xlink:href="http://www.nodc.noaa.gov/cgi-bin/OAS/prd/datatype/details/332" xlink:actuate="onRequest">SIGMA-T</gmx:Anchor>
+          </gmd:keyword>
+          <gmd:keyword>
+            <gmx:Anchor xlink:href="http://www.nodc.noaa.gov/cgi-bin/OAS/prd/datatype/details/91" xlink:actuate="onRequest">CONDUCTIVITY</gmx:Anchor>
+          </gmd:keyword>
+          <gmd:keyword>
+            <gmx:Anchor xlink:href="http://www.nodc.noaa.gov/cgi-bin/OAS/prd/datatype/details/307" xlink:actuate="onRequest">SALINITY</gmx:Anchor>
+          </gmd:keyword>
+          <gmd:keyword>
+            <gmx:Anchor xlink:href="http://www.nodc.noaa.gov/cgi-bin/OAS/prd/datatype/details/373" xlink:actuate="onRequest">WATER TEMPERATURE</gmx:Anchor>
+          </gmd:keyword>
+          <gmd:keyword>
+            <gmx:Anchor xlink:href="http://www.nodc.noaa.gov/cgi-bin/OAS/prd/datatype/details/723" xlink:actuate="onRequest">hydrocarbon</gmx:Anchor>
+          </gmd:keyword>
+          <gmd:keyword>
+            <gmx:Anchor xlink:href="http://www.nodc.noaa.gov/cgi-bin/OAS/prd/datatype/details/289" xlink:actuate="onRequest">POLYNUCLEAR AROMATIC HYDROCARBONS (PAH)</gmx:Anchor>
+          </gmd:keyword>
+          <gmd:keyword>
+            <gmx:Anchor xlink:href="http://www.nodc.noaa.gov/cgi-bin/OAS/prd/datatype/details/390" xlink:actuate="onRequest">TRACE METALS</gmx:Anchor>
+          </gmd:keyword>
+          <gmd:keyword>
+            <gmx:Anchor xlink:href="http://www.nodc.noaa.gov/cgi-bin/OAS/prd/datatype/details/563" xlink:actuate="onRequest">SEDIMENT - GRAIN SIZE</gmx:Anchor>
+          </gmd:keyword>
+          <gmd:keyword>
+            <gmx:Anchor xlink:href="http://www.nodc.noaa.gov/cgi-bin/OAS/prd/datatype/details/61" xlink:actuate="onRequest">CARBON - TOTAL ORGANIC</gmx:Anchor>
+          </gmd:keyword>
+          <gmd:keyword>
+            <gmx:Anchor xlink:href="http://www.nodc.noaa.gov/cgi-bin/OAS/prd/datatype/details/81" xlink:actuate="onRequest">CHLOROPHYLL</gmx:Anchor>
+          </gmd:keyword>
+          <gmd:keyword>
+            <gmx:Anchor xlink:href="http://www.nodc.noaa.gov/cgi-bin/OAS/prd/datatype/details/454" xlink:actuate="onRequest">PIGMENTS</gmx:Anchor>
+          </gmd:keyword>
+          <gmd:keyword>
+            <gmx:Anchor xlink:href="http://www.nodc.noaa.gov/cgi-bin/OAS/prd/datatype/details/690" xlink:actuate="onRequest">Carbon content of specimen</gmx:Anchor>
+          </gmd:keyword>
+          <gmd:keyword>
+            <gmx:Anchor xlink:href="http://www.nodc.noaa.gov/cgi-bin/OAS/prd/datatype/details/579" xlink:actuate="onRequest">DELTA CARBON-13</gmx:Anchor>
+          </gmd:keyword>
+          <gmd:keyword>
+            <gmx:Anchor xlink:href="http://www.nodc.noaa.gov/cgi-bin/OAS/prd/datatype/details/691" xlink:actuate="onRequest">Nitrogen content of specimen</gmx:Anchor>
+          </gmd:keyword>
+          <gmd:keyword>
+            <gmx:Anchor xlink:href="http://www.nodc.noaa.gov/cgi-bin/OAS/prd/datatype/details/654" xlink:actuate="onRequest">DELTA NITROGEN-15</gmx:Anchor>
+          </gmd:keyword>
+          <gmd:keyword>
+            <gmx:Anchor xlink:href="http://www.nodc.noaa.gov/cgi-bin/OAS/prd/datatype/details/11" xlink:actuate="onRequest">AMMONIUM (NH4)</gmx:Anchor>
+          </gmd:keyword>
+          <gmd:keyword>
+            <gmx:Anchor xlink:href="http://www.nodc.noaa.gov/cgi-bin/OAS/prd/datatype/details/366" xlink:actuate="onRequest">suspended solids</gmx:Anchor>
+          </gmd:keyword>
+          <gmd:keyword>
+            <gmx:Anchor xlink:href="http://www.nodc.noaa.gov/cgi-bin/OAS/prd/datatype/details/251" xlink:actuate="onRequest">CARBON - TOTAL PARTICULATE [PARTICULATE ORGANIC CARBON]</gmx:Anchor>
+          </gmd:keyword>
+          <gmd:keyword>
+            <gmx:Anchor xlink:href="http://www.nodc.noaa.gov/cgi-bin/OAS/prd/datatype/details/659" xlink:actuate="onRequest">particulate phosphorus</gmx:Anchor>
+          </gmd:keyword>
+          <gmd:keyword>
+            <gmx:Anchor xlink:href="http://www.nodc.noaa.gov/cgi-bin/OAS/prd/datatype/details/688" xlink:actuate="onRequest">species abundance</gmx:Anchor>
+          </gmd:keyword>
+          <gmd:keyword>
+            <gmx:Anchor xlink:href="http://www.nodc.noaa.gov/cgi-bin/OAS/prd/datatype/details/533" xlink:actuate="onRequest">BIOMASS</gmx:Anchor>
+          </gmd:keyword>
+          <gmd:keyword>
+            <gmx:Anchor xlink:href="http://www.nodc.noaa.gov/cgi-bin/OAS/prd/datatype/details/230" xlink:actuate="onRequest">NUTRIENTS</gmx:Anchor>
+          </gmd:keyword>
+          <gmd:type>
+            <gmd:MD_KeywordTypeCode codeList="http://www.ngdc.noaa.gov/metadata/published/xsd/schema/resources/Codelist/gmxCodelists.xml#MD_KeywordTypeCode" codeListValue="theme">theme</gmd:MD_KeywordTypeCode>
+          </gmd:type>
+          <gmd:thesaurusName>
+            <gmd:CI_Citation>
+              <gmd:title>
+                <gco:CharacterString>NODC DATA TYPES THESAURUS</gco:CharacterString>
+              </gmd:title>
+              <gmd:date gco:nilReason="inapplicable"/>
+            </gmd:CI_Citation>
+          </gmd:thesaurusName>
+        </gmd:MD_Keywords>
+      </gmd:descriptiveKeywords>
+      <gmd:descriptiveKeywords>
+        <gmd:MD_Keywords>
+          <gmd:keyword>
+            <gmx:Anchor>ADCP</gmx:Anchor>
+          </gmd:keyword>
+          <gmd:keyword>
+            <gmx:Anchor>CTD</gmx:Anchor>
+          </gmd:keyword>
+          <gmd:type>
+            <gmd:MD_KeywordTypeCode codeList="http://www.ngdc.noaa.gov/metadata/published/xsd/schema/resources/Codelist/gmxCodelists.xml#MD_KeywordTypeCode" codeListValue="instrument">instrument</gmd:MD_KeywordTypeCode>
+          </gmd:type>
+          <gmd:thesaurusName>
+            <gmd:CI_Citation>
+              <gmd:title>
+                <gco:CharacterString>Sampling Instruments</gco:CharacterString>
+              </gmd:title>
+              <gmd:date gco:nilReason="inapplicable"/>
+            </gmd:CI_Citation>
+          </gmd:thesaurusName>
+        </gmd:MD_Keywords>
+      </gmd:descriptiveKeywords>
+      <gmd:descriptiveKeywords>
+        <gmd:MD_Keywords>
+          <gmd:keyword>
+            <gmx:Anchor xlink:href="http://www.nodc.noaa.gov/cgi-bin/OAS/prd/insttype/details/43" xlink:actuate="onRequest">thermosalinographs</gmx:Anchor>
+          </gmd:keyword>
+          <gmd:keyword>
+            <gmx:Anchor xlink:href="http://www.nodc.noaa.gov/cgi-bin/OAS/prd/insttype/details/67" xlink:actuate="onRequest">trawl</gmx:Anchor>
+          </gmd:keyword>
+          <gmd:keyword>
+            <gmx:Anchor xlink:href="http://www.nodc.noaa.gov/cgi-bin/OAS/prd/insttype/details/16" xlink:actuate="onRequest">sediment sampler - grab</gmx:Anchor>
+          </gmd:keyword>
+          <gmd:keyword>
+            <gmx:Anchor xlink:href="http://www.nodc.noaa.gov/cgi-bin/OAS/prd/insttype/details/31" xlink:actuate="onRequest">net - plankton net</gmx:Anchor>
+          </gmd:keyword>
+          <gmd:keyword>
+            <gmx:Anchor xlink:href="http://www.nodc.noaa.gov/cgi-bin/OAS/prd/insttype/details/3" xlink:actuate="onRequest">bottle</gmx:Anchor>
+          </gmd:keyword>
+          <gmd:type>
+            <gmd:MD_KeywordTypeCode codeList="http://www.ngdc.noaa.gov/metadata/published/xsd/schema/resources/Codelist/gmxCodelists.xml#MD_KeywordTypeCode" codeListValue="instrument">instrument</gmd:MD_KeywordTypeCode>
+          </gmd:type>
+          <gmd:thesaurusName>
+            <gmd:CI_Citation>
+              <gmd:title>
+                <gco:CharacterString>NODC INSTRUMENT TYPES THESAURUS</gco:CharacterString>
+              </gmd:title>
+              <gmd:date gco:nilReason="inapplicable"/>
+            </gmd:CI_Citation>
+          </gmd:thesaurusName>
+        </gmd:MD_Keywords>
+      </gmd:descriptiveKeywords>
+      <gmd:descriptiveKeywords>
+        <gmd:MD_Keywords>
+          <gmd:keyword>
+            <gmx:Anchor>in situ</gmx:Anchor>
+          </gmd:keyword>
+          <gmd:keyword>
+            <gmx:Anchor>laboratory analysis</gmx:Anchor>
+          </gmd:keyword>
+          <gmd:type>
+            <gmd:MD_KeywordTypeCode codeList="http://www.ngdc.noaa.gov/metadata/published/xsd/schema/resources/Codelist/gmxCodelists.xml#MD_KeywordTypeCode" codeListValue="obstype">obstype</gmd:MD_KeywordTypeCode>
+          </gmd:type>
+          <gmd:thesaurusName>
+            <gmd:CI_Citation>
+              <gmd:title>
+                <gco:CharacterString>Observation Category</gco:CharacterString>
+              </gmd:title>
+              <gmd:date gco:nilReason="inapplicable"/>
+            </gmd:CI_Citation>
+          </gmd:thesaurusName>
+        </gmd:MD_Keywords>
+      </gmd:descriptiveKeywords>
+      <gmd:language>
+        <gco:CharacterString>eng; USA</gco:CharacterString>
+      </gmd:language>
+      <gmd:topicCategory>
+        <gmd:MD_TopicCategoryCode>oceans</gmd:MD_TopicCategoryCode>
+      </gmd:topicCategory>
+      <gmd:topicCategory>
+        <gmd:MD_TopicCategoryCode>environment</gmd:MD_TopicCategoryCode>
+      </gmd:topicCategory>
+      <gmd:extent>
+        <gmd:EX_Extent id="boundingExtent">
+          <gmd:geographicElement>
+            <gmd:EX_GeographicBoundingBox id="boundingGeographicBoundingBox">
+              <gmd:westBoundLongitude>
+                <gco:Decimal>-152.5844</gco:Decimal>
+              </gmd:westBoundLongitude>
+              <gmd:eastBoundLongitude>
+                <gco:Decimal>-141.696</gco:Decimal>
+              </gmd:eastBoundLongitude>
+              <gmd:southBoundLatitude>
+                <gco:Decimal>69.84831667</gco:Decimal>
+              </gmd:southBoundLatitude>
+              <gmd:northBoundLatitude>
+                <gco:Decimal>71.49109444</gco:Decimal>
+              </gmd:northBoundLatitude>
+            </gmd:EX_GeographicBoundingBox>
+          </gmd:geographicElement>
+          <gmd:temporalElement>
+            <gmd:EX_TemporalExtent>
+              <gmd:extent>
+                <gml:TimePeriod gml:id="boundingTemporalExtent">
+                  <gml:beginPosition>2014-07-31</gml:beginPosition>
+                  <gml:endPosition>2015-08-12</gml:endPosition>
+                </gml:TimePeriod>
+              </gmd:extent>
+            </gmd:EX_TemporalExtent>
+          </gmd:temporalElement>
+        </gmd:EX_Extent>
+      </gmd:extent>
+    </gmd:MD_DataIdentification>
+  </gmd:identificationInfo>
+  <gmd:contentInfo>
+    <gmd:MD_FeatureCatalogueDescription>
+      <gmd:includedWithDataset>
+        <gco:Boolean>true</gco:Boolean>
+      </gmd:includedWithDataset>
+      <gmd:featureTypes>
+        <gco:LocalName>CURRENT SPEED - EAST/WEST COMPONENT (U) (meters per second)</gco:LocalName>
+      </gmd:featureTypes>
+      <gmd:featureTypes>
+        <gco:LocalName>CURRENT SPEED - NORTH/SOUTH COMPONENT (V) (meters per second)</gco:LocalName>
+      </gmd:featureTypes>
+      <gmd:featureTypes>
+        <gco:LocalName>FLUORESCENCE (milligrams per cubic meter)</gco:LocalName>
+      </gmd:featureTypes>
+      <gmd:featureTypes>
+        <gco:LocalName>PHOTOSYNTHETIC ACTIVE RADIATION (PAR) (watts per square meter)</gco:LocalName>
+      </gmd:featureTypes>
+      <gmd:featureTypes>
+        <gco:LocalName>SALINITY (practical salinity unit)</gco:LocalName>
+      </gmd:featureTypes>
+      <gmd:featureTypes>
+        <gco:LocalName>WATER TEMPERATURE (degrees Celsius)</gco:LocalName>
+      </gmd:featureTypes>
+      <gmd:featureTypes>
+        <gco:LocalName>turbidity (NTU)</gco:LocalName>
+      </gmd:featureTypes>
+      <gmd:featureTypes>
+        <gco:LocalName>DISSOLVED OXYGEN (milligrams per liter)</gco:LocalName>
+      </gmd:featureTypes>
+      <gmd:featureTypes>
+        <gco:LocalName>SIGMA-T (dimensionless)</gco:LocalName>
+      </gmd:featureTypes>
+      <gmd:featureTypes>
+        <gco:LocalName>CONDUCTIVITY (siemens per meter)</gco:LocalName>
+      </gmd:featureTypes>
+      <gmd:featureTypes>
+        <gco:LocalName>SALINITY (psu)</gco:LocalName>
+      </gmd:featureTypes>
+      <gmd:featureTypes>
+        <gco:LocalName>WATER TEMPERATURE (degrees Celsius)</gco:LocalName>
+      </gmd:featureTypes>
+      <gmd:featureTypes>
+        <gco:LocalName>Methylmercury (micrograms per gram)</gco:LocalName>
+      </gmd:featureTypes>
+      <gmd:featureTypes>
+        <gco:LocalName>hydrocarbon (micrograms per gram)</gco:LocalName>
+      </gmd:featureTypes>
+      <gmd:featureTypes>
+        <gco:LocalName>POLYNUCLEAR AROMATIC HYDROCARBONS (PAH) (nanograms per gram)</gco:LocalName>
+      </gmd:featureTypes>
+      <gmd:featureTypes>
+        <gco:LocalName>TRACE METALS (micrograms per gram)</gco:LocalName>
+      </gmd:featureTypes>
+      <gmd:featureTypes>
+        <gco:LocalName>SEDIMENT - GRAIN SIZE (percent)</gco:LocalName>
+      </gmd:featureTypes>
+      <gmd:featureTypes>
+        <gco:LocalName>CARBON - TOTAL ORGANIC (percent)</gco:LocalName>
+      </gmd:featureTypes>
+      <gmd:featureTypes>
+        <gco:LocalName>CHLOROPHYLL (milligrams per square meter)</gco:LocalName>
+      </gmd:featureTypes>
+      <gmd:featureTypes>
+        <gco:LocalName>PIGMENTS (milligrams per square meter)</gco:LocalName>
+      </gmd:featureTypes>
+      <gmd:featureTypes>
+        <gco:LocalName>Carbon content of specimen (micromole)</gco:LocalName>
+      </gmd:featureTypes>
+      <gmd:featureTypes>
+        <gco:LocalName>DELTA CARBON-13 (per mille)</gco:LocalName>
+      </gmd:featureTypes>
+      <gmd:featureTypes>
+        <gco:LocalName>Nitrogen content of specimen (micromole)</gco:LocalName>
+      </gmd:featureTypes>
+      <gmd:featureTypes>
+        <gco:LocalName>DELTA NITROGEN-15 (per mille)</gco:LocalName>
+      </gmd:featureTypes>
+      <gmd:featureTypes>
+        <gco:LocalName>AMMONIUM (NH4) (micromole)</gco:LocalName>
+      </gmd:featureTypes>
+      <gmd:featureTypes>
+        <gco:LocalName>suspended solids (milligrams per liter)</gco:LocalName>
+      </gmd:featureTypes>
+      <gmd:featureTypes>
+        <gco:LocalName>CARBON - TOTAL PARTICULATE [PARTICULATE ORGANIC CARBON] (percent)</gco:LocalName>
+      </gmd:featureTypes>
+      <gmd:featureTypes>
+        <gco:LocalName>particulate phosphorus (percent)</gco:LocalName>
+      </gmd:featureTypes>
+      <gmd:featureTypes>
+        <gco:LocalName>species abundance (number of organisms per 1000 square meter)</gco:LocalName>
+      </gmd:featureTypes>
+      <gmd:featureTypes>
+        <gco:LocalName>BIOMASS (grams per 1000 square meter)</gco:LocalName>
+      </gmd:featureTypes>
+      <gmd:featureTypes>
+        <gco:LocalName>NUTRIENTS (micromoles per liter)</gco:LocalName>
+      </gmd:featureTypes>
+      <gmd:featureCatalogueCitation gco:nilReason="unknown"/>
+    </gmd:MD_FeatureCatalogueDescription>
+  </gmd:contentInfo>
+  <gmd:dataQualityInfo>
+    <gmd:DQ_DataQuality>
+      <gmd:scope>
+        <gmd:DQ_Scope>
+          <gmd:level>
+            <gmd:MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ScopeCode" codeListValue="dataset">dataset</gmd:MD_ScopeCode>
+          </gmd:level>
+          <gmd:extent xlink:href="#boundingExtent"/>
+        </gmd:DQ_Scope>
+      </gmd:scope>
+      <gmd:lineage xlink:title="References">
+        <gmd:LI_Lineage>
+          <gmd:statement>
+            <gco:CharacterString/>
+          </gmd:statement>
+        </gmd:LI_Lineage>
+      </gmd:lineage>
+    </gmd:DQ_DataQuality>
+  </gmd:dataQualityInfo>
+  <gmd:dataQualityInfo>
+    <gmd:DQ_DataQuality>
+      <gmd:scope>
+        <gmd:DQ_Scope>
+          <gmd:level>
+            <gmd:MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ScopeCode" codeListValue="dataset">dataset</gmd:MD_ScopeCode>
+          </gmd:level>
+        </gmd:DQ_Scope>
+      </gmd:scope>
+      <gmd:lineage>
+        <gmd:LI_Lineage>
+          <gmd:processStep>
+            <gmi:LE_ProcessStep>
+              <gmd:description>
+                <gco:CharacterString>Data Type: CURRENT SPEED - EAST/WEST COMPONENT (U) (measured); Units: meters per second; Observation Type: in situ; Sampling Instrument: ADCP; Sampling and Analyzing Method: Shipboard ADCP velocity profiles using instrument wh300; Data Quality Information: </gco:CharacterString>
+              </gmd:description>
+            </gmi:LE_ProcessStep>
+          </gmd:processStep>
+          <gmd:processStep>
+            <gmi:LE_ProcessStep>
+              <gmd:description>
+                <gco:CharacterString>Data Type: CURRENT SPEED - NORTH/SOUTH COMPONENT (V) (measured); Units: meters per second; Observation Type: in situ; Sampling Instrument: ADCP; Sampling and Analyzing Method: Shipboard ADCP velocity profiles using instrument wh300; Data Quality Information: </gco:CharacterString>
+              </gmd:description>
+            </gmi:LE_ProcessStep>
+          </gmd:processStep>
+          <gmd:processStep>
+            <gmi:LE_ProcessStep>
+              <gmd:description>
+                <gco:CharacterString>Data Type: FLUORESCENCE (measured); Units: milligrams per cubic meter; Observation Type: in situ; Sampling Instrument: CTD; Sampling and Analyzing Method: ; Data Quality Information: </gco:CharacterString>
+              </gmd:description>
+            </gmi:LE_ProcessStep>
+          </gmd:processStep>
+          <gmd:processStep>
+            <gmi:LE_ProcessStep>
+              <gmd:description>
+                <gco:CharacterString>Data Type: PHOTOSYNTHETIC ACTIVE RADIATION (PAR) (measured); Units: watts per square meter; Observation Type: in situ; Sampling Instrument: CTD; Sampling and Analyzing Method: ; Data Quality Information: </gco:CharacterString>
+              </gmd:description>
+            </gmi:LE_ProcessStep>
+          </gmd:processStep>
+          <gmd:processStep>
+            <gmi:LE_ProcessStep>
+              <gmd:description>
+                <gco:CharacterString>Data Type: SALINITY (measured); Units: practical salinity unit; Observation Type: in situ; Sampling Instrument: CTD; Sampling and Analyzing Method: ; Data Quality Information: </gco:CharacterString>
+              </gmd:description>
+            </gmi:LE_ProcessStep>
+          </gmd:processStep>
+          <gmd:processStep>
+            <gmi:LE_ProcessStep>
+              <gmd:description>
+                <gco:CharacterString>Data Type: WATER TEMPERATURE (measured); Units: degrees Celsius; Observation Type: in situ; Sampling Instrument: CTD; Sampling and Analyzing Method: ; Data Quality Information: </gco:CharacterString>
+              </gmd:description>
+            </gmi:LE_ProcessStep>
+          </gmd:processStep>
+          <gmd:processStep>
+            <gmi:LE_ProcessStep>
+              <gmd:description>
+                <gco:CharacterString>Data Type: turbidity (measured); Units: NTU; Observation Type: in situ; Sampling Instrument: CTD; Sampling and Analyzing Method: ; Data Quality Information: </gco:CharacterString>
+              </gmd:description>
+            </gmi:LE_ProcessStep>
+          </gmd:processStep>
+          <gmd:processStep>
+            <gmi:LE_ProcessStep>
+              <gmd:description>
+                <gco:CharacterString>Data Type: DISSOLVED OXYGEN (measured); Units: milligrams per liter; Observation Type: in situ; Sampling Instrument: CTD; Sampling and Analyzing Method: All measurements were made thru-ice during and immediately preceding the spring freshet-breakup of the Colville River.; Data Quality Information: </gco:CharacterString>
+              </gmd:description>
+            </gmi:LE_ProcessStep>
+          </gmd:processStep>
+          <gmd:processStep>
+            <gmi:LE_ProcessStep>
+              <gmd:description>
+                <gco:CharacterString>Data Type: SIGMA-T (measured); Units: dimensionless; Observation Type: in situ; Sampling Instrument: CTD; Sampling and Analyzing Method: All measurements were made thru-ice during and immediately preceding the spring freshet-breakup of the Colville River.; Data Quality Information: </gco:CharacterString>
+              </gmd:description>
+            </gmi:LE_ProcessStep>
+          </gmd:processStep>
+          <gmd:processStep>
+            <gmi:LE_ProcessStep>
+              <gmd:description>
+                <gco:CharacterString>Data Type: CONDUCTIVITY (measured); Units: siemens per meter; Observation Type: in situ; Sampling Instrument: CTD; Sampling and Analyzing Method: All measurements were made thru-ice during and immediately preceding the spring freshet-breakup of the Colville River.; Data Quality Information: </gco:CharacterString>
+              </gmd:description>
+            </gmi:LE_ProcessStep>
+          </gmd:processStep>
+          <gmd:processStep>
+            <gmi:LE_ProcessStep>
+              <gmd:description>
+                <gco:CharacterString>Data Type: SALINITY (measured); Units: psu; Observation Type: in situ; Sampling Instrument: thermosalinographs; Sampling and Analyzing Method: Underway sea surface temperature and salinity; Data Quality Information: </gco:CharacterString>
+              </gmd:description>
+            </gmi:LE_ProcessStep>
+          </gmd:processStep>
+          <gmd:processStep>
+            <gmi:LE_ProcessStep>
+              <gmd:description>
+                <gco:CharacterString>Data Type: WATER TEMPERATURE (measured); Units: degrees Celsius; Observation Type: in situ; Sampling Instrument: thermosalinographs; Sampling and Analyzing Method: Underway sea surface temperature and salinity; Data Quality Information: </gco:CharacterString>
+              </gmd:description>
+            </gmi:LE_ProcessStep>
+          </gmd:processStep>
+          <gmd:processStep>
+            <gmi:LE_ProcessStep>
+              <gmd:description>
+                <gco:CharacterString>Data Type: Methylmercury (measured); Units: micrograms per gram; Observation Type: laboratory analysis; Sampling Instrument: trawl; Sampling and Analyzing Method: ; Data Quality Information: </gco:CharacterString>
+              </gmd:description>
+            </gmi:LE_ProcessStep>
+          </gmd:processStep>
+          <gmd:processStep>
+            <gmi:LE_ProcessStep>
+              <gmd:description>
+                <gco:CharacterString>Data Type: hydrocarbon (measured); Units: micrograms per gram; Observation Type: laboratory analysis; Sampling Instrument: sediment sampler - grab; Sampling and Analyzing Method: ; Data Quality Information: </gco:CharacterString>
+              </gmd:description>
+            </gmi:LE_ProcessStep>
+          </gmd:processStep>
+          <gmd:processStep>
+            <gmi:LE_ProcessStep>
+              <gmd:description>
+                <gco:CharacterString>Data Type: POLYNUCLEAR AROMATIC HYDROCARBONS (PAH) (measured); Units: nanograms per gram; Observation Type: laboratory analysis; Sampling Instrument: sediment sampler - grab; Sampling and Analyzing Method: ; Data Quality Information: </gco:CharacterString>
+              </gmd:description>
+            </gmi:LE_ProcessStep>
+          </gmd:processStep>
+          <gmd:processStep>
+            <gmi:LE_ProcessStep>
+              <gmd:description>
+                <gco:CharacterString>Data Type: TRACE METALS (measured); Units: micrograms per gram; Observation Type: laboratory analysis; Sampling Instrument: trawl; Sampling and Analyzing Method: ; Data Quality Information: </gco:CharacterString>
+              </gmd:description>
+            </gmi:LE_ProcessStep>
+          </gmd:processStep>
+          <gmd:processStep>
+            <gmi:LE_ProcessStep>
+              <gmd:description>
+                <gco:CharacterString>Data Type: SEDIMENT - GRAIN SIZE (measured); Units: percent; Observation Type: laboratory analysis; Sampling Instrument: sediment sampler - grab; Sampling and Analyzing Method: ; Data Quality Information: </gco:CharacterString>
+              </gmd:description>
+            </gmi:LE_ProcessStep>
+          </gmd:processStep>
+          <gmd:processStep>
+            <gmi:LE_ProcessStep>
+              <gmd:description>
+                <gco:CharacterString>Data Type: CARBON - TOTAL ORGANIC (measured); Units: percent; Observation Type: laboratory analysis; Sampling Instrument: sediment sampler - grab; Sampling and Analyzing Method: ; Data Quality Information: </gco:CharacterString>
+              </gmd:description>
+            </gmi:LE_ProcessStep>
+          </gmd:processStep>
+          <gmd:processStep>
+            <gmi:LE_ProcessStep>
+              <gmd:description>
+                <gco:CharacterString>Data Type: CHLOROPHYLL (calculated); Units: milligrams per square meter; Observation Type: laboratory analysis; Sampling Instrument: sediment sampler - grab; Sampling and Analyzing Method: ; Data Quality Information: </gco:CharacterString>
+              </gmd:description>
+            </gmi:LE_ProcessStep>
+          </gmd:processStep>
+          <gmd:processStep>
+            <gmi:LE_ProcessStep>
+              <gmd:description>
+                <gco:CharacterString>Data Type: PIGMENTS (calculated); Units: milligrams per square meter; Observation Type: laboratory analysis; Sampling Instrument: sediment sampler - grab; Sampling and Analyzing Method: ; Data Quality Information: </gco:CharacterString>
+              </gmd:description>
+            </gmi:LE_ProcessStep>
+          </gmd:processStep>
+          <gmd:processStep>
+            <gmi:LE_ProcessStep>
+              <gmd:description>
+                <gco:CharacterString>Data Type: Carbon content of specimen (measured); Units: micromole; Observation Type: laboratory analysis; Sampling Instrument: trawl; Sampling and Analyzing Method: ; Data Quality Information: </gco:CharacterString>
+              </gmd:description>
+            </gmi:LE_ProcessStep>
+          </gmd:processStep>
+          <gmd:processStep>
+            <gmi:LE_ProcessStep>
+              <gmd:description>
+                <gco:CharacterString>Data Type: DELTA CARBON-13 (measured); Units: per mille; Observation Type: laboratory analysis; Sampling Instrument: net - plankton net; Sampling and Analyzing Method: ; Data Quality Information: </gco:CharacterString>
+              </gmd:description>
+            </gmi:LE_ProcessStep>
+          </gmd:processStep>
+          <gmd:processStep>
+            <gmi:LE_ProcessStep>
+              <gmd:description>
+                <gco:CharacterString>Data Type: Nitrogen content of specimen (measured); Units: micromole; Observation Type: laboratory analysis; Sampling Instrument: sediment sampler - grab; Sampling and Analyzing Method: ; Data Quality Information: </gco:CharacterString>
+              </gmd:description>
+            </gmi:LE_ProcessStep>
+          </gmd:processStep>
+          <gmd:processStep>
+            <gmi:LE_ProcessStep>
+              <gmd:description>
+                <gco:CharacterString>Data Type: DELTA NITROGEN-15 (measured); Units: per mille; Observation Type: laboratory analysis; Sampling Instrument: sediment sampler - grab; Sampling and Analyzing Method: ; Data Quality Information: </gco:CharacterString>
+              </gmd:description>
+            </gmi:LE_ProcessStep>
+          </gmd:processStep>
+          <gmd:processStep>
+            <gmi:LE_ProcessStep>
+              <gmd:description>
+                <gco:CharacterString>Data Type: AMMONIUM (NH4) (measured); Units: micromole; Observation Type: laboratory analysis; Sampling Instrument: sediment sampler - grab; Sampling and Analyzing Method: ; Data Quality Information: </gco:CharacterString>
+              </gmd:description>
+            </gmi:LE_ProcessStep>
+          </gmd:processStep>
+          <gmd:processStep>
+            <gmi:LE_ProcessStep>
+              <gmd:description>
+                <gco:CharacterString>Data Type: suspended solids (measured); Units: milligrams per liter; Observation Type: laboratory analysis; Sampling Instrument: bottle; Sampling and Analyzing Method: ; Data Quality Information: </gco:CharacterString>
+              </gmd:description>
+            </gmi:LE_ProcessStep>
+          </gmd:processStep>
+          <gmd:processStep>
+            <gmi:LE_ProcessStep>
+              <gmd:description>
+                <gco:CharacterString>Data Type: CARBON - TOTAL PARTICULATE [PARTICULATE ORGANIC CARBON] (measured); Units: percent; Observation Type: laboratory analysis; Sampling Instrument: bottle; Sampling and Analyzing Method: ; Data Quality Information: </gco:CharacterString>
+              </gmd:description>
+            </gmi:LE_ProcessStep>
+          </gmd:processStep>
+          <gmd:processStep>
+            <gmi:LE_ProcessStep>
+              <gmd:description>
+                <gco:CharacterString>Data Type: particulate phosphorus (measured); Units: percent; Observation Type: laboratory analysis; Sampling Instrument: bottle; Sampling and Analyzing Method: ; Data Quality Information: </gco:CharacterString>
+              </gmd:description>
+            </gmi:LE_ProcessStep>
+          </gmd:processStep>
+          <gmd:processStep>
+            <gmi:LE_ProcessStep>
+              <gmd:description>
+                <gco:CharacterString>Data Type: species abundance (calculated); Units: number of organisms per 1000 square meter; Observation Type: laboratory analysis; Sampling Instrument: trawl; Sampling and Analyzing Method: ; Data Quality Information: </gco:CharacterString>
+              </gmd:description>
+            </gmi:LE_ProcessStep>
+          </gmd:processStep>
+          <gmd:processStep>
+            <gmi:LE_ProcessStep>
+              <gmd:description>
+                <gco:CharacterString>Data Type: BIOMASS (calculated); Units: grams per 1000 square meter; Observation Type: laboratory analysis; Sampling Instrument: trawl; Sampling and Analyzing Method: ; Data Quality Information: </gco:CharacterString>
+              </gmd:description>
+            </gmi:LE_ProcessStep>
+          </gmd:processStep>
+          <gmd:processStep>
+            <gmi:LE_ProcessStep>
+              <gmd:description>
+                <gco:CharacterString>Data Type: NUTRIENTS (measured); Units: micromoles per liter; Observation Type: laboratory analysis; Sampling Instrument: bottle; Sampling and Analyzing Method: ; Data Quality Information: </gco:CharacterString>
+              </gmd:description>
+            </gmi:LE_ProcessStep>
+          </gmd:processStep>
+        </gmd:LI_Lineage>
+      </gmd:lineage>
+    </gmd:DQ_DataQuality>
+  </gmd:dataQualityInfo>
+  <gmi:acquisitionInformation>
+    <gmi:MI_AcquisitionInformation>
+      <gmi:platform>
+        <gmi:MI_Platform>
+          <gmi:identifier gco:nilReason="unknown"/>
+          <gmi:description>
+            <gmx:Anchor xlink:href="http://www.nodc.noaa.gov/cgi-bin/OAS/prd/platform/details/11843" xlink:actuate="onRequest">Norseman II (Call Sign WDD6688 - NODC Code 32QO)</gmx:Anchor>
+          </gmi:description>
+          <gmi:instrument gco:nilReason="unknown"/>
+        </gmi:MI_Platform>
+      </gmi:platform>
+    </gmi:MI_AcquisitionInformation>
+  </gmi:acquisitionInformation>
+</gmi:MI_Metadata>

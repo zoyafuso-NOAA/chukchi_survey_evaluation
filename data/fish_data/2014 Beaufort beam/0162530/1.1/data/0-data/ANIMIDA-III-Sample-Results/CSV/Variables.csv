@@ -1,0 +1,381 @@
+VariableID,VariableCode,VariableName,Speciation,UnitsName,SampleMedium,ValueType,DataType,GeneralCategory,NoDataValue
+75,Al-S,"Aluminum, total",Al,percent,Sediment,Sample,Sporadic,Geology,-9999.0
+167,Clay-S,"Clay, total",Not Applicable,percent,Sediment,Sample,Sporadic,Geology,-9999.0
+178,Fe-S,"Iron, total",Fe,percent,Sediment,Sample,Sporadic,Geology,-9999.0
+184,Gravel-S,"Gravel, total",Not Applicable,percent,Sediment,Sample,Sporadic,Geology,-9999.0
+282,Sand-S,"Sand, total",Not Applicable,percent,Sediment,Sample,Sporadic,Geology,-9999.0
+285,sediment_water_content,Water Content,Not Applicable,percent,Sediment,Sample,Sporadic,Geology,-9999.0
+290,Silt-S,"Silt, total",Not Applicable,percent,Sediment,Sample,Sporadic,Geology,-9999.0
+295,tissue_lipid_content,Water Content,Not Applicable,percent,Tissue,Sample,Sporadic,Biota,-9999.0
+296,tissue_water_content,Water Content,Not Applicable,percent,Tissue,Sample,Sporadic,Biota,-9999.0
+301,TOC-S,"Carbon, total organic",C,percent,Sediment,Sample,Sporadic,Chemistry,-9999.0
+308,Water-T,Water Content,Not Applicable,percent,Tissue,Sample,Sporadic,Biota,-9999.0
+336,Al-P,"Aluminum, particulate",Al,percent,Suspended particulate matter,Sample,Sporadic,Water Quality,-9999.0
+341,POC,"Carbon, particulate organic",C,percent,Suspended particulate matter,Sample,Sporadic,Water Quality,-9999.0
+342,Si-P,"Silicon, particulate",Si,percent,Suspended particulate matter,Sample,Sporadic,Water Quality,-9999.0
+357,N-P,"Nitrogen, particulate",N,percent,Suspended particulate matter,Sample,Sporadic,Water Quality,-9999.0
+358,P-P,"Phosphorus, particulate",P,percent,Suspended particulate matter,Sample,Sporadic,Water Quality,-9999.0
+339,Fe-P,"Iron, particulate",Fe,percent,Suspended particulate matter,Sample,Sporadic,Water Quality,-9999.0
+370,Temp-ctd,Temperature,Not Applicable,degree celsius,Surface Water,Field Observation,Sporadic,Water Quality,-9999.0
+359,Sal-seawater,Salinity,Not Applicable,dimensionless,Seawater,Sample,Sporadic,Water Quality,-9999.0
+369,Sigma-t-ctd,Sigma-t,Not Applicable,dimensionless,Surface Water,Field Observation,Sporadic,Water Quality,-9999.0
+329,salinity-sediment,Salinity,Not Applicable,dimensionless,Sediment,Sample,Sporadic,Chemistry,-9999.0
+374,Biomass_gm2,Biomass,Not Applicable,grams per square meter,Benthic zone,Derived Value,Sporadic,Biota,-9999.0
+335,Zeaxanthin_sediment,Zeaxanthin,Not Applicable,milligrams per square meter,Sediment,Sample,Sporadic,Chemistry,-9999.0
+322,Fucoxanthin_sediment,Fucoxanthin,Not Applicable,milligrams per square meter,Sediment,Sample,Sporadic,Chemistry,-9999.0
+324,Peridinin_sediment,Peridinin,Not Applicable,milligrams per square meter,Sediment,Sample,Sporadic,Chemistry,-9999.0
+325,Pheophorbide_sediment,Pheophorbide a,Not Applicable,milligrams per square meter,Sediment,Sample,Sporadic,Chemistry,-9999.0
+326,Pheophytin_sediment,Pheophytin,Not Applicable,milligrams per square meter,Sediment,Sample,Sporadic,Chemistry,-9999.0
+327,Prasinoxanthin_sediment,Prasinoxanthin,Not Applicable,milligrams per square meter,Sediment,Sample,Sporadic,Chemistry,-9999.0
+328,Pyropheophorbide_sediment,Pyropheophorbide a,Not Applicable,milligrams per square meter,Sediment,Sample,Sporadic,Chemistry,-9999.0
+311,19-But-Fucoxanthin_sediment,19'-But-Fucoxanthin,Not Applicable,milligrams per square meter,Sediment,Sample,Sporadic,Chemistry,-9999.0
+312,19-Hex-Fucoxanthin_sediment,19'-Hex-Fucoxanthin,Not Applicable,milligrams per square meter,Sediment,Sample,Sporadic,Chemistry,-9999.0
+313,Chl-a_sediment,Chlorophyll a,Not Applicable,milligrams per square meter,Sediment,Sample,Sporadic,Chemistry,-9999.0
+314,Chl-b_sediment,Chlorophyll b,Not Applicable,milligrams per square meter,Sediment,Sample,Sporadic,Chemistry,-9999.0
+315,Chl-c2_sediment,Chlorophyll c2,Not Applicable,milligrams per square meter,Sediment,Sample,Sporadic,Chemistry,-9999.0
+368,Salinity-ctd,Salinity,Not Applicable,practical salinity units ,Surface Water,Field Observation,Sporadic,Water Quality,-9999.0
+365,DO-ctd,"Oxygen, dissolved",Not Applicable,milligrams per liter,Surface Water,Field Observation,Sporadic,Water Quality,-9999.0
+360,TSS-surfacewater,"Solids, total suspended",Not Applicable,milligrams per liter,Surface water,Sample,Sporadic,Water Quality,-9999.0
+343,TSS-seawater,"Solids, total suspended",Not Applicable,milligrams per liter,Seawater,Sample,Sporadic,Water Quality,-9999.0
+351,DOC-seawater,"Carbon, dissolved organic",C,milligrams per liter,Seawater,Sample,Sporadic,Water Quality,-9999.0
+352,DOC-surfacewater,"Carbon, dissolved organic",C,milligrams per liter,Surface water,Sample,Sporadic,Water Quality,-9999.0
+353,Fe-D-seawater,"Iron, dissolved",Fe,micrograms per liter,Seawater,Sample,Sporadic,Water Quality,-9999.0
+354,Fe-D-surfacewater,"Iron, dissolved",Fe,micrograms per liter,Surface water,Sample,Sporadic,Water Quality,-9999.0
+355,Mn-D-seawater,"Manganese, dissolved",Mn,micrograms per liter,Seawater,Sample,Sporadic,Water Quality,-9999.0
+356,Mn-D-surfacewater,"Manganese, dissolved",Mn,micrograms per liter,Surface water,Sample,Sporadic,Water Quality,-9999.0
+347,Ba-D-seawater,"Barium, dissolved",Ba,micrograms per liter,Seawater,Sample,Sporadic,Water Quality,-9999.0
+348,Ba-D-surfacewater,"Barium, dissolved",Ba,micrograms per liter,Surface water,Sample,Sporadic,Water Quality,-9999.0
+349,Cu-D-seawater,"Copper, dissolved",Cu,micrograms per liter,Seawater,Sample,Sporadic,Water Quality,-9999.0
+350,Cu-D-surfacewater,"Copper, dissolved",Cu,micrograms per liter,Surface water,Sample,Sporadic,Water Quality,-9999.0
+344,As-D-seawater,"Arsenic, dissolved",As,micrograms per liter,Seawater,Sample,Sporadic,Water Quality,-9999.0
+345,As-D-surfacewater,"Arsenic, dissolved",As,micrograms per liter,Surface water,Sample,Sporadic,Water Quality,-9999.0
+361,Zn-D-seawater,"Zinc, dissolved",Zn,micrograms per liter,Seawater,Sample,Sporadic,Water Quality,-9999.0
+362,Zn-D-surfacewater,"Zinc, dissolved",Zn,micrograms per liter,Surface water,Sample,Sporadic,Water Quality,-9999.0
+316,del_13C-biota,"Carbon-13, stable isotope ratio delta",Not Applicable,per mille,Tissue,Sample,Sporadic,Biota,-9999.0
+317,del_13C-pom,"Carbon-13, stable isotope ratio delta",Not Applicable,per mille,Surface water,Sample,Sporadic,Chemistry,-9999.0
+318,del_13C-sediment,"Carbon-13, stable isotope ratio delta",Not Applicable,per mille,Sediment,Sample,Sporadic,Chemistry,-9999.0
+319,del_15N-biota,"Nitrogen-15, stable isotope ratio delta",Not Applicable,per mille,Tissue,Sample,Sporadic,Biota,-9999.0
+320,del_15N-pom,"Nitrogen-15, stable isotope ratio delta",Not Applicable,per mille,Surface water,Sample,Sporadic,Chemistry,-9999.0
+321,del_15N-sediment,"Nitrogen-15, stable isotope ratio delta",Not Applicable,per mille,Sediment,Sample,Sporadic,Chemistry,-9999.0
+366,OBS-ctd,Turbidity,Not Applicable,nephelometric turbidity units,Surface Water,Field Observation,Sporadic,Water Quality,-9999.0
+373,Abundance_m2,Abundance,Not Applicable,number of organisms per square meter,Benthic zone,Derived Value,Sporadic,Biota,-9999.0
+323,NH4-sediment,"Nitrogen, NH4",N,micromoles,Sediment,Sample,Sporadic,Chemistry,-9999.0
+330,TC-biota-umol,"Carbon, total",Not Applicable,micromoles,Tissue,Sample,Sporadic,Biota,-9999.0
+331,TC-sediment-umol,"Carbon, total",Not Applicable,micromoles,Sediment,Sample,Sporadic,Chemistry,-9999.0
+332,TN-biota-umol,"Nitrogen, total",Not Applicable,micromoles,Tissue,Sample,Sporadic,Biota,-9999.0
+333,TN-pom-umol,"Nitrogen, total",Not Applicable,micromoles,Surface water,Sample,Sporadic,Chemistry,-9999.0
+334,TN-sediment-umol,"Nitrogen, total",Not Applicable,micromoles,Sediment,Sample,Sporadic,Chemistry,-9999.0
+364,Cond-ctd,Specific conductance,Not Applicable,siemens per meter,Surface Water,Field Observation,Sporadic,Water Quality,-9999.0
+375,N_N_uM,"Nitrogen, nitrite (NO2) + nitrate (NO3)",Not Applicable,micromoles per liter,Seawater,Sample,Sporadic,Water Quality,-9999.0
+376,NH4_uM,"Nitrogen, NH4",Not Applicable,micromoles per liter,Seawater,Sample,Sporadic,Water Quality,-9999.0
+377,NO2_uM,"Nitrogen, nitrite (NO2)",Not Applicable,micromoles per liter,Seawater,Sample,Sporadic,Water Quality,-9999.0
+378,NO3_uM,"Nitrogen, nitrate (NO3)",Not Applicable,micromoles per liter,Seawater,Sample,Sporadic,Water Quality,-9999.0
+379,PO4_uM,"Phosphorus, phosphate (PO4)",Not Applicable,micromoles per liter,Seawater,Sample,Sporadic,Water Quality,-9999.0
+380,SiO4_uM,Silicate,Not Applicable,micromoles per liter,Seawater,Sample,Sporadic,Water Quality,-9999.0
+340,Mn-P,"Manganese, particulate",Mn,micrograms per gram,Suspended particulate matter,Sample,Sporadic,Water Quality,-9999.0
+363,Zn-P,"Zinc, particulate",Zn,micrograms per gram,Suspended particulate matter,Sample,Sporadic,Water Quality,-9999.0
+337,Ba-P,"Barium, particulate",Ba,micrograms per gram,Suspended particulate matter,Sample,Sporadic,Water Quality,-9999.0
+338,Cu-P,"Copper, particulate",Cu,micrograms per gram,Suspended particulate matter,Sample,Sporadic,Water Quality,-9999.0
+346,As-P,"Arsenic, particulate",As,micrograms per gram,Suspended particulate matter,Sample,Sporadic,Water Quality,-9999.0
+309,Zn-S,"Zinc, total",Zn,micrograms per gram,Sediment,Sample,Sporadic,Geology,-9999.0
+310,Zn-T,"Zinc, total",Zn,micrograms per gram,Tissue,Sample,Sporadic,Biota,-9999.0
+306,V-S,"Vanadium, total",V,micrograms per gram,Sediment,Sample,Sporadic,Geology,-9999.0
+307,V-T,"Vanadium, total",V,micrograms per gram,Tissue,Sample,Sporadic,Biota,-9999.0
+297,Tl-S,"Thallium, total",Tl,micrograms per gram,Sediment,Sample,Sporadic,Geology,-9999.0
+298,Tl-T,"Thallium, total",Tl,micrograms per gram,Tissue,Sample,Sporadic,Biota,-9999.0
+291,Sn-S,"Tin, total",Sn,micrograms per gram,Sediment,Sample,Sporadic,Geology,-9999.0
+292,Sn-T,"Tin, total",Sn,micrograms per gram,Tissue,Sample,Sporadic,Biota,-9999.0
+293,Sum_SHC_C9-C40_sediment,"n-alkane, total",Not Applicable,micrograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+294,Sum_SHC_C9-C40_tissue,"n-alkane, total",Not Applicable,micrograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+286,Se-S,"Selenium, total",Se,micrograms per gram,Sediment,Sample,Sporadic,Geology,-9999.0
+287,Se-T,"Selenium, total",Se,micrograms per gram,Tissue,Sample,Sporadic,Biota,-9999.0
+288,SHC_Total_C9-C40_sediment,"Saturated petroleum hydrocarbon, total",Not Applicable,micrograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+289,SHC_Total_C9-C40_tissue,"Saturated petroleum hydrocarbon, total",Not Applicable,micrograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+283,Sb-S,"Antimony, total",Sb,micrograms per gram,Sediment,Sample,Sporadic,Geology,-9999.0
+284,Sb-T,"Antimony, total",Sb,micrograms per gram,Tissue,Sample,Sporadic,Biota,-9999.0
+73,Ag-S,"Silver, total",Ag,micrograms per gram,Sediment,Sample,Sporadic,Geology,-9999.0
+74,Ag-T,"Silver, total",Ag,micrograms per gram,Tissue,Sample,Sporadic,Biota,-9999.0
+272,Phytane_sediment,Phytane,Not Applicable,micrograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+273,Phytane_tissue,Phytane,Not Applicable,micrograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+276,Pristane_sediment,Pristane,Not Applicable,micrograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+277,Pristane_tissue,Pristane,Not Applicable,micrograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+185,Hg-MM,Methylmercury,CH3Hg,micrograms per gram,Tissue,Sample,Sporadic,Biota,-9999.0
+186,Hg-S,"Mercury, total",Hg,micrograms per gram,Sediment,Sample,Sporadic,Geology,-9999.0
+187,Hg-T,"Mercury, total",Hg,micrograms per gram,Tissue,Sample,Sporadic,Biota,-9999.0
+179,Fe-T,"Iron, total",Fe,micrograms per gram,Tissue,Sample,Sporadic,Biota,-9999.0
+190,Isoprenoid_RRT_1380_sediment,Isoprenoid RRT 1380,Not Applicable,micrograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+191,Isoprenoid_RRT_1380_tissue,Isoprenoid RRT 1380,Not Applicable,micrograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+192,Isoprenoid_RRT_1470_sediment,Isoprenoid RRT 1470,Not Applicable,micrograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+193,Isoprenoid_RRT_1470_tissue,Isoprenoid RRT 1470,Not Applicable,micrograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+194,Mn-S,"Manganese, total",Mn,micrograms per gram,Sediment,Sample,Sporadic,Geology,-9999.0
+195,Mn-T,"Manganese, total",Mn,micrograms per gram,Tissue,Sample,Sporadic,Biota,-9999.0
+168,Cr-S,"Chromium, total",Cr,micrograms per gram,Sediment,Sample,Sporadic,Geology,-9999.0
+169,Cr-T,"Chromium, total",Cr,micrograms per gram,Tissue,Sample,Sporadic,Biota,-9999.0
+170,Cu-S,"Copper, total",Cu,micrograms per gram,Sediment,Sample,Sporadic,Geology,-9999.0
+171,Cu-T,"Copper, total",Cu,micrograms per gram,Tissue,Sample,Sporadic,Biota,-9999.0
+76,Al-T,"Aluminum, total",Al,micrograms per gram,Tissue,Sample,Sporadic,Biota,-9999.0
+163,Cd-S,"Cadmium, total",Cd,micrograms per gram,Sediment,Sample,Sporadic,Geology,-9999.0
+164,Cd-T,"Cadmium, total",Cd,micrograms per gram,Tissue,Sample,Sporadic,Biota,-9999.0
+79,As-S,"Arsenic, total",As,micrograms per gram,Sediment,Sample,Sporadic,Geology,-9999.0
+80,As-T,"Arsenic, total",As,micrograms per gram,Tissue,Sample,Sporadic,Biota,-9999.0
+81,Ba-S,"Barium, total",Ba,micrograms per gram,Sediment,Sample,Sporadic,Geology,-9999.0
+82,Ba-T,"Barium, total",Ba,micrograms per gram,Tissue,Sample,Sporadic,Biota,-9999.0
+198,n-Decane_sediment,"n-alkane, C10",Not Applicable,micrograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+199,n-Decane_tissue,"n-alkane, C10",Not Applicable,micrograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+200,n-Docosane_sediment,"n-alkane, C22",Not Applicable,micrograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+201,n-Docosane_tissue,"n-alkane, C22",Not Applicable,micrograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+202,n-Dodecane_sediment,"n-alkane, C12",Not Applicable,micrograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+203,n-Dodecane_tissue,"n-alkane, C12",Not Applicable,micrograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+204,n-Dotriacontane_sediment,"n-alkane, C32",Not Applicable,micrograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+205,n-Dotriacontane_tissue,"n-alkane, C32",Not Applicable,micrograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+206,n-Eicosane_sediment,"n-alkane, C20",Not Applicable,micrograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+207,n-Eicosane_tissue,"n-alkane, C20",Not Applicable,micrograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+208,n-Heneicosane_sediment,"n-alkane, C21",Not Applicable,micrograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+209,n-Heneicosane_tissue,"n-alkane, C21",Not Applicable,micrograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+210,n-Hentriacontane_sediment,"n-alkane, C31",Not Applicable,micrograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+211,n-Hentriacontane_tissue,"n-alkane, C31",Not Applicable,micrograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+212,n-Heptacosane_sediment,"n-alkane, C27",Not Applicable,micrograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+213,n-Heptacosane_tissue,"n-alkane, C27",Not Applicable,micrograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+214,n-Heptadecane_sediment,"n-alkane, C17",Not Applicable,micrograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+215,n-Heptadecane_tissue,"n-alkane, C17",Not Applicable,micrograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+216,n-Heptatriacontane_sediment,"n-alkane, C37",Not Applicable,micrograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+217,n-Heptatriacontane_tissue,"n-alkane, C37",Not Applicable,micrograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+218,n-Hexacosane_sediment,"n-alkane, C26",Not Applicable,micrograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+219,n-Hexacosane_tissue,"n-alkane, C26",Not Applicable,micrograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+220,n-Hexadecane_sediment,"n-alkane, C16",Not Applicable,micrograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+221,n-Hexadecane_tissue,"n-alkane, C16",Not Applicable,micrograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+222,n-Hexatriacontane_sediment,"n-alkane, C36",Not Applicable,micrograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+223,n-Hexatriacontane_tissue,"n-alkane, C36",Not Applicable,micrograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+224,Ni-S,"Nickel, total",Ni,micrograms per gram,Sediment,Sample,Sporadic,Geology,-9999.0
+225,Ni-T,"Nickel, total",Ni,micrograms per gram,Tissue,Sample,Sporadic,Biota,-9999.0
+226,n-Nonacosane_sediment,"n-alkane, C29",Not Applicable,micrograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+227,n-Nonacosane_tissue,"n-alkane, C29",Not Applicable,micrograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+228,n-Nonadecane_sediment,"n-alkane, C19",Not Applicable,micrograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+229,n-Nonadecane_tissue,"n-alkane, C19",Not Applicable,micrograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+230,n-Nonane_sediment,"n-alkane, C9",Not Applicable,micrograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+231,n-Nonane_tissue,"n-alkane, C9",Not Applicable,micrograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+232,n-Nonatriacontane_sediment,"n-alkane, C39",Not Applicable,micrograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+233,n-Nonatriacontane_tissue,"n-alkane, C39",Not Applicable,micrograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+234,n-Octacosane_sediment,"n-alkane, C28",Not Applicable,micrograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+235,n-Octacosane_tissue,"n-alkane, C28",Not Applicable,micrograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+236,n-Octadecane_sediment,"n-alkane, C18",Not Applicable,micrograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+237,n-Octadecane_tissue,"n-alkane, C18",Not Applicable,micrograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+238,n-Octatriacontane_sediment,"n-alkane, C38",Not Applicable,micrograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+239,n-Octatriacontane_tissue,"n-alkane, C38",Not Applicable,micrograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+240,Norpristane_1650_sediment,Norpristane (1650),Not Applicable,micrograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+241,Norpristane_1650_tissue,Norpristane (1650),Not Applicable,micrograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+242,n-Pentacosane_sediment,"n-alkane, C25",Not Applicable,micrograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+243,n-Pentacosane_tissue,"n-alkane, C25",Not Applicable,micrograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+244,n-Pentadecane_sediment,"n-alkane, C15",Not Applicable,micrograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+245,n-Pentadecane_tissue,"n-alkane, C15",Not Applicable,micrograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+246,n-Pentatriacontane_sediment,"n-alkane, C35",Not Applicable,micrograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+247,n-Pentatriacontane_tissue,"n-alkane, C35",Not Applicable,micrograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+248,n-Tetracontane_sediment,"n-alkane, C40",Not Applicable,micrograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+249,n-Tetracontane_tissue,"n-alkane, C40",Not Applicable,micrograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+250,n-Tetracosane_sediment,"n-alkane, C24",Not Applicable,micrograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+251,n-Tetracosane_tissue,"n-alkane, C24",Not Applicable,micrograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+252,n-Tetradecane_sediment,"n-alkane, C14",Not Applicable,micrograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+253,n-Tetradecane_tissue,"n-alkane, C14",Not Applicable,micrograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+254,n-Tetratriacontane_sediment,"n-alkane, C34",Not Applicable,micrograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+255,n-Tetratriacontane_tissue,"n-alkane, C34",Not Applicable,micrograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+256,n-Triacontane_sediment,"n-alkane, C30",Not Applicable,micrograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+257,n-Triacontane_tissue,"n-alkane, C30",Not Applicable,micrograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+258,n-Tricosane_sediment,"n-alkane, C23",Not Applicable,micrograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+259,n-Tricosane_tissue,"n-alkane, C23",Not Applicable,micrograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+260,n-Tridecane_sediment,"n-alkane, C13",Not Applicable,micrograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+261,n-Tridecane_tissue,"n-alkane, C13",Not Applicable,micrograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+262,n-Tritriacontane_sediment,"n-alkane, C33",Not Applicable,micrograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+263,n-Tritriacontane_tissue,"n-alkane, C33",Not Applicable,micrograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+264,n-Undecane_sediment,"n-alkane, C11",Not Applicable,micrograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+265,n-Undecane_tissue,"n-alkane, C11",Not Applicable,micrograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+266,Pb-S,"Lead, total",Pb,micrograms per gram,Sediment,Sample,Sporadic,Geology,-9999.0
+267,Pb-T,"Lead, total",Pb,micrograms per gram,Tissue,Sample,Sporadic,Biota,-9999.0
+95,Be-S,"Beryllium, total",Be,micrograms per gram,Sediment,Sample,Sporadic,Geology,-9999.0
+96,Be-T,"Beryllium, total",Be,micrograms per gram,Tissue,Sample,Sporadic,Biota,-9999.0
+97,Biphenyl_sediment,Biphenyl,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+98,Biphenyl_tissue,Biphenyl,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+99,C1-Chrysenes_sediment,C1-Chrysenes,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+100,C1-Chrysenes_tissue,C1-Chrysenes,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+101,C1-Dibenzothiophenes_sediment,C1-Dibenzothiophenes,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+102,C1-Dibenzothiophenes_tissue,C1-Dibenzothiophenes,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+103,C1-Fluoranthenes-Pyrenes_sediment,C1-Fluoranthenes/Pyrenes,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+104,C1-Fluoranthenes-Pyrenes_tissue,C1-Fluoranthenes/Pyrenes,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+105,C1-Fluorenes_sediment,C1-Fluorene,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+106,C1-Fluorenes_tissue,C1-Fluorene,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+107,C1-Naphthalenes_sediment,C1-Naphthalene,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+108,C1-Naphthalenes_tissue,C1-Naphthalene,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+109,C1-Phenanthrenes-Anthracenes_sediment,C1-Phenanthrene/Anthracene,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+110,C1-Phenanthrenes-Anthracenes_tissue,C1-Phenanthrene/Anthracene,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+111,C23_Tricyclic_Terpane_sediment,C23 Tricyclic Terpane,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+112,C23_Tricyclic_Terpane_tissue,C23 Tricyclic Terpane,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+113,C24_Tetracyclic_Terpane_sediment,C24 Tetracyclic Terpane,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+114,C24_Tetracyclic_Terpane_tissue,C24 Tetracyclic Terpane,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+115,C24_Tricyclic_Terpane_sediment,C24 Tricyclic Terpane ,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+116,C24_Tricyclic_Terpane_tissue,C24 Tricyclic Terpane ,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+117,C25_Tricyclic_Terpane_sediment,C25 Tricyclic Terpane,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+118,C25_Tricyclic_Terpane_tissue,C25 Tricyclic Terpane,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+119,C26_Tricyclic_Terpane-22R_sediment,C26 Tricyclic Terpane-22R,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+120,C26_Tricyclic_Terpane-22R_tissue,C26 Tricyclic Terpane-22R,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+121,C26_Tricyclic_Terpane-22S_sediment,C26 Tricyclic Terpane-22S,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+122,C26_Tricyclic_Terpane-22S_tissue,C26 Tricyclic Terpane-22S,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+123,C28_Tricyclic_Terpane-22R_sediment,C28 Tricyclic Terpane-22R,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+124,C28_Tricyclic_Terpane-22R_tissue,C28 Tricyclic Terpane-22R,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+125,C28_Tricyclic_Terpane-22S_sediment,C28 Tricyclic Terpane-22S,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+126,C28_Tricyclic_Terpane-22S_tissue,C28 Tricyclic Terpane-22S,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+127,C29_Tricyclic_Terpane-22R_sediment,C29 Tricyclic Terpane-22R,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+128,C29_Tricyclic_Terpane-22R_tissue,C29 Tricyclic Terpane-22R,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+129,C29_Tricyclic_Terpane-22S_sediment,C29 Tricyclic Terpane-22S,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+130,C29_Tricyclic_Terpane-22S_tissue,C29 Tricyclic Terpane-22S,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+131,C2-Chrysenes_sediment,C2-Chrysenes,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+132,C2-Chrysenes_tissue,C2-Chrysenes,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+133,C2-Dibenzothiophenes_sediment,C2-Dibenzothiophenes,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+134,C2-Dibenzothiophenes_tissue,C2-Dibenzothiophenes,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+135,C2-Fluoranthenes-Pyrenes_sediment,C2-Fluoranthenes/Pyrenes,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+136,C2-Fluoranthenes-Pyrenes_tissue,C2-Fluoranthenes/Pyrenes,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+137,C2-Fluorenes_sediment,C2-Fluorene,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+138,C2-Fluorenes_tissue,C2-Fluorene,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+139,C2-Naphthalenes_sediment,C2-Naphthalene,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+140,C2-Naphthalenes_tissue,C2-Naphthalene,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+141,C2-Phenanthrenes-Anthracenes_sediment,C2-Phenanthrene/Anthracene,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+142,C2-Phenanthrenes-Anthracenes_tissue,C2-Phenanthrene/Anthracene,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+143,C3-Chrysenes_sediment,C3-Chrysenes,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+144,C3-Chrysenes_tissue,C3-Chrysenes,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+145,C3-Dibenzothiophenes_sediment,C3-Dibenzothiophenes,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+146,C3-Dibenzothiophenes_tissue,C3-Dibenzothiophenes,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+147,C3-Fluoranthenes-Pyrenes_sediment,C3-Fluoranthenes/Pyrenes,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+148,C3-Fluoranthenes-Pyrenes_tissue,C3-Fluoranthenes/Pyrenes,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+149,C3-Fluorenes_sediment,C3-Fluorene,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+150,C3-Fluorenes_tissue,C3-Fluorene,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+151,C3-Naphthalenes_sediment,C3-Naphthalene,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+152,C3-Naphthalenes_tissue,C3-Naphthalene,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+153,C3-Phenanthrenes-Anthracenes_sediment,C3-Phenanthrene/Anthracene,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+154,C3-Phenanthrenes-Anthracenes_tissue,C3-Phenanthrene/Anthracene,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+155,C4-Chrysenes_sediment,C4-Chrysenes,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+156,C4-Chrysenes_tissue,C4-Chrysenes,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+157,C4-Dibenzothiophenes_sediment,C4-Dibenzothiophenes,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+158,C4-Dibenzothiophenes_tissue,C4-Dibenzothiophenes,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+159,C4-Naphthalenes_sediment,C4-Naphthalene,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+160,C4-Naphthalenes_tissue,C4-Naphthalene,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+161,C4-Phenanthrenes-Anthracenes_sediment,C4-Phenanthrene/Anthracene,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+162,C4-Phenanthrenes-Anthracenes_tissue,C4-Phenanthrene/Anthracene,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+1,13bH_17aH-20R-Diacholestane_sediment,"13b(H),17a(H)-20R-Diacholestane",Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+2,13bH_17aH-20R-Diacholestane_tissue,"13b(H),17a(H)-20R-Diacholestane",Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+3,13bH_17aH-20S-Diacholestane_sediment,"13b(H),17a(H)-20S-Diacholestane ",Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+4,13bH_17aH-20S-Diacholestane_tissue,"13b(H),17a(H)-20S-Diacholestane ",Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+5,13bH_17aH-20S-Methyldiacholestane_sediment,"13b(H),17a(H)-20S-Methyldiacholestane",Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+6,13bH_17aH-20S-Methyldiacholestane_tissue,"13b(H),17a(H)-20S-Methyldiacholestane",Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+7,14aH_17aH-20R-Cholestane_sediment,"14a(H),17a(H)-20R-Cholestane",Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+8,14aH_17aH-20R-Cholestane_tissue,"14a(H),17a(H)-20R-Cholestane",Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+9,14aH_17aH-20R-Ethylcholestane_sediment,"14a(H),17a(H)-20R-Ethylcholestane",Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+10,14aH_17aH-20R-Ethylcholestane_tissue,"14a(H),17a(H)-20R-Ethylcholestane",Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+11,14aH_17aH-20R-methylcholestane_sediment,"14a(H),17a(H)-20R-methylcholestane ",Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+12,14aH_17aH-20R-methylcholestane_tissue,"14a(H),17a(H)-20R-methylcholestane ",Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+13,14aH_17aH-20S-Cholestane_sediment,"14a(H),17a(H)-20S-Cholestane",Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+14,14aH_17aH-20S-Cholestane_tissue,"14a(H),17a(H)-20S-Cholestane",Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+15,14aH_17aH-20S-Ethylcholestane_sediment,"14a(H),17a(H)-20S-Ethylcholestane",Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+16,14aH_17aH-20S-Ethylcholestane_tissue,"14a(H),17a(H)-20S-Ethylcholestane",Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+17,14aH_17aH-20S-methylcholestane_sediment,"14a(H),17a(H)-20S-methylcholestane",Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+18,14aH_17aH-20S-methylcholestane_tissue,"14a(H),17a(H)-20S-methylcholestane",Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+19,14bH_17bH-20R-Cholestane_sediment,"14b(H),17b(H)-20R-Cholestane",Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+20,14bH_17bH-20R-Cholestane_tissue,"14b(H),17b(H)-20R-Cholestane",Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+21,14bH_17bH-20R-Ethylcholestane_sediment,"14b(H),17b(H)-20R-Ethylcholestane",Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+22,14bH_17bH-20R-Ethylcholestane_tissue,"14b(H),17b(H)-20R-Ethylcholestane",Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+23,14bH_17bH-20R-Methylcholestane_sediment,"14b(H),17b(H)-20R-Methylcholestane",Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+24,14bH_17bH-20R-Methylcholestane_tissue,"14b(H),17b(H)-20R-Methylcholestane",Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+25,14bH_17bH-20S-Cholestane_sediment,"14b(H),17b(H)-20S-Cholestane",Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+26,14bH_17bH-20S-Cholestane_tissue,"14b(H),17b(H)-20S-Cholestane",Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+27,14bH_17bH-20S-Ethylcholestane_sediment,"14b(H),17b(H)-20S-Ethylcholestane",Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+28,14bH_17bH-20S-Ethylcholestane_tissue,"14b(H),17b(H)-20S-Ethylcholestane",Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+29,14bH_17bH-20S-Methylcholestane_sediment,"14b(H),17b(H)-20S-Methylcholestane",Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+30,14bH_17bH-20S-Methylcholestane_tissue,"14b(H),17b(H)-20S-Methylcholestane",Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+31,17aH_21bH-25-Norhopane_sediment,"17a(H),21b(H)-25-Norhopane",Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+32,17aH_21bH-25-Norhopane_tissue,"17a(H),21b(H)-25-Norhopane",Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+33,17aH_21bH-28_30-Bisnorhopane_sediment,"17a(H),21b(H)-28,30-Bisnorhopane",Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+34,17aH_21bH-28_30-Bisnorhopane_tissue,"17a(H),21b(H)-28,30-Bisnorhopane",Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+35,17aH_21bH-hopane_sediment,"17a(H),21b(H)-hopane",Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+36,17aH_21bH-hopane_tissue,"17a(H),21b(H)-hopane",Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+37,17aH-Diahopane_sediment,17a(H)-Diahopane,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+38,17aH-Diahopane_tissue,17a(H)-Diahopane,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+39,17bH_21aH-hopane-moretane_sediment,"17b(H),21a(H)-hopane (moretane)",Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+40,17bH_21aH-hopane-moretane_tissue,"17b(H),21a(H)-hopane (moretane)",Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+41,18aH_21bH-30-Norneohopane-C29Ts_sediment,"18a(H),21b(H)-30-Norneohopane (C29Ts)",Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+42,18aH_21bH-30-Norneohopane-C29Ts_tissue,"18a(H),21b(H)-30-Norneohopane (C29Ts)",Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+43,18aH-18bH-Oleananes_sediment,18a(H) & 18b(H)-Oleananes,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+44,18aH-18bH-Oleananes_tissue,18a(H) & 18b(H)-Oleananes,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+45,30_31_32_33_34-Pentakishomohopane-22R_sediment,"30,31,32,33,34-Pentakishomohopane-22R",Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+46,30_31_32_33_34-Pentakishomohopane-22R_tissue,"30,31,32,33,34-Pentakishomohopane-22R",Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+47,30_31_32_33_34-Pentakishomohopane-22S_sediment,"30,31,32,33,34-Pentakishomohopane-22S",Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+48,30_31_32_33_34-Pentakishomohopane-22S_tissue,"30,31,32,33,34-Pentakishomohopane-22S",Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+49,30_31_32_33-Tetrakishomohopane-22R_sediment,"30,31,32,33-Tetrakishomohopane-22R",Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+50,30_31_32_33-Tetrakishomohopane-22R_tissue,"30,31,32,33-Tetrakishomohopane-22R",Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+51,30_31_32_33-Tetrakishomohopane-22S_sediment,"30,31,32,33-Tetrakishomohopane-22S",Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+52,30_31_32_33-Tetrakishomohopane-22S_tissue,"30,31,32,33-Tetrakishomohopane-22S",Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+53,30_31_32-Trishomohopane-22R_sediment,"30,31,32-Trishomohopane-22R",Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+54,30_31_32-Trishomohopane-22R_tissue,"30,31,32-Trishomohopane-22R",Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+55,30_31_32-Trishomohopane-22S_sediment,"30,31,32-Trishomohopane-22S",Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+56,30_31_32-Trishomohopane-22S_tissue,"30,31,32-Trishomohopane-22S",Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+57,30_31-Bishomohopane-22R_sediment,"30,31-Bishomohopane-22R",Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+58,30_31-Bishomohopane-22R_tissue,"30,31-Bishomohopane-22R",Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+59,30_31-Bishomohopane-22S_sediment,"30,31-Bishomohopane-22S",Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+60,30_31-Bishomohopane-22S_tissue,"30,31-Bishomohopane-22S",Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+61,30-Homohopane-22R_sediment,30-Homohopane-22R,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+62,30-Homohopane-22R_tissue,30-Homohopane-22R,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+63,30-Homohopane-22S_sediment,30-Homohopane-22S,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+64,30-Homohopane-22S_tissue,30-Homohopane-22S,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+65,30-Norhopane_sediment,30-Norhopane,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+66,30-Norhopane_tissue,30-Norhopane,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+67,30-Normoretane_sediment,30-Normoretane,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+68,30-Normoretane_tissue,30-Normoretane,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+69,Acenaphthene_sediment,Acenaphthene,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+70,Acenaphthene_tissue,Acenaphthene,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+71,Acenaphthylene_sediment,Acenaphthylene,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+72,Acenaphthylene_tissue,Acenaphthylene,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+268,Perylene_sediment,Perylene,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+269,Perylene_tissue,Perylene,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+270,Phenanthrene_sediment,Phenanthrene,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+271,Phenanthrene_tissue,Phenanthrene,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+83,Benzo_a_anthracene_sediment,Benz(a)anthracene,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+84,Benzo_a_anthracene_tissue,Benz(a)anthracene,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+85,Benzo_a_pyrene_sediment,Benzo(a)pyrene,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+86,Benzo_a_pyrene_tissue,Benzo(a)pyrene,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+87,Benzo_b_fluoranthene_sediment,Benzo(b)fluoranthene,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+88,Benzo_b_fluoranthene_tissue,Benzo(b)fluoranthene,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+89,Benzo_e_pyrene_sediment,Benzo(e)pyrene,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+90,Benzo_e_pyrene_tissue,Benzo(e)pyrene,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+91,Benzo_ghi_perylene_sediment,"Benzo(g,h,i)perylene",Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+92,Benzo_ghi_perylene_tissue,"Benzo(g,h,i)perylene",Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+93,Benzo_k_fluoranthene_sediment,Benzo(k)fluoranthene,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+94,Benzo_k_fluoranthene_tissue,Benzo(k)fluoranthene,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+165,Chrysene_sediment,Chrysene,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+166,Chrysene_tissue,Chrysene,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+77,Anthracene_sediment,Anthracene,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+78,Anthracene_tissue,Anthracene,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+172,Dibenz_ah_anthracene_sediment,"Dibenz(a,h)anthracene",Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+173,Dibenz_ah_anthracene_tissue,"Dibenz(a,h)anthracene",Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+174,Dibenzofuran_sediment,Dibenzofuran,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+175,Dibenzofuran_tissue,Dibenzofuran,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+176,Dibenzothiophene_sediment,Dibenzothiophene,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+177,Dibenzothiophene_tissue,Dibenzothiophene,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+196,Naphthalene_sediment,Naphthalene,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+197,Naphthalene_tissue,Naphthalene,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+180,Fluoranthene_sediment,Fluoranthene,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+181,Fluoranthene_tissue,Fluoranthene,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+182,Fluorene_sediment,Fluorene,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+183,Fluorene_tissue,Fluorene,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+188,Indeno_123-cd_pyrene_sediment,"Indeno(1,2,3-cd)pyrene",Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+189,Indeno_123-cd_pyrene_tissue,"Indeno(1,2,3-cd)pyrene",Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+278,Pyrene_sediment,Pyrene,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+279,Pyrene_tissue,Pyrene,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+280,Retene_sediment,Retene,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+281,Retene_tissue,Retene,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+274,Priority_Pollutant_PAH_sediment,Priority Pollutant PAH,Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+275,Priority_Pollutant_PAH_tissue,Priority Pollutant PAH,Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+299,Tm-17aH_21bH-22_29_30-Trisnorhopane_sediment,"Tm-17a(H),21b(H)-22,29,30-Trisnorhopane",Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+300,Tm-17aH_21bH-22_29_30-Trisnorhopane_tissue,"Tm-17a(H),21b(H)-22,29,30-Trisnorhopane",Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+302,Total_PAH_sediment,"Polycyclic aromatic hydrocarbon, total",Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+303,Total_PAH_tissue,"Polycyclic aromatic hydrocarbon, total",Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+304,Ts-18aH_21bH-22_29_30-Trisnorhopane_sediment,"Ts-18a(H),21b(H)-22,29,30-Trisnorhopane",Not Applicable,nanograms per gram,Sediment,Sample,Sporadic,Chemistry,-9999.0
+305,Ts-18aH_21bH-22_29_30-Trisnorhopane_tissue,"Ts-18a(H),21b(H)-22,29,30-Trisnorhopane",Not Applicable,nanograms per gram,Tissue,Sample,Sporadic,Chemistry,-9999.0
+371,Abundance_1000m2,Abundance,Not Applicable,number of organisms per 1000 square meter,Benthic zone,Derived Value,Sporadic,Biota,-9999.0
+367,Pressure-ctd,"Pressure, gauge",Not Applicable,decibar,Surface Water,Field Observation,Sporadic,Water Quality,-9999.0
+372,Biomass_g1000m2,Biomass,Not Applicable,grams per 1000 square meter,Benthic zone,Derived Value,Sporadic,Biota,-9999.0

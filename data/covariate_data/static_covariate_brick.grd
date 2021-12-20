@@ -1,0 +1,25 @@
+[general]
+creator=R package 'raster'
+created=2021-11-15 16:00:50
+[georeference]
+nrows=931
+ncols=1240
+xmin=-685529.093277222
+ymin=1803103.66489856
+xmax=554470.906722778
+ymax=2734103.66489856
+projection=+proj=aea +lat_0=50 +lon_0=-154 +lat_1=55 +lat_2=65 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs
+[data]
+datatype=FLT4S
+byteorder=little
+nbands=3
+bandorder=BIL
+minvalue=-4164.16162109375:-1246:0
+maxvalue=6:1801:35.0303573608398
+nodatavalue=-3.4e+38
+[legend]
+legendtype=
+values=
+color=
+[description]
+layername=depth:bpi_1km:slope
