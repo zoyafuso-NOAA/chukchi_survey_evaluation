@@ -35,7 +35,7 @@ arctic_lat <- ncvar_get(arctic_grid, "lat_rho")
 ##################################################
 ####   Import locations of otter trawls
 ##################################################
-otter_df <- read.csv(file = paste0("data/fish_data/otter_trawl/",
+otter_df <- read.csv(file = paste0("data/fish_data/AK_BTS_OtterAndBeam/",
                                    "AK_BTS_Arctic_processed_wide.csv"))
 
 ##################################################
@@ -174,10 +174,11 @@ names(temp_brick)[temp_idx] <- names(v_brick)[temp_idx] <- names(u_brick)[temp_i
 # }
 
 ##################################################
-####   Save
+####   Write Rasters
 ##################################################
-save(list = "static_covariate_brick", 
-     file = "data/covariate_data/static_covariate_data.RData")
+for (ifile in  c("static_covariate_brick", 
+                 "temp_brick", "salt_brick", "u_brick", "v_brick")) {
+  writeRaster(x = get(ifile), 
+              filename = paste0("data/covariate_data/", ifile, ".grd"))
+}
 
-save(list = c("temp_brick", "salt_brick", "u_brick", "v_brick"),
-     file = "data/covariate_data/dynamic_covariate_data.RData")
