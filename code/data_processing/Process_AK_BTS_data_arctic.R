@@ -97,6 +97,8 @@ dat <- dplyr::left_join(x = dat, y = catch) %>%
                 !is.na(CPUE_KG),
                 !is.na(CPUE_N))
 
+dat$AREA_SWEPT <- dat$DISTANCE_FISHED * dat$NET_WIDTH * 0.001
+
 ##################################################
 #### Calculate station location as the mean of the start and ending points
 ##################################################
@@ -111,7 +113,8 @@ dat <- subset(dat,
                          STATIONID, MEAN_LONGITUDE, MEAN_LATITUDE,
                          DATE, MONTH, DAY, YEAR,
                          GEAR_DEPTH, GEAR_TEMPERATURE,
-                         COMMON_NAME, SPECIES_NAME, CPUE_KG, CPUE_N))
+                         COMMON_NAME, SPECIES_NAME, CPUE_KG, CPUE_N, 
+                         AREA_SWEPT))
 
 ##################################################
 #### Create a wide df with zeros filled for stations where species not observed
@@ -120,7 +123,8 @@ dat$STATION_ID <- with(dat, paste(MEAN_LONGITUDE, MEAN_LATITUDE))
 
 cpue_wide <- tidyr::spread(
   data = dat[, c("YEAR", "MONTH", "DAY", "DATE",
-                 "STATION_ID", "CPUE_KG", "COMMON_NAME", "GEAR_CAT")], 
+                 "STATION_ID", "CPUE_KG", "AREA_SWEPT",
+                 "COMMON_NAME", "GEAR_CAT")], 
   key = COMMON_NAME, 
   value = "CPUE_KG", 
   fill = 0)
@@ -135,7 +139,7 @@ station_data <- dat[!duplicated(dat$STATION_ID),
                     c("STATION_ID", "SURVEY_NAME", 
                       "DATE", "YEAR", "MONTH", "DAY", 
                       "GEAR_CAT", "GEAR_DEPTH", "GEAR_TEMPERATURE",  
-                      "MEAN_LONGITUDE", "MEAN_LATITUDE") ]
+                      "MEAN_LONGITUDE", "MEAN_LATITUDE", "AREA_SWEPT") ]
 
 station_data <- station_data[order(station_data$GEAR_CAT,
                                    station_data$STATION_ID), ]
@@ -149,13 +153,14 @@ data_wide <- cbind(station_data,
 data_long <- reshape::melt(
   data = data_wide[, c("YEAR", "MONTH", "DAY", "DATE", "GEAR_CAT", 
                        "MEAN_LONGITUDE", "MEAN_LATITUDE", 
-                       "GEAR_DEPTH", "GEAR_TEMPERATURE",
+                       "GEAR_DEPTH", "GEAR_TEMPERATURE", "AREA_SWEPT",
                        unique(dat$COMMON_NAME))],
   measure.vars = unique(dat$COMMON_NAME),
   variable_name = "COMMON_NAME")
 
 names(data_long) <- c("year", "month", "day", "date", "gear", "lon", "lat", 
-                      "bot_depth", "bot_temp", "common_name", "cpue_kg_km2")
+                      "bot_depth", "bot_temp", "actual_area_swept",
+                      "common_name", "cpue_kg_km2")
 data_long$area_swept_km2 <- 1
 
 ##################################################
