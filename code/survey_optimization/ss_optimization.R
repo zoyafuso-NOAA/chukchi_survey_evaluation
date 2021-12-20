@@ -27,13 +27,13 @@ library(foreach)
 library(parallel)
 library(doParallel)
 
-cl <- parallel::makeCluster(parallel::detectCores() - 2)
+cl <- parallel::makeCluster(parallel::detectCores() - 1)
 doParallel::registerDoParallel(cl)
 
 ##################################################
 ####  Load input data
 ##################################################
-load("data/survey_opt_data/optimization_data_otter.RData")
+load("data/survey_opt_data/optimization_data.RData")
 source("modified_functions/plot_survey_opt_map.R")
 source("modified_functions/calc_expected_CV.R")
 curr_dir <- getwd()
@@ -41,8 +41,19 @@ curr_dir <- getwd()
 ##################################################
 ####  Set up data input for species index ispp
 ##################################################
-foreach::foreach(ispp = 1:n_spp) %dopar% {
+settings <- data.frame(spp_idx = c(1:n_spp_beam, 1:n_spp_otter),
+                       gear = c(rep("beam", n_spp_beam), 
+                                rep("otter", n_spp_otter)) )
+
+foreach::foreach(irow = 1:nrow(settings), .export = ls()) %dopar% {
   
+  ispp <- settings$spp_idx[irow]
+  igear <- settings$gear[irow]
+  frame_df <- get(paste0("frame_df_", igear))
+  
+  ##################################################
+  ####  Subset density data for species ispp
+  ##################################################
   ss_df <- subset(x = frame_df, 
                   select = c("domainvalue", "id", "WEIGHT", "X1", "X2", 
                              paste0("Y", ispp), paste0("Y", ispp, "_SQ_SUM") ))
@@ -76,8 +87,13 @@ foreach::foreach(ispp = 1:n_spp) %dopar% {
   ##################################################
   while (temp_n < 100) {
     
-    result_dir <- paste0(curr_dir, "/results/otter_trawl/survey_opt/SS/",
-                         spp_list[ispp], "/Run_", run, "/")
+    result_dir <- paste0(curr_dir, "/results/", 
+                         ifelse(test = igear == "otter",
+                                yes = "otter_trawl",
+                                no = "beam_trawl_2012_2019"),
+                                "/survey_opt/SS/",
+                         get(paste0("spp_list_", igear))[ispp], 
+                         "/Run_", run, "/")
     
     if (!dir.exists(result_dir)) dir.create(result_dir, recursive = TRUE)
     setwd(result_dir)
@@ -105,6 +121,7 @@ foreach::foreach(ispp = 1:n_spp) %dopar% {
                                                solution$aggr_strata,
                                                progress=FALSE)
     sum_stats$stratum_id <- 1:nrow(sum_stats)
+    sum_stats$Population <- sum_stats$Population / unique(frame_df$WEIGHT)
     sum_stats$wh <- sum_stats$Allocation / sum_stats$Population
     sum_stats$Wh <- sum_stats$Population / nrow(frame_df)
     sum_stats <- cbind(sum_stats,
@@ -132,13 +149,16 @@ foreach::foreach(ispp = 1:n_spp) %dopar% {
     ##################################################
     ####   Reduce CV and rerun again
     ##################################################
+    temp_n <- sum(sum_stats$Allocation)
+    run <- run + 1
+    
     cv <- list()
-    cv[["CV1"]] <- as.numeric(calc_expected_CV(sum_stats)) * 0.9
+    cv_reduce <- ifelse(temp_n < 50, yes = 0.75, no = 0.9)
+    
+    cv[["CV1"]] <- as.numeric(calc_expected_CV(sum_stats)) * cv_reduce
     cv[["DOM"]] <- 1
     cv[["domainvalue"]] <- 1
     cv <- as.data.frame(cv)
-    
-    temp_n <- sum(sum_stats$Allocation)
-    run <- run + 1
+
   }
 }
