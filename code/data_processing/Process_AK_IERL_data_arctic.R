@@ -137,6 +137,8 @@ ierl_data_long <- subset(x = data_long,
 names(ierl_data_long)[8] <- "catch_kg"
 ierl_data_long$gear <- "beam"
 
+ierl_data_long$cpue_kg_km2 <- with(ierl_data_long, catch_kg / area_swept_km2)
+
 ##################################################
 ####  Save
 ##################################################

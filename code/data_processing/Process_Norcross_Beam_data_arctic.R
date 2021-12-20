@@ -22,48 +22,55 @@ spp_list <- c("Arctic cod" = "Boreogadus saida",
               "Alaska plaice" = "Pleuronectes quadrituberculatus")
 
 ##################################################
-####  Import cpue data
+####  Import CPUE data
 ##################################################
 beam_norcross <- 
   as.data.frame(read_xlsx(paste0("data/fish_data/Norcross_Beam/",
                                  "2004-09 PSBT fish data Chukchi",
                                  "_for SOAR_18Mar14.xlsx"), 
-                          sheet = "static CATCH per haul", 
-                          skip = 3))
+                          sheet = "CATCH 2004-2009 hauls "))
 
 ##################################################
-####  Some manipulations:
-####   1) some of the longitudes have the wrong sign
-####   2) years as extracted out of the cruise name
+####  Simplify field names
 ##################################################
-beam_norcross$lon <- ifelse(beam_norcross$LongitudeStart < 0, 
-                            beam_norcross$LongitudeStart, 
-                            -1 * beam_norcross$LongitudeStart) 
-beam_norcross$lat <- beam_norcross$LatitudeStart
+beam_norcross <- subset(x = beam_norcross, 
+                        select = c(HaulUniqueCDF, LatitudeStart, LongitudeStart,
+                                   TempBottomC, SalBottom, DepthAvgM, Gear, 
+                                   FishTaxon, Gms_per_1000sqM))
+names(beam_norcross) <- c("haul_id", "lat", "lon", "bot_temp", 
+                          "bot_salt", "bot_depth", "gear", "species_name", 
+                          "cpue_kg_km2")
 
-beam_norcross$year <- as.numeric(substr(x = beam_norcross$HaulUniqueCDF, 
+##################################################
+####  Subset for species in spp_list and add common names
+##################################################
+beam_norcross <- subset(x = beam_norcross, subset = species_name %in% spp_list)
+beam_norcross$common_name <- 
+  names(spp_list)[match(beam_norcross$species_name, spp_list)]
+
+##################################################
+####  Additional manipulations:
+####    add gear information, simplify names of covariates, add year
+##################################################
+beam_norcross$gear <- "beam"
+names(beam_norcross)[4:6] <- paste0("bot_", c("temp", "salt", "depth"))
+
+beam_norcross$year <- as.numeric(substr(x = beam_norcross$haul_id, 
                                         start = 1, stop = 4))
 
 ##################################################
-####   "Lengthen" the dataset 
+####  Spread dataframe to include zeros and then lengthen the dataframe
 ##################################################
-beam_norcross_wide <- beam_norcross[, c("year", "lat", "lon", 
-                                        "TempBottomC", "SalBottom", "DepthAvgM", 
-                                        spp_list)]
+beam_norcross_wide <- tidyr::spread(data = subset(beam_norcross, 
+                                                  select = -species_name), 
+                                    value = "cpue_kg_km2", 
+                                    key = "common_name",
+                                    fill = 0)
 
 beam_norcross_long <- reshape::melt(data = beam_norcross_wide, 
-                                    measure.vars = spp_list,
-                                    variable_name = "species_name")
+                                    measure.vars = names(spp_list))
 
-##################################################
-####  Additional manipulations: add common names and a field to denote that 
-####  this is beam data
-##################################################
-beam_norcross_long$common_name <- 
-  names(spp_list)[match(beam_norcross_long$species_name, spp_list)]
-beam_norcross_long$gear <- "beam"
-names(beam_norcross_long)[c(4:6, 8)] <- 
-  c(paste0("bot_", c("temp", "salt", "depth")), "catch_kg")
+names(beam_norcross_long)[9:10] <- c("common_name", "cpue_kg_km2")
 
 ##################################################
 ####  Save
