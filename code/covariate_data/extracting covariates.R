@@ -28,13 +28,18 @@ chukchi_grid <-
 ##################################################
 ####   Import Static and Dynamic Covariates
 ##################################################
-load("data/covariate_data/static_covariate_data.RData")
-load("data/covariate_data/dynamic_covariate_data.RData")
+for (ifile in  c("static_covariate_brick", 
+                 "temp_brick", "salt_brick", "u_brick", "v_brick")) {
+  assign(x = ifile, 
+         value = brick(x = paste0("data/covariate_data/", ifile, ".grd")))
+}
+
 
 ##################################################
 ####   Import Otter Trawl Data
 ##################################################
-otter <- read.csv("data/fish_data/otter_trawl/AK_BTS_Arctic_processed_wide.csv")
+otter <- read.csv(paste0("data/fish_data/AK_BTS_OtterAndBeam/",
+                         "AK_BTS_Arctic_processed_wide.csv"))
 
 ##################################################
 ####   Convert chukchi grid cells (chukchi_pts_aea) and the station locations
@@ -75,7 +80,6 @@ otter_pts_aea@data[, names(static_covariate_brick)] <-
 for (ivar in c("temp", "u", "v", "salt")) {
   for (iyear in c(1990, 2012)) {
     temp_ras <- get(paste0(ivar, "_brick"))[[paste0("X", iyear, "_Aug_Avg")]]
-    temp_ras@file@name <- "C:\\Users\\zack.oyafuso\\AppData\\Local\\Temp\\RtmpY1Kpvf\\raster\\r_tmp_2021-11-06_234240_9552_43157.gri"
     chukchi_pts_aea@data[, paste0(ivar, "_", iyear)] <-
       raster::extract(x = temp_ras,
                       y = chukchi_pts_aea)
@@ -101,7 +105,7 @@ missing_idx_matrix <- matrix(data = FALSE,
                              length(names(static_covariate_brick)),
                              dimnames = list(NULL, names(static_covariate_brick)))
 
-for (icovar in names(static_covariate_brick)) {
+for (icovar in names(static_covariate_brick)[1]) {
   r <- static_covariate_brick[[icovar]] #example raster set
   missing_idx <- is.na(chukchi_pts_aea@data[, icovar])
   sampled = apply(X = chukchi_pts_aea@data[missing_idx, c("E_km", "N_km")] ,
@@ -160,8 +164,7 @@ for (ivar in c("temp", "u", "v", "salt")) {
 ##################################################
 ####   Combine the station and grid data
 ##################################################
-wide_covar_df <- cbind(Catch_KG = 0,
-                       type = "grid", 
+wide_covar_df <- cbind(type = "grid", 
                        chukchi_pts_aea@data[, c("Lon", "Lat", "depth", 
                                                 paste0(rep(c("temp", "salt", 
                                                              "u", "v"), 
@@ -170,20 +173,19 @@ wide_covar_df <- cbind(Catch_KG = 0,
                                                        rep(c(1990, 2012), 
                                                            times = 4)))])
 
-temp_otter <- cbind(Catch_KG = 0,
-                    type = "station",
+temp_otter <- cbind(type = "station",
                     otter_pts_aea@data[, c("MEAN_LONGITUDE", "MEAN_LATITUDE",
                                            "YEAR",
                                            "depth", "temp", "salt", "u", "v")])
-names(temp_otter)[3:5] <- c("Lon", "Lat", "year")
+names(temp_otter)[2:4] <- c("Lon", "Lat", "year")
 
 covar_df <- data.frame()
 for (iyear in c(1990, 2012)) {
   temp_df <- cbind(year = iyear,
-                   wide_covar_df[, c("type", "Catch_KG", "Lon", "Lat", "depth",
+                   wide_covar_df[, c("type", "Lon", "Lat", "depth",
                                      paste0(c("temp", "salt", "u", "v"), 
                                             "_", iyear))])
-  names(temp_df)[7:10] <- c("temp", "salt", "u", "v")
+  names(temp_df)[6:9] <- c("temp", "salt", "u", "v")
   covar_df <- rbind(covar_df, temp_df)
 }
 covar_df <- rbind(covar_df, temp_otter[, names(covar_df)])
