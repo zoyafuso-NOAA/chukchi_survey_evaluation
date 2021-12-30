@@ -33,7 +33,7 @@ plot_survey_opt_map <- function( file_name,
   ## Plot solution
   strata_colors <- colorRampPalette(
     RColorBrewer::brewer.pal(n = 11,
-                             name = "Paired"))(length(unique(plot_solution)) )
+                             name = "Paired"))(length(unique(sol_by_cell)) )
   
   if (any(sol_by_cell == 0)) strata_colors <- c("black", strata_colors)
   
