@@ -24,7 +24,7 @@ AKland <- rgdal::readOGR("data/spatial_data/land_shapefiles/AKland.shp")
 aea_crs <- raster::crs(AKland)
 latlon_crs <- sp::CRS("+proj=longlat +datum=WGS84")
 n_cells <- nrow(chukchi_grid)
-n_iters <- 500
+n_iters <- 1000
 
 ##################################################
 #### Calculate minimum distance to land for each grid point
@@ -91,9 +91,7 @@ for (igear in c("otter", "beam")) {
   
   frame_df <- get(paste0("frame_df_", igear))
   frame_df$WEIGHT <- length(years)
-  idir <- ifelse(test = igear == "otter", 
-                 yes = "otter_trawl/vast_fits/", 
-                 no = "beam_trawl_2012_2019/vast_fits/")
+  idir <- paste0("chukchi_", igear, "/vast_fits/")
 
   
   for (ispp in 1:n_spp) {
