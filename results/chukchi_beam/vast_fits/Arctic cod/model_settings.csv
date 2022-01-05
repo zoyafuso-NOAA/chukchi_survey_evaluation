@@ -1,0 +1,17 @@
+"region","gear","common_name","Omega1","Epsilon1","Omega2","Epsilon2","status","max_grad","rrmse","aic"
+"chukchi","beam","Arctic cod",0,0,0,0,"confirm_gradient",6.75569891860207e-11,1.571,1421.11050029094
+"chukchi","beam","Arctic cod",1,0,0,0,"confirm_gradient",1.51136270165608e-10,1.373,1407.46773890332
+"chukchi","beam","Arctic cod",0,1,0,0,"confirm_gradient",1.80206072286637e-10,1.264,1411.16339575866
+"chukchi","beam","Arctic cod",1,1,0,0,"confirm_gradient",2.52600459660357e-07,1.235,1405.59912020233
+"chukchi","beam","Arctic cod",0,0,1,0,"confirm_gradient",5.16133866310661,1.422,1419.78770696565
+"chukchi","beam","Arctic cod",1,0,1,0,"confirm_gradient",3.49581160019596e-07,1.36,1406.20217184528
+"chukchi","beam","Arctic cod",0,1,1,0,"confirm_gradient",5.71708307352567,1.236,1413.40236115951
+"chukchi","beam","Arctic cod",1,1,1,0,"confirm_gradient",3.19018105010009,1.327,1418.85240058811
+"chukchi","beam","Arctic cod",0,0,0,1,"confirm_gradient",2.55899522917232,1.186,1418.38226653722
+"chukchi","beam","Arctic cod",1,0,0,1,"confirm_gradient",1.74792872624252,1.007,1404.8971678349
+"chukchi","beam","Arctic cod",0,1,0,1,"confirm_gradient",1.88426587198903,1.066,1412.63026834885
+"chukchi","beam","Arctic cod",1,1,0,1,"confirm_gradient",1.99494209254048,1.002,1406.49562446554
+"chukchi","beam","Arctic cod",0,0,1,1,NA,NA,NA,NA
+"chukchi","beam","Arctic cod",1,0,1,1,NA,NA,NA,NA
+"chukchi","beam","Arctic cod",0,1,1,1,NA,NA,NA,NA
+"chukchi","beam","Arctic cod",1,1,1,1,"confirm_gradient",2.3244991176341e-07,1.246,1408.11638481395

@@ -1,0 +1,17 @@
+"region","gear","common_name","Omega1","Epsilon1","Omega2","Epsilon2","status","max_grad","rrmse","aic"
+"chukchi","otter","Alaska plaice",0,0,0,0,"confirm_gradient",9.68312412777082e-11,3.726,282.705964648666
+"chukchi","otter","Alaska plaice",1,0,0,0,"confirm_gradient",2.19415374758114e-09,2.28,253.640410511722
+"chukchi","otter","Alaska plaice",0,1,0,0,"confirm_gradient",7.67761321185390e-09,2.019,257.950732232537
+"chukchi","otter","Alaska plaice",1,1,0,0,"confirm_gradient",1.72239289497611e-09,2.28,255.640410507374
+"chukchi","otter","Alaska plaice",0,0,1,0,"confirm_gradient",1.11238346083009e-07,3.574,286.862871597932
+"chukchi","otter","Alaska plaice",1,0,1,0,NA,NA,NA,NA
+"chukchi","otter","Alaska plaice",0,1,1,0,NA,NA,NA,NA
+"chukchi","otter","Alaska plaice",1,1,1,0,"confirm_gradient",1.66135691509694e-06,2.28,259.640410529119
+"chukchi","otter","Alaska plaice",0,0,0,1,"confirm_gradient",8.28825952314816e-09,3.603,286.159453079341
+"chukchi","otter","Alaska plaice",1,0,0,1,"confirm_gradient",1.98596694644948e-12,2.28,257.640410502241
+"chukchi","otter","Alaska plaice",0,1,0,1,NA,NA,NA,NA
+"chukchi","otter","Alaska plaice",1,1,0,1,NA,NA,NA,NA
+"chukchi","otter","Alaska plaice",0,0,1,1,"confirm_gradient",2.53879273159896e-09,3.603,288.159453079505
+"chukchi","otter","Alaska plaice",1,0,1,1,NA,NA,NA,NA
+"chukchi","otter","Alaska plaice",0,1,1,1,NA,NA,NA,NA
+"chukchi","otter","Alaska plaice",1,1,1,1,"confirm_gradient",2.16934726489213e-07,2.28,261.640410503111

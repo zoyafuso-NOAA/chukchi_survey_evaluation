@@ -1,0 +1,17 @@
+"region","gear","common_name","Omega1","Epsilon1","Omega2","Epsilon2","status","max_grad","rrmse","aic"
+"chukchi","beam","Bering flounder",0,0,0,0,"confirm_gradient",4.23519141413044e-12,2.855,1054.30671625905
+"chukchi","beam","Bering flounder",1,0,0,0,"confirm_gradient",4.53978312719983e-08,2.117,1032.48880848777
+"chukchi","beam","Bering flounder",0,1,0,0,"confirm_gradient",1.2053588127614e-09,2.547,1054.76629056304
+"chukchi","beam","Bering flounder",1,1,0,0,"confirm_gradient",3.75193298651766e-09,2.117,1034.48880849961
+"chukchi","beam","Bering flounder",0,0,1,0,"confirm_gradient",2.3774196500348e-08,2.516,1028.00396960645
+"chukchi","beam","Bering flounder",1,0,1,0,"confirm_gradient",8.53085775354145e-08,2.12,1021.04173906837
+"chukchi","beam","Bering flounder",0,1,1,0,"confirm_gradient",2.961104916821e-09,2.4,1031.05400087995
+"chukchi","beam","Bering flounder",1,1,1,0,"confirm_gradient",3.33821859044292e-12,2.12,1023.04173916379
+"chukchi","beam","Bering flounder",0,0,0,1,"confirm_gradient",2.357625206173e-11,2.495,1040.57770390854
+"chukchi","beam","Bering flounder",1,0,0,1,NA,NA,NA,NA
+"chukchi","beam","Bering flounder",0,1,0,1,"confirm_gradient",2.59910553607312e-07,2.495,1044.5777039242
+"chukchi","beam","Bering flounder",1,1,0,1,NA,NA,NA,NA
+"chukchi","beam","Bering flounder",0,0,1,1,"confirm_gradient",6.12399020383236e-12,2.502,1029.9550068067
+"chukchi","beam","Bering flounder",1,0,1,1,"confirm_gradient",2.54934406918039e-11,2.09,1023.00118264204
+"chukchi","beam","Bering flounder",0,1,1,1,NA,NA,NA,NA
+"chukchi","beam","Bering flounder",1,1,1,1,"confirm_gradient",1.55466682416616e-07,2.09,1025.00118264209

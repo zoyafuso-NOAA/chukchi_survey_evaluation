@@ -1,0 +1,17 @@
+"region","gear","common_name","Omega1","Epsilon1","Omega2","Epsilon2","status","max_grad","rrmse","aic"
+"chukchi","otter","snow crab",0,0,0,0,"confirm_gradient",3.65880127812568e-12,2.355,2005.58486394284
+"chukchi","otter","snow crab",1,0,0,0,"confirm_gradient",5.80589188114988e-08,1.514,1902.93980759415
+"chukchi","otter","snow crab",0,1,0,0,"confirm_gradient",9.5347783002353e-09,0.905,1888.64576807767
+"chukchi","otter","snow crab",1,1,0,0,"confirm_gradient",1.37493429974711e-08,0.904,1886.87450299943
+"chukchi","otter","snow crab",0,0,1,0,"confirm_gradient",1.01715991185358e-07,1.566,1905.69103454806
+"chukchi","otter","snow crab",1,0,1,0,NA,NA,NA,NA
+"chukchi","otter","snow crab",0,1,1,0,"confirm_gradient",3.57702685249706e-08,0.87,1885.67225112601
+"chukchi","otter","snow crab",1,1,1,0,NA,NA,NA,NA
+"chukchi","otter","snow crab",0,0,0,1,"confirm_gradient",2.77595724185176e-11,1.1,1891.08464382001
+"chukchi","otter","snow crab",1,0,0,1,"confirm_gradient",35.3270548765142,0.624,1879.8504713783
+"chukchi","otter","snow crab",0,1,0,1,NA,NA,NA,NA
+"chukchi","otter","snow crab",1,1,0,1,NA,NA,NA,NA
+"chukchi","otter","snow crab",0,0,1,1,"confirm_gradient",3.60948457789334e-08,1.072,1887.94559629882
+"chukchi","otter","snow crab",1,0,1,1,NA,NA,NA,NA
+"chukchi","otter","snow crab",0,1,1,1,NA,NA,NA,NA
+"chukchi","otter","snow crab",1,1,1,1,NA,NA,NA,NA

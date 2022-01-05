@@ -1,0 +1,17 @@
+"region","gear","common_name","Omega1","Epsilon1","Omega2","Epsilon2","status","max_grad","rrmse","aic"
+"chukchi","otter","saffron cod",0,0,0,0,"confirm_gradient",3.05339031444838e-10,5.413,729.908735838006
+"chukchi","otter","saffron cod",1,0,0,0,"confirm_gradient",2.47142373233089e-08,2.374,641.873318207101
+"chukchi","otter","saffron cod",0,1,0,0,"confirm_gradient",2.82216916502875e-09,1.605,592.663045197078
+"chukchi","otter","saffron cod",1,1,0,0,"confirm_gradient",1.30420447774782e-08,1.508,593.765910473379
+"chukchi","otter","saffron cod",0,0,1,0,"confirm_gradient",1.57702664260739e-08,4.592,641.343845120577
+"chukchi","otter","saffron cod",1,0,1,0,"confirm_gradient",1.0375214354319e-08,3.373,604.366058791124
+"chukchi","otter","saffron cod",0,1,1,0,"confirm_gradient",6.29370333626866e-10,2.165,590.745735484252
+"chukchi","otter","saffron cod",1,1,1,0,"confirm_gradient",4.93808656187866e-08,2.142,592.581922986952
+"chukchi","otter","saffron cod",0,0,0,1,"confirm_gradient",1.51826895500307e-09,4.281,630.674394236772
+"chukchi","otter","saffron cod",1,0,0,1,"confirm_gradient",2.56589482994229e-08,2.674,593.625440623018
+"chukchi","otter","saffron cod",0,1,0,1,"confirm_gradient",2.02914351987715e-10,2.229,593.039736109837
+"chukchi","otter","saffron cod",1,1,0,1,"confirm_gradient",1.03166937215349e-08,2.255,594.181315336165
+"chukchi","otter","saffron cod",0,0,1,1,"confirm_gradient",6.06448224971246e-11,4.3,629.641683742466
+"chukchi","otter","saffron cod",1,0,1,1,"confirm_gradient",6.85629331087512e-10,2.756,593.911930921069
+"chukchi","otter","saffron cod",0,1,1,1,"confirm_gradient",9.18435233421278e-09,2.183,591.176083142193
+"chukchi","otter","saffron cod",1,1,1,1,"confirm_gradient",5.46187211014626e-08,2.191,592.806736772764

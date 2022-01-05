@@ -1,0 +1,17 @@
+"region","gear","common_name","Omega1","Epsilon1","Omega2","Epsilon2","status","max_grad","rrmse","aic"
+"chukchi","beam","snow crab",0,0,0,0,"confirm_gradient",1.74059967190351e-10,2.911,2146.46068025376
+"chukchi","beam","snow crab",1,0,0,0,"confirm_gradient",1.6038163241916e-08,2.475,2125.30930574655
+"chukchi","beam","snow crab",0,1,0,0,"confirm_gradient",1.36687363649912e-08,2.3,2120.36845455556
+"chukchi","beam","snow crab",1,1,0,0,"confirm_gradient",1.27763616575294e-07,2.247,2114.7120957001
+"chukchi","beam","snow crab",0,0,1,0,"confirm_gradient",4.09100264775475e-09,2.367,2108.10901464872
+"chukchi","beam","snow crab",1,0,1,0,"confirm_gradient",2.29982677346641e-08,2.322,2110.5348163728
+"chukchi","beam","snow crab",0,1,1,0,"confirm_gradient",8.872680834493e-08,2.147,2103.89759550036
+"chukchi","beam","snow crab",1,1,1,0,"confirm_gradient",6.20538109785684e-09,2.146,2105.80469731651
+"chukchi","beam","snow crab",0,0,0,1,"confirm_gradient",2.12965156620726e-08,2.22,2107.01975164911
+"chukchi","beam","snow crab",1,0,0,1,"confirm_gradient",7.7233748285721e-09,2.151,2108.01583586552
+"chukchi","beam","snow crab",0,1,0,1,"confirm_gradient",2.64688120310552e-08,2.149,2108.46746374432
+"chukchi","beam","snow crab",1,1,0,1,"confirm_gradient",6.72657529676712e-09,2.14,2109.34623722203
+"chukchi","beam","snow crab",0,0,1,1,"confirm_gradient",1.05392167881746e-07,2.162,2100.98844971225
+"chukchi","beam","snow crab",1,0,1,1,"confirm_gradient",4.65722642672972e-08,2.107,2103.49625151257
+"chukchi","beam","snow crab",0,1,1,1,"confirm_gradient",2.96955171563695e-09,2.084,2102.52651065004
+"chukchi","beam","snow crab",1,1,1,1,"confirm_gradient",1.3116734365326e-08,2.08,2104.41241470007

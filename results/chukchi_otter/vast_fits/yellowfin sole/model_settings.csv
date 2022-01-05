@@ -1,0 +1,17 @@
+"region","gear","common_name","Omega1","Epsilon1","Omega2","Epsilon2","status","max_grad","rrmse","aic"
+"chukchi","otter","yellowfin sole",0,0,0,0,"confirm_gradient",9.97720135624563e-11,4.134,342.181709694122
+"chukchi","otter","yellowfin sole",1,0,0,0,"confirm_gradient",3.57237053653925e-09,2.121,308.05612207145
+"chukchi","otter","yellowfin sole",0,1,0,0,"confirm_gradient",1.16681198036872e-08,1.854,314.515137417067
+"chukchi","otter","yellowfin sole",1,1,0,0,"confirm_gradient",2.29944042473562e-07,2.121,310.056122061767
+"chukchi","otter","yellowfin sole",0,0,1,0,"confirm_gradient",2.73419695426269e-08,3.844,346.200017162844
+"chukchi","otter","yellowfin sole",1,0,1,0,"confirm_gradient",7.08090795741088,0.892,315.158092108767
+"chukchi","otter","yellowfin sole",0,1,1,0,NA,NA,NA,NA
+"chukchi","otter","yellowfin sole",1,1,1,0,"confirm_gradient",7.08289622661344,0.892,317.159198286739
+"chukchi","otter","yellowfin sole",0,0,0,1,NA,NA,NA,NA
+"chukchi","otter","yellowfin sole",1,0,0,1,NA,NA,NA,NA
+"chukchi","otter","yellowfin sole",0,1,0,1,"confirm_gradient",2.7901388260932,0.157,315.547879324389
+"chukchi","otter","yellowfin sole",1,1,0,1,"confirm_gradient",9.34745679661772e-07,2.121,314.056122062022
+"chukchi","otter","yellowfin sole",0,0,1,1,"confirm_gradient",1.40028205281029e-08,3.844,348.200017085837
+"chukchi","otter","yellowfin sole",1,0,1,1,NA,NA,NA,NA
+"chukchi","otter","yellowfin sole",0,1,1,1,NA,NA,NA,NA
+"chukchi","otter","yellowfin sole",1,1,1,1,NA,NA,NA,NA
