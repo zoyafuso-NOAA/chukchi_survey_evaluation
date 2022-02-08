@@ -14,6 +14,7 @@ library(raster)
 library(RColorBrewer)
 library(gap)
 library(plotrix)
+library(VAST)
 
 ##################################################
 #### Import Data and Constants
@@ -23,6 +24,7 @@ AK_land <- rgdal::readOGR("data/spatial_data/land_shapefiles/AKland.shp")
 cropped_extent <- extent(grid_pts)
 cropped_extent[2] <- cropped_extent[2] + 10000
 ak_land_cropped <- raster::crop(x = AK_land, y = cropped_extent)
+species <- read.csv("results/good_species.csv")
 
 ##################################################
 #### Synthesize density predictions for each gear and species
@@ -36,9 +38,8 @@ for (igear in c("otter", "beam")) {
                                     year = c(2012, 2017, 2019)))[[igear]]
   
   ## Species that gear sampled
-  species <- list.dirs(paste0("results/chukchi_", igear, "/vast_fits/"), 
-                       full.names = FALSE, 
-                       recursive = FALSE)
+  species <- subset(x = read.csv("results/good_species.csv"),
+                    subset = gear == igear)$taxon
   
   ## Temporary result object
   ms_dens <- array(data = NA,
@@ -64,32 +65,31 @@ for (igear in c("otter", "beam")) {
 col_otter <- brewer.pal(n = 9, name = "Blues")
 col_beam <- brewer.pal(n = 9, name = "Greens")
 
-
-
-for (ispp in c("Alaska plaice", "Arctic cod", "Bering flounder", 
-               "saffron cod", "snow crab", "yellowfin sole")){
-  png(filename = paste0("figures/FigureX_VAST_diagnostics_", ispp, ".png"), 
-      width = 190, units = "mm", res = 500, family = "serif", 
-      height = switch(ispp,
-                      "Alaska plaice" =  45, 
-                      90))
+for (ispp in unique(species$taxon)[-1]){
   
+  available_gears <- subset(x = species,
+                            subset = taxon == ispp)$gear
+  
+  n_gears <- length(available_gears)
+  
+  png(filename = paste0("figures/FigureX_VAST_diagnostics_", ispp, ".png"),
+      width = 190, units = "mm", res = 500, family = "serif",
+      height = switch(paste(n_gears),
+                      "1" =  45,
+                      "2" = 90))
   ## Setup layout of 
   par(mar = c(0, 0, 0, 0))
   
-  layout(mat = switch(ispp,
-                      "Alaska plaice" = matrix(c(1, 2, 5, 3, 4), 
-                                               byrow = TRUE, nrow = 1), 
-                      matrix(data = c(1, 2, 10, 3, 4, 
-                                      5:9),
-                             byrow = TRUE, nrow = 2)),
+  layout(mat = switch(paste(n_gears),
+                      "1" = matrix(c(1, 2, 5, 3, 4), 
+                                   byrow = TRUE, nrow = 1), 
+                      "2" = matrix(data = c(1, 2, 10, 3, 4, 
+                                            5:9),
+                                   byrow = TRUE, nrow = 2)),
          widths = c(1, 1, 1, 1.5, 1.5))
   
-  available_gears <- switch(ispp,
-                            "Alaska plaice" =  "otter", 
-                            c("otter", "beam"))
-  
-  for (igear in available_gears) {
+  for (igear in sort(available_gears, decreasing = T) ) {
+    
     
     ## Load full VAST result
     fit <- readRDS(paste0("results/chukchi_", igear, "/vast_fits/", 
@@ -131,7 +131,7 @@ for (ispp in c("Alaska plaice", "Arctic cod", "Bering flounder",
       
       ## Plot Observed densities
       assign(x = paste0("obs_dens_", igear), 
-             value = subset(fit$data_frame, t_i == years$year[iyear]))
+             value = subset(fit$data_frame[fit$data_list$PredTF_i == 0, ], t_i == years$year[iyear]))
       latlon_locs <- 
         sp::SpatialPoints(coords = get(paste0("obs_dens_", 
                                               igear))[, c("Lon_i", "Lat_i")],
