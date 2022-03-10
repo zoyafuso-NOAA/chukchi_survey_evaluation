@@ -40,37 +40,6 @@ chukchi_grid <- read.csv(file = paste0("data/spatial_data/",
 chukchi_grid$Area_km2 <- chukchi_grid$Shape_Area / 1000 / 1000
 
 ##################################################
-####  Synthesize a main cpue dataframe
-##################################################
-aksc_data <- read.csv(file = paste0("data/fish_data/AK_BTS_OtterAndBeam/",
-                                    "AK_BTS_Arctic_processed_long.csv"))
-aksc_data <- subset(x = aksc_data, 
-                    subset = common_name %in% c("yellowfin sole", "snow crab",
-                                                "saffron cod",
-                                                "Bering flounder",
-                                                "Arctic cod", "Alaska plaice"))
-chukchi_beam_data <- read.csv(file = paste0("data/fish_data/2017_2019_Beam/",
-                                            "ierl_data_processed.csv"))
-chukchi_beam_data <- subset(x = chukchi_beam_data,
-                            subset = common_name %in% c("yellowfin sole",
-                                                        "snow crab",
-                                                        "saffron cod",
-                                                        "Bering flounder",
-                                                        "Arctic cod"))
-data_geostat <- data.frame( 
-  region = "chukchi",
-  gear = c(aksc_data$gear, 
-           chukchi_beam_data$gear),
-  spp = as.factor(c(aksc_data$common_name, 
-                    chukchi_beam_data$common_name)),
-  Year = c(aksc_data$year, chukchi_beam_data$year),
-  Catch_KG = c(aksc_data$cpue_kg_km2, chukchi_beam_data$cpue_kg_km2),
-  AreaSwept_km2 = 1,
-  Lat = c(aksc_data$lat, chukchi_beam_data$lat),
-  Lon = c(aksc_data$lon, chukchi_beam_data$lon),
-  stringsAsFactors = T)
-
-##################################################
 ####   VAST Model Settings
 ##################################################
 settings <- FishStatsUtils::make_settings( 
@@ -95,13 +64,46 @@ settings <- FishStatsUtils::make_settings(
 ##################################################
 ####   Model fit
 ##################################################
-for (igear in c("beam", "otter")[2]) { ## Loop over gear -- start
+for (igear in c("beam", "otter")) { ## Loop over gear -- start
   
-  ## Species List
-  spp_list <- sort(unique(subset(x = aksc_data, 
-                                 gear == igear)$common_name))
+  ## Species list
+  spp_list <- 
+    gsub(x = dir(path = paste0("data/fish_data/",
+                               switch(igear,
+                                      otter = "AK_BTS_OtterAndBeam",
+                                      beam = "2017_2019_Beam"),
+                               "/data_long_by_taxa/")), 
+         pattern = ".csv",
+         replacement = "")
   
-  for (ispp in spp_list[6]) { ## Loop over species -- start
+  
+  for (ispp in spp_list[-c(1:7)] ) { ## Loop over species -- start
+    
+    AKBTS_data <- read.csv(paste0("data/fish_data/AK_BTS_OtterAndBeam/",
+                                  "data_long_by_taxa/", 
+                                  ispp, ".csv"))
+    ierl_beam_data <- read.csv(paste0("data/fish_data/2017_2019_Beam/",
+                                      "data_long_by_taxa/", 
+                                      ispp, ".csv"))
+    
+    spp_data <- subset(x = AKBTS_data, subset = gear == igear,
+                       select = c(year, lon, lat, cpue_kg_km2))
+    
+    if (igear == "beam") { #add ierl beam data
+      spp_data <- rbind(spp_data,
+                        subset(x = ierl_beam_data,
+                               select = c(year, lon, lat, cpue_kg_km2)))  
+    }
+    
+    data_geostat <- data.frame(
+      region = "chukchi",
+      spp = ispp,
+      Year = spp_data$year,
+      Catch_KG = spp_data$cpue_kg_km2,
+      AreaSwept_km2 = 1,
+      Lat = spp_data$lat,
+      Lon = spp_data$lon,
+      stringsAsFactors = T)
     
     ## Model settings
     model_settings <- expand.grid( region = "chukchi",
@@ -111,12 +113,9 @@ for (igear in c("beam", "otter")[2]) { ## Loop over gear -- start
                                    Epsilon1 = 0:1,
                                    Omega2 = 0:1,
                                    Epsilon2 = 0:1,
+                                   obs_model = c("PosLink", "Log_Delta", "Gamma_Delta"),
                                    stringsAsFactors = FALSE)
     model_settings[, c("status", "max_grad", "rrmse", "aic")] <- NA
-    
-    ## Subset vast data input based on current species, gear, and region
-    data_geostat_subset <- subset(x = data_geostat, 
-                                  subset = spp == ispp & gear == igear)
     
     ## Setup result directory and create one if running for the first time
     result_dir <- paste0(getwd(), "/results/chukchi_", 
@@ -130,15 +129,21 @@ for (igear in c("beam", "otter")[2]) { ## Loop over gear -- start
                                                             "Omega2", 
                                                             "Epsilon2")])
       
+      ## Set observation model
+      settings$ObsModel <- switch(model_settings$obs_model[irow], 
+                                  "PosLink" = c(2, 4),
+                                  "Log_Delta" = c(1, 0), 
+                                  "Gamma_Delta" = c(2, 0))
+      
       ## Fit model
       fit <- tryCatch( {FishStatsUtils::fit_model( 
         "settings" = settings,
         "working_dir" = result_dir,
-        "Lat_i" = data_geostat_subset[, "Lat"],
-        "Lon_i" = data_geostat_subset[, "Lon"],
-        "t_i" = data_geostat_subset[, "Year"],
-        "b_i" = data_geostat_subset[, "Catch_KG"],
-        "a_i" = data_geostat_subset[, "AreaSwept_km2"],
+        "Lat_i" = data_geostat[, "Lat"],
+        "Lon_i" = data_geostat[, "Lon"],
+        "t_i" = data_geostat[, "Year"],
+        "b_i" = data_geostat[, "Catch_KG"],
+        "a_i" = data_geostat[, "AreaSwept_km2"],
         "getJointPrecision" = TRUE,
         "newtonsteps" = 1,
         "test_fit" = F,
@@ -158,12 +163,13 @@ for (igear in c("beam", "otter")[2]) { ## Loop over gear -- start
         # If you want more than one expression to be executed, then you 
         # need to wrap them in curly brackets ({...}); otherwise you could
         # just have written 'finally=<expression>' 
-        message( paste0("Processed model ", irow, 
+        message( paste0("\nProcessed model ", irow, 
                         " of ", nrow(model_settings), " for ", ispp, ": ", 
                         model_settings$gear[irow], ", ",
                         model_settings$common_name[irow],
                         ", with settings\n",
-                        "Omega1 = ", model_settings$Omega1[irow],
+                        model_settings$obs_model[irow],
+                        ", Omega1 = ", model_settings$Omega1[irow],
                         " Omega2 = ", model_settings$Omega2[irow],
                         " Epsilon1 = ", model_settings$Epsilon1[irow],
                         " Epsilon2 = ", model_settings$Epsilon2[irow]) )
@@ -180,7 +186,7 @@ for (igear in c("beam", "otter")[2]) { ## Loop over gear -- start
         model_settings$max_grad[irow] <- fit$parameter_estimates$max_gradient
         
         ## RRMSE of density predictions
-        obs_cpue <- with(data_geostat_subset,  Catch_KG / AreaSwept_km2 )
+        obs_cpue <- with(data_geostat,  Catch_KG / AreaSwept_km2 )
         pred_cpue <- fit$Report$D_i
         rrmse <- sqrt(mean((obs_cpue - pred_cpue)^2)) / mean(obs_cpue)
         
@@ -215,15 +221,20 @@ for (igear in c("beam", "otter")[2]) { ## Loop over gear -- start
                                       "Omega2", "Epsilon2")])
       settings$FieldConfig <- field_config
       
+      settings$ObsModel <- switch(sub_df$obs_model[best_model_idx], 
+                                  "PosLink" = c(2, 4),
+                                  "Log_Delta" = c(1, 0), 
+                                  "Gamma_Delta" = c(2, 0))
+      
       ## Fit model with best settings
       fit <- tryCatch( {FishStatsUtils::fit_model( 
         "settings" = settings,
         "working_dir" = result_dir,
-        "Lat_i" = data_geostat_subset[, "Lat"],
-        "Lon_i" = data_geostat_subset[, "Lon"],
-        "t_i" = data_geostat_subset[, "Year"],
-        "b_i" = data_geostat_subset[, "Catch_KG"],
-        "a_i" = data_geostat_subset[, "AreaSwept_km2"],
+        "Lat_i" = data_geostat[, "Lat"],
+        "Lon_i" = data_geostat[, "Lon"],
+        "t_i" = data_geostat[, "Year"],
+        "b_i" = data_geostat[, "Catch_KG"],
+        "a_i" = data_geostat[, "AreaSwept_km2"],
         "getJointPrecision" = TRUE,
         "newtonsteps" = 1,
         "test_fit" = FALSE,
@@ -276,12 +287,12 @@ for (igear in c("beam", "otter")[2]) { ## Loop over gear -- start
       ##################################################
       ## Prediction Grid: df of the grid to simulate data onto
       grid_df <- data.frame()
-      for (itime in sort(unique(data_geostat_subset$Year))) {
-        grid_df <- 
+      for (itime in sort(unique(data_geostat$Year))) {
+        grid_df <-
           rbind(grid_df,
                 data.frame(spp = ispp,
                            Year = rep(itime, nrow(chukchi_grid)),
-                           Catch_KG = mean(data_geostat_subset$Catch_KG),
+                           Catch_KG = mean(data_geostat$Catch_KG),
                            AreaSwept_km2 = chukchi_grid$Area_km2,
                            Lat = chukchi_grid$Lat,
                            Lon = chukchi_grid$Lon,
@@ -292,13 +303,13 @@ for (igear in c("beam", "otter")[2]) { ## Loop over gear -- start
       ###################################################
       ## Add New Points: set catch to NAs?
       ###################################################
-      data_geostat_with_grid <- rbind(data_geostat_subset[, names(grid_df)],
+      data_geostat_with_grid <- rbind(data_geostat[, names(grid_df)],
                                       grid_df)
       
       pred_TF <- rep(1, nrow(data_geostat_with_grid))
-      pred_TF[1:nrow(data_geostat_subset)] <- 0
+      pred_TF[1:nrow(data_geostat)] <- 0
       
-      fit_sim <- FishStatsUtils::fit_model( 
+      fit_sim <- FishStatsUtils::fit_model(
         "settings" = settings,
         "working_dir" = result_dir,
         "Lat_i" = data_geostat_with_grid[, "Lat"],
@@ -309,7 +320,7 @@ for (igear in c("beam", "otter")[2]) { ## Loop over gear -- start
         "getJointPrecision" = TRUE,
         "newtonsteps" = 1,
         "test_fit" = F,
-        "input_grid" = chukchi_grid, 
+        "input_grid" = chukchi_grid,
         "PredTF_i" = pred_TF,
         "Parameters" = ParHat)
       
@@ -321,57 +332,54 @@ for (igear in c("beam", "otter")[2]) { ## Loop over gear -- start
       ####   Simulate_data() function produces simulated biomasses, and we 
       ####      divide by the cell areas to calculate simulated desniteis
       ##################################################
-      # sim_data <- array(data = NA, 
-      #                   dim = c(nrow(chukchi_grid), 
-      #                           length(unique(data_geostat_subset$Year)), 
-      #                           1000, 2))
-      # 
-      # for (isim in 1:1000) {
-      #   Sim1 <- FishStatsUtils::simulate_data(fit = fit_sim, 
-      #                                         type = 1, 
-      #                                         random_seed = isim)
-      #   Sim3 <- FishStatsUtils::simulate_data(fit = fit_sim, 
-      #                                         type = 3, 
-      #                                         random_seed = isim)
-      #   sim_data[, ,isim, 1] <- matrix(Sim1$b_i[pred_TF == 1] / chukchi_grid$Area_km2, 
-      #                                  nrow = nrow(chukchi_grid))
-      #   sim_data[, ,isim, 2] <- matrix(Sim3$b_i[pred_TF == 1] / chukchi_grid$Area_km2, 
-      #                                  nrow = nrow(chukchi_grid))
-      #   if(isim%%50 == 0) print(paste("Done with", ispp, "Iteration", isim))
-      # }
+      sim_data <- array(data = NA,
+                        dim = c(nrow(chukchi_grid),
+                                length(unique(data_geostat$Year)),
+                                1000))
+      
+      for (isim in 1:1000) {
+        Sim1 <- FishStatsUtils::simulate_data(fit = fit_sim,
+                                              type = 1,
+                                              random_seed = isim)
+        
+        sim_data[, ,isim] <- matrix(Sim1$b_i[pred_TF == 1] / chukchi_grid$Area_km2,
+                                    nrow = nrow(chukchi_grid))
+        
+        if(isim%%50 == 0) print(paste("Done with", ispp, "Iteration", isim))
+      }
       
       ##################################################
       ####   Save simulated densities by year so they can be pushed to github
       ##################################################
-      # for (iyear in 1:length(unique(data_geostat_subset$Year))) {
-      #   for (isim in 1:2) {
-      #     obj_name <- paste0("sim_data_", 
-      #                        sort(unique(data_geostat_subset$Year))[iyear], 
-      #                        "_simtype", ifelse(isim == 1, "1", "3"))
-      #     
-      #     ## Save iteration 1:500
-      #     assign(value = sim_data[, iyear, 1:500, isim], 
-      #            x = obj_name )
-      #     save(list = obj_name, 
-      #          file = paste0(result_dir, obj_name, "_iter1to500.RData") )
-      #     
-      #     ## Save iteration 501:1000
-      #     assign(value = sim_data[, iyear, 501:1000, isim], 
-      #            x = obj_name )
-      #     save(list = obj_name, 
-      #          file = paste0(result_dir, obj_name, "_iter501to1000.RData") )
-      #   }
-      #   
-      # }
+      for (iyear in 1:length(unique(data_geostat$Year))) {
+        
+        obj_name <- paste0("sim_data_",
+                           sort(unique(data_geostat$Year))[iyear],
+                           "_simtype1")
+        
+        ## Save iteration 1:500
+        assign(value = sim_data[, iyear, 1:500],
+               x = obj_name )
+        save(list = obj_name,
+             file = paste0(result_dir, obj_name, "_iter1to500.RData") )
+        
+        ## Save iteration 501:1000
+        assign(value = sim_data[, iyear, 501:1000],
+               x = obj_name )
+        save(list = obj_name,
+             file = paste0(result_dir, obj_name, "_iter501to1000.RData") )
+        
+        
+      }
       
       ## partial output to sync to remote
-      fit_sim <- fit_sim[c("parameter_estimates", "data_frame", 
-                           "data_list", "Report")] 
-      save(list = "fit_sim", 
+      fit_sim <- fit_sim[c("parameter_estimates", "data_frame",
+                           "data_list", "Report")]
+      save(list = "fit_sim",
            file = paste0(result_dir, "fit_sim.RData"))
       
       dyn.unload(paste0(result_dir, "/", vast_cpp_version, ".dll"))
-   
+      
     }
   } ## Loop over species -- end
 } ## Loop over gear -- end
