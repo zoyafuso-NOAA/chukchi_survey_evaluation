@@ -1,0 +1,178 @@
+"common_name","scientific_name","file_name","species_code"
+"snow crab","Chionoecetes opilio","snow crab",68580
+"Pacific cod","Gadus macrocephalus","Pacific cod",21720
+"Arctic cod","Boreogadus saida","Arctic cod",21725
+"saffron cod","Eleginus gracilis","saffron cod",21735
+"walleye pollock","Gadus chalcogrammus","walleye pollock",21740
+"Bering flounder","Hippoglossoides robustus","Bering flounder",10140
+"yellowfin sole","Limanda aspera","yellowfin sole",10210
+"Pacific halibut","Hippoglossus stenolepis","Pacific halibut",10120
+"Alaska plaice","Pleuronectes quadrituberculatus","Alaska plaice",10285
+"purple-orange sea star","Asterias amurensis","purple-orange sea star",81742
+"tunicates","Ascidiacea unid.","tunicates",98000
+"tunicates","Pelonaia corrugata","tunicates",98079
+"tunicates","Styela rustica","tunicates",98082
+"tunicates","Boltenia villosa","tunicates",98101
+"tunicates","Boltenia ecinata","tunicates",98102
+"tunicates","Boltenia ovifera","tunicates",98105
+"tunicates","Halocynthia aurantium","tunicates",98205
+"tunicates","Ascidiacea unid.","tunicates",98300
+"tunicates","Chelyosoma macleayanum","tunicates",98332
+"corals","Actinoscyphia sp.","corals",43003
+"corals","Actinernus sp.","corals",43005
+"corals","Metridium farcimen","corals",43021
+"corals","Stomphia sp.","corals",43030
+"corals","Zoanthus sp.","corals",43225
+"corals","Anthozoa unid.","corals",41000
+"corals","Gersemia sp.","corals",41201
+"corals","Actiniaria unid.","corals",43000
+"sea cucumbers","Holothuroidea unid.","sea cucumbers",85000
+"sea cucumbers","Ocnus glacialis","sea cucumbers",85013
+"sea cucumbers","Myriotrochus rinkii","sea cucumbers",85085
+"sea cucumbers","Psolus peroni","sea cucumbers",85221
+"other seastars","Asteroidea unid.","other seastars",80000
+"other seastars","Evasterias troschelii","other seastars",80015
+"other seastars","Evasterias echinosoma","other seastars",80020
+"other seastars","Urasterias lincki","other seastars",80030
+"other seastars","Leptasterias groenlandica","other seastars",80110
+"other seastars","Lethasterias nanimensis","other seastars",80200
+"other seastars","Henricia sp.","other seastars",80540
+"other seastars","Henricia tumida","other seastars",80546
+"other seastars","Leptasterias polaris","other seastars",80590
+"other seastars","Leptasterias arctica","other seastars",80594
+"other seastars","Leptasterias sp.","other seastars",80595
+"other seastars","Solaster sp.","other seastars",81060
+"other seastars","Asterias sp.","other seastars",81741
+"other seastars","Ctenodiscus crispatus","other seastars",81780
+"other seastars","Leptychaster arcticus","other seastars",81835
+"other seastars","Crossaster papposus","other seastars",81095
+"snails","Gastropoda unid.","snails",71405
+"snails","Gastropoda unid.","snails",71500
+"snails","Cryptonatica affinis","snails",71526
+"snails","Lunatia pallida","snails",71580
+"snails","Neptunea heros","snails",71884
+"snails","Plicifusus kroyeri","snails",71891
+"snails","Liomesus ooides","snails",71911
+"snails","Oenopota sp.","snails",72100
+"snails","Oenopota harpa","snails",72103
+"snails","Oenopota nobilis","snails",72104
+"snails","Oenopota elegans","snails",72106
+"snails","Obesotoma tenuilirata","snails",72182
+"snails","Curtitoma decussata","snails",72183
+"snails","Boreotrophon clathratus","snails",72406
+"snails","Boreotrophon sp.","snails",72420
+"snails","Boreotrophon pacificus","snails",72421
+"snails","Margarites costalis","snails",72535
+"snails","Margarites beringensis","snails",72539
+"snails","Solariella obscura","snails",72541
+"snails","Buccinum sp.","snails",72740
+"snails","Buccinum angulosum","snails",72743
+"snails","Buccinum plectrum","snails",72751
+"snails","Buccinum scalariforme","snails",72752
+"snails","Buccinum polare","snails",72755
+"snails","Buccinum solenum","snails",72756
+"snails","Buccinum ciliatum","snails",72757
+"snails","Buccinum glaciale","snails",72758
+"snails","Buccinum tenellum","snails",72759
+"snails","Onchidiopsis sp.","snails",71590
+"snails","Tachyrhynchus sp.","snails",71631
+"snails","Tachyrhynchus erosus","snails",71634
+"snails","Colus sp.","snails",71710
+"snails","Colus sabini","snails",71720
+"snails","Colus spitzbergensis","snails",71726
+"snails","Colus aphelus","snails",71730
+"snails","Volutopsius sp.","snails",71750
+"snails","Pyrulofusus deformis","snails",71753
+"snails","Beringius sp.","snails",71769
+"snails","Beringius beringii","snails",71772
+"snails","Neptunea sp.","snails",71800
+"snails","Gastropoda unid.","snails",71001
+"snails","Nudibranchia unid.","snails",71010
+"snails","Dendronotus sp.","snails",71018
+"snails","Tritonia sp.","snails",71025
+"snails","Calycidoris guentheri","snails",71027
+"snails","Admete virdula","snails",73183
+"snails","Admete regina","snails",73186
+"snails","Cylichna alba","snails",73351
+"snails","Gastropoda unid.","snails",99994
+"other flatfishes","Reinhardtius hippoglossoides","other flatfishes",10115
+"other flatfishes","Liopsetta glacialis","other flatfishes",10155
+"other flatfishes","Limanda proboscidea","other flatfishes",10211
+"other flatfishes","Limanda sakhalinensis","other flatfishes",10212
+"other flatfishes","Platichthys stellatus","other flatfishes",10220
+"other flatfishes","Lepidopsetta polyxystra","other flatfishes",10261
+"bryozoans","Bryozoa unid.","bryozoans",95000
+"bryozoans","Bryozoa unid.","bryozoans",95010
+"urchins","Strongylocentrotus droebachiensis","urchins",82510
+"urchins","Strongylocentrotus pallidus","urchins",82526
+"poachers","Pallasina barbata","poachers",20001
+"poachers","Podothecus sp.","poachers",20039
+"poachers","Podothecus veternus","poachers",20041
+"poachers","Aspidophoroides monopterygius","poachers",20050
+"poachers","Ulcina olrikii","poachers",20051
+"poachers","Hypsagonus quadricornis","poachers",20071
+"sculpins","Cottidae unid.","sculpins",21300
+"sculpins","Gymnocanthus pistilliger","sculpins",21314
+"sculpins","Gymnocanthus tricuspis","sculpins",21315
+"sculpins","Artediellus scaber","sculpins",21334
+"sculpins","Triglops pingeli","sculpins",21355
+"sculpins","Myoxocephalus scorpius","sculpins",21368
+"sculpins","Myoxocephalus polyacanthocephalus","sculpins",21370
+"sculpins","Myoxocephalus jaok","sculpins",21371
+"sculpins","Myoxocephalus sp.","sculpins",21375
+"sculpins","Trichocottus brashnikovi","sculpins",21379
+"sculpins","Enophrys lucasi","sculpins",21387
+"sculpins","Enophrys diceraus","sculpins",21388
+"sculpins","Icelus spatula","sculpins",21441
+"snailfishes","Liparidae unid.","snailfishes",22200
+"snailfishes","Liparis sp.","snailfishes",22201
+"snailfishes","Liparis gibbus","snailfishes",22205
+"snailfishes","Liparis tunicatus","snailfishes",22238
+"pricklebacks","Lumpenus sp.","pricklebacks",23801
+"pricklebacks","Eumesogrammus praecisus","pricklebacks",23803
+"pricklebacks","Stichaeus punctatus","pricklebacks",23804
+"pricklebacks","Lumpenus maculatus","pricklebacks",23805
+"pricklebacks","Lumpenus medius","pricklebacks",23806
+"pricklebacks","Lumpenus fabricii","pricklebacks",23807
+"pricklebacks","Chirolophis snyderi","pricklebacks",23843
+"bivalves","Chlamys behringiana","bivalves",74105
+"bivalves","Hiatella arctica","bivalves",74311
+"bivalves","Yoldia sp.","bivalves",74414
+"bivalves","Yoldia hyperborea","bivalves",74420
+"bivalves","Portlandia sp.","bivalves",74421
+"bivalves","Nuculana sp.","bivalves",74435
+"bivalves","Nuculana pernula","bivalves",74436
+"bivalves","Musculus niger","bivalves",74561
+"bivalves","Musculus discors","bivalves",74562
+"bivalves","Astarte crenata","bivalves",74639
+"bivalves","Astarte sp.","bivalves",74640
+"bivalves","Astarte borealis","bivalves",74641
+"bivalves","Astarte montagui","bivalves",74647
+"bivalves","Cyclocardia ventricosa","bivalves",74653
+"bivalves","Cyclocardia crebricostata","bivalves",74655
+"bivalves","Cyclocardia sp.","bivalves",74656
+"bivalves","Clinocardium ciliatum","bivalves",74983
+"bivalves","Liocyma fluctosa","bivalves",75092
+"bivalves","Pandora glacialis","bivalves",75220
+"bivalves","Macoma sp.","bivalves",75240
+"bivalves","Macoma calcarea","bivalves",75242
+"bivalves","Macoma moesta","bivalves",75246
+"bivalves","Serripes sp.","bivalves",75284
+"bivalves","Serripes groenlandicus","bivalves",75285
+"bivalves","Serripes laperousii","bivalves",75286
+"bivalves","Lyonsia arenosa","bivalves",75410
+"bivalves","Bivalvia unid.","bivalves",99993
+"eelpouts","Lycodes sp.","eelpouts",24180
+"eelpouts","Lycodes raridens","eelpouts",24184
+"eelpouts","Lycodes palearis","eelpouts",24185
+"eelpouts","Lycodes mucosus","eelpouts",24186
+"eelpouts","Lycodes polaris","eelpouts",24188
+"eelpouts","Lycodes turneri","eelpouts",24189
+"eelpouts","Gymnelus viridis","eelpouts",24192
+"eelpouts","Gymnelus sp.","eelpouts",24193
+"eelpouts","Gymnelus hemifasciatus","eelpouts",24194
+"jellyfishes","Scyphozoa unid.","jellyfishes",40500
+"jellyfishes","Chrysaora melanaster","jellyfishes",40504
+"jellyfishes","Aurelia sp.","jellyfishes",40511
+"jellyfishes","Aurelia limbata","jellyfishes",40520
+"jellyfishes","Cyanea capillata","jellyfishes",40561
