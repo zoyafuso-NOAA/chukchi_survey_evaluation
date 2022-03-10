@@ -45,13 +45,13 @@ yrange <- bbox(grid_pts)[2, ]
 ##################################################
 #### Species included
 ##################################################
-spp_list_otter <- c("Alaska plaice", "Arctic cod", "Bering flounder", 
-                    "saffron cod", "snow crab", "yellowfin sole")
+spp_list <- read.csv(file = "results/good_species.csv")
+
+spp_list_otter <- spp_list$taxon[spp_list$gear == "otter"]
 n_spp_otter <- length(spp_list_otter)
 names(spp_list_otter) <- paste0("Y", 1:n_spp_otter)
 
-spp_list_beam <- c("Arctic cod", "Bering flounder", 
-                   "saffron cod", "snow crab", "yellowfin sole")
+spp_list_beam <- spp_list$taxon[spp_list$gear == "beam"]
 n_spp_beam <- length(spp_list_beam)
 names(spp_list_beam) <- paste0("Y", 1:n_spp_beam)
 
