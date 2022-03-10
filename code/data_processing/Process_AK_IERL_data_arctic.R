@@ -13,135 +13,146 @@ library(readxl)
 ##################################################
 ####  Import Data
 ##################################################
-master_haul <- as.data.frame(readxl::read_xlsx(
+main_haul <- as.data.frame(readxl::read_xlsx(
   "data/fish_data/2017_2019_Beam/Hauls2017_2019.xlsx"))
-master_haul <- subset(master_haul, 
+main_haul <- subset(main_haul, 
                       select = c("Year" , "EVENT_EVENT_NUMBER",
                                  "BOTTOM_DEPTH_m", "AREA_SWEPT_KM_2",
                                  "LAT_DD_ON_BOTTOM", "LON_DD_ON_BOTTOM",
                                  "Surface_temp_C", "Surface_sal", 
                                  "bottom_temp_C", "bottom_sal") )
 
-master_catch <- as.data.frame(readxl::read_xlsx(
+main_catch <- as.data.frame(readxl::read_xlsx(
   "data/fish_data/2017_2019_Beam/Genetics_corrected_Catch.xlsx"))
+
+species_codes <- read.csv("data/fish_data/AK_BTS_OtterAndBeam/species.csv")
+taxa <- read.csv("data/fish_data/AK_BTS_OtterAndBeam/taxonomy.csv")
+
+###############################################################################
+####   Create output result directory if does not exist already
+############################################################################### 
+output_dir <- "data/fish_data/2017_2019_Beam/data_long_by_taxa/"
+if (!dir.exists(output_dir)) dir.create(output_dir)
 
 ##################################################
 ####  Subset catch data to selected fish species 
 ####  Sum over subsampling?
 ##################################################
-master_catch <- subset(x = master_catch,
+main_catch <- subset(x = main_catch,
                        select = c(CLAMS_EVENT_NUMBER, 
                                   TOTAL_WEIGHT_IN_HAUL,
-                                  COMMON_NAME))
-names(master_catch) <- c("station_id", "catch_kg", "common_name")
+                                  SPECIES_CODE))
+names(main_catch) <- c("station_id", "catch_kg", "species_code")
 
-master_catch <- aggregate(catch_kg ~ common_name + station_id, 
-                          data = master_catch,
+main_catch <- aggregate(catch_kg ~ species_code + station_id, 
+                          data = main_catch,
                           FUN = sum)
 
 ##################################################
 ####  Match haul data information with catch data
 ##################################################
-idx <- match(master_catch$station_id,
-             master_haul$EVENT_EVENT_NUMBER)
+idx <- match(main_catch$station_id,
+             main_haul$EVENT_EVENT_NUMBER)
 
-master_catch[, c("year", "station_id", "area_swept_km2", "lat", "lon",
+main_catch[, c("year", "station_id", "area_swept_km2", "lat", "lon",
                  "bot_temp", "bot_depth")] <-
-  master_haul[idx, c("Year", "EVENT_EVENT_NUMBER", "AREA_SWEPT_KM_2",
+  main_haul[idx, c("Year", "EVENT_EVENT_NUMBER", "AREA_SWEPT_KM_2",
                      "LAT_DD_ON_BOTTOM", "LON_DD_ON_BOTTOM", 
                      "bottom_temp_C", "BOTTOM_DEPTH_m")]
+main_catch$cpue_kg_km2 <- main_catch$catch_kg / main_catch$area_swept_km2
 
 ##################################################
 #### Create a wide df with zeros filled for stations where species not observed
 ##################################################
-data_wide <- tidyr::spread(data = master_catch,
-                           key = "common_name", 
-                           value = "catch_kg",
+data_wide <- tidyr::spread(data = subset(main_catch,
+                                         select = -c(catch_kg, area_swept_km2)),
+                           key = "species_code", 
+                           value = "cpue_kg_km2",
                            fill = 0)
 data_wide <- data_wide[!is.na(data_wide$year), ]
 
-##################################################
-#### "lengthen" wide dataset to long-form to match VAST data input 
-##################################################
-data_long <- reshape::melt(data_wide, 
-                           measure.vars = unique(master_catch$common_name),
-                           variable_name = "common_name")
+###############################################################################
+####   
+###############################################################################  
+species_info <- data.frame()
 
-##################################################
-#### Subset data to a set of species of interest
-#### Change common names to be consistent with RACEBACE
-##################################################
-spp_list <- c("Arctic cod", "Bering flounder", "Saffron cod", "Snow crab",
-              "Pacific cod", 
-              "Walleye pollock", "Yellowfin sole", "Alaska plaice",
-              "Starry flounder", "Arctic staghorn sculpin", "Pacific herring",
-              "Slender eelblenny", "Blue king crab", "Hairy hermit crab",
-              "Shorthorn (Warty) sculpin", "Sculptured shrimp", 
-              "Notched brittlestar", "Purple Orange sea star", 
-              "Fuzzy hermit crab", "Circumboreal toad crab", "Humpy shrimp",
-              "Helmet crab", "Arctic argid", "Kuro argid", "Green sea urchin",
-              "Northern nutclam", "Common mud star", "Greenland cockle",
-              "Basketstar")
+solo_spp <- subset(x = species_codes, 
+                   subset = COMMON_NAME %in% 
+                     c("Alaska plaice", "Arctic cod",  "Pacific cod", "walleye pollock", 
+                       "snow crab", "Pacific halibut", "yellowfin sole", 
+                       "Bering flounder", "saffron cod",
+                       "purple-orange sea star") )
 
-# c("rainbow smelt", "circumpolar eualid", "shortscale eualid", 
-# "smooth nutclam", "brownscaled sea cucumber")
+for (irow in 1:nrow(solo_spp)) {
+  
+  ispp_code <- solo_spp$SPECIES_CODE[irow]
+  ispp_sci_name <- solo_spp$SPECIES_NAME[irow]
+  ispp <- solo_spp$COMMON_NAME[irow]
+  
+  species_info <- rbind(species_info, 
+                        data.frame(common_name = ispp,
+                                   scientific_name = ispp_sci_name,
+                                   file_name = ispp,
+                                   species_code = ispp_code))
+  
+  if (ispp_code %in% names(data_wide)) {
+    data_long <- cbind(data_wide[, c("station_id", "year", 
+                                     "lat", "lon", "bot_temp", "bot_depth")],
+                       cpue_kg_km2 = data_wide[, paste(ispp_code)])
 
-data_long <- subset(x = data_long, 
-                    subset = common_name %in% spp_list)
-data_long$common_name <- as.character(data_long$common_name)
-
-data_long$common_name <- unlist(sapply(
-  X = data_long$common_name,
-  FUN = function(x) switch(
-    x,
-    "Arctic cod" = "Arctic cod", 
-    "Bering flounder" = "Bering flounder", 
-    "Starry flounder" = "starry flounder",
-    "Saffron cod" = "saffron cod", 
-    "Walleye pollock" = "walleye pollock",
-    "Pacific cod" = "Pacific cod",
-    "Yellowfin sole" = "yellowfin sole",
-    "Alaska plaice" = "Alaska plaice", 
-    "Arctic staghorn sculpin" = "Arctic staghorn sculpin", 
-    "Pacific herring" = "Pacific herring"  , 
-    "Slender eelblenny" = "slender eelblenny", 
-    "Shorthorn (Warty) sculpin" = "shorthorn (=warty) sculpin", 
     
-    "Snow crab" = "snow crab",
-    "Blue king crab" = "blue king crab", 
-    "Fuzzy hermit crab" = "fuzzy hermit crab", 
-    "Circumboreal toad crab" = "circumboreal toad crab", 
-    "Helmet crab" = "helmet crab",
-    "Hairy hermit crab" = "hairy hermit crab",
+    ## Remove species column from data_wide
+    data_wide <- data_wide[!names(data_wide) %in% paste(ispp_code)]
     
-    "Notched brittlestar" = "notched brittlestar", 
-    "Purple Orange sea star" = "purple-orange sea star", 
-    "Basketstar" = "basketstar",
-    "Common mud star" = "common mud star", 
-    "Green sea urchin" = "green sea urchin", 
+    ## Save data
+    write.csv(x = data_long, file = paste0(output_dir, ispp, ".csv"), 
+              row.names = F) 
+  }
+}
+
+###############################################################################
+####   Aggregate species
+############################################################################### 
+aggregate_species <- read.csv(file = "data/fish_data/aggregates_species.csv")
+for (irow in 1:nrow(aggregate_species)) {
+  
+  species_code_query <- paste0("subset(x = taxa, subset = ", 
+                               aggregate_species$species_query[irow], ")")
+  species_query <- eval(parse(text = species_code_query))
+  species_query <- 
+    species_query[species_query$SPECIES_CODE %in% names(data_wide), ]
+  
+  if (nrow(species_query) > 0) {
+    ispp <- aggregate_species$taxon_name[irow]
+    ispp_code <- species_query$SPECIES_CODE
+    ispp_common <- species_query$REPORT_NAME_SCIENTIFIC 
+    ispp_sci_name <- species_query$REPORT_NAME_SCIENTIFIC
     
-    "Humpy shrimp" = "humpy shrimp",
-    "Sculptured shrimp" = "sculptured shrimp", 
-    "Arctic argid" = "Arctic argid", 
-    "Kuro argid" = "kuro argid", 
+    species_info <- rbind(species_info, 
+                          data.frame(common_name = ispp,
+                                     scientific_name = ispp_sci_name,
+                                     file_name = ispp,
+                                     species_code = ispp_code))
     
-    "Northern nutclam" = "northern nutclam", 
-    "Greenland cockle" = "Greenland cockle"
-  )))
+    
+    sub_df <- as.matrix(data_wide[, paste(ispp_code)])
+    
+    data_long <- cbind(data_wide[, c("station_id", "year",  
+                                     "lat", "lon", "bot_temp", "bot_depth")],
+                       cpue_kg_km2 = rowSums(sub_df))
+    
+    ## Remove species column from data_wide
+    data_wide <- data_wide[!names(data_wide) %in% paste(ispp_code)]
+    
+    ## Save data
+    write.csv(x = data_long, file = paste0(output_dir, ispp, ".csv"),
+              row.names = F) 
+  }
+}
 
-##################################################
-####  Prepare the dataframe for catch-rate data in the VAST format
-##################################################
-ierl_data_long <- subset(x = data_long, 
-                         select = -station_id)
-names(ierl_data_long)[8] <- "catch_kg"
-ierl_data_long$gear <- "beam"
-
-ierl_data_long$cpue_kg_km2 <- with(ierl_data_long, catch_kg / area_swept_km2)
-
-##################################################
-####  Save
-##################################################
-write.csv(x = ierl_data_long, 
-          file = "data/fish_data/2017_2019_Beam/ierl_data_processed.csv", 
-          row.names = FALSE)
+###############################################################################
+####   Save species info data
+###############################################################################  
+write.csv(x = species_info, 
+          file = paste0(dirname(output_dir), "/species_info.csv"),
+          row.names = F)
