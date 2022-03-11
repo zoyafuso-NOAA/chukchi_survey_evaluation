@@ -4,3 +4,4 @@
 .Ruserdata
 **/fit_full.rds
 *.rds
+results/chukchi_beam/vast_fits/*/*.RData
