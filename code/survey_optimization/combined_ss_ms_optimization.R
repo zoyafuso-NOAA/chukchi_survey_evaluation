@@ -24,7 +24,7 @@ library(raster)
 ####  Load input data
 ##################################################
 load("data/survey_opt_data/optimization_data.RData")
-grid_chukchi <- read.csv("~/GitHub/Arctic_GF_OM/data/spatial_data/BS_Chukchi_extrapolation_grids/ChukchiThorsonGrid.csv")
+grid_chukchi <- read.csv("data/spatial_data/BS_Chukchi_extrapolation_grids/ChukchiThorsonGrid.csv")
 source("modified_functions/plot_survey_opt_map.R")
 source("modified_functions/calc_expected_CV.R")
 curr_dir <- getwd()
@@ -41,7 +41,7 @@ frame_df <- get(paste0("frame_df_", igear))
 n_years <- c("otter" = 2, "beam" = 3)[igear]
 
 stratas <- 3:5
-total_n <- seq(from = 40, to = 100, by = 10)
+total_n <- seq(from = 50, to = 200, by = 10)
 
 ##################################################
 ####  Conduct optimization across strata
@@ -50,9 +50,9 @@ total_n <- seq(from = 40, to = 100, by = 10)
 for (istrata in stratas) {
   
   ##################################################
-  ####  Initialize at the simple random sample CV given 100 stations
+  ####  Initialize at the simple random sample CV given 200 stations
   ##################################################
-  srs_n <- 100
+  srs_n <- 200
   srs_stats <- SamplingStrata::buildStrataDF(
     dataset = cbind( frame_df[, -grep(x = names(frame_df), pattern = "X")],
                      X1 = 1))
@@ -290,12 +290,12 @@ for (istrata in stratas) {
   }
   
   ##################################################
-  ####   Save an image of the solution with 100 stations
+  ####   Save an image of the solution with 200 stations
   ##################################################
   plot_survey_opt_map(file_name = paste0("solution.png"),
                       grid_object =  grid_pts,
                       sol_by_cell = plot_solution, 
-                      allocations = as.numeric(ms_sample_allocations[ms_sample_allocations$n == 100, paste0("Str_ ", 1:istrata)]),
+                      allocations = as.numeric(ms_sample_allocations[ms_sample_allocations$n == 200, paste0("Str_ ", 1:istrata)]),
                       draw_stations = TRUE)
   
   ##################################################
@@ -304,6 +304,3 @@ for (istrata in stratas) {
   save(list = c("ss_sample_allocations", "ms_sample_allocations"), 
        file = "allocations.RData")
 }
-# tapply(X = grid_chukchi$Shape_Area * 1e-6, INDEX = plot_solution, FUN = sum) / sum(grid_chukchi$Shape_Area * 1e-6)
-# 
-# ms_sample_allocations[ms_sample_allocations$n == 100, paste0("Str_ ", 1:istrata)] / sum(ms_sample_allocations[ms_sample_allocations$n == 100, paste0("Str_ ", 1:istrata)])
