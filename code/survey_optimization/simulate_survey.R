@@ -48,14 +48,14 @@ crs(chukchi_mask) <- aea_crs
                                              data = data.frame(id = 1:n_cells),
                                              proj4string = aea_crs)
   temp_n <- 0
-  temp_res <- 70000
+  temp_res <- 65000
   sys_settings <- NULL
   sys_idx <- list()
   
   # png(filename = "presentations/results_11_30_2021/sys_survey_grids.png",
   #     width = 4, height = 6, units = "in", res = 500)
   par(mfrow = c(3, 3), mar = c(0, 0, 0, 0))
-  while (temp_n < 100) {
+  while (temp_n < 150) {
     
     ## Make grid based on latlon coords
     temp_grid <- sp::makegrid(x = grid_pts_aea, cellsize = temp_res)
@@ -122,7 +122,7 @@ for (ispp in 1:n_spp) { ## Loop over species -- start
 ##################################
 ## Simulate Simple Random Designs at varying sampling efforts
 ##################################
-target_n <- seq(from = 40, by = 10, length.out = 7)
+target_n <- seq(from = 50, by = 10, to = 170)
 index_srs <- cv_srs <- rb_index_srs <-
   array(dim = c(length(target_n), n_spp, n_iters),
         dimnames = list(paste0("srs_n = ", target_n), spp_list, NULL))
@@ -210,7 +210,7 @@ for (isample in 1:nrow(sys_settings)) { ## Loop over survey effort -- start
 index_ms_strs <- cv_ms_strs <- rb_index_ms_strs <-
   array(dim = c(length(target_n), n_spp, n_iters),
         dimnames = list(paste0("ms_strs_n = ", target_n), spp_list, NULL))
-n_strata <- 3
+n_strata <- 5
 
 load(paste0("results/chukchi_", igear,
             "/survey_opt/Str_", n_strata, "/result_list.RData"))
