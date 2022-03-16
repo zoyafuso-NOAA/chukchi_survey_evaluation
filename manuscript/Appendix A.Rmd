@@ -1,0 +1,24 @@
+---
+output: 
+  word_document:
+      reference_docx: template-worddoc.docx
+---
+
+```{r Appendix A, echo = F, message = F, warning = F, results='asis'}
+good_species <- read.csv("../results/good_species.csv")
+
+string = c()
+fig_num <- 1
+for (ispp in unique(good_species$taxon)){
+ string = paste0(string,
+                 "![](../figures/Appendix_A/VAST_output_", ispp, ".png)\n",
+                 "Appendix A", fig_num, ": VAST output for ", ispp, 
+                 ". A) Predicted density with observed densities superimposed,",
+                 " B) Abundance Indices with coefficients of variation, and ",
+                 "C) QQ plot.", "\n\n<br>\n\n")
+ 
+ fig_num <- fig_num + 1
+}
+
+cat(string)
+```

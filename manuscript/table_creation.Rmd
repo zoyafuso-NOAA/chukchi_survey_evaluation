@@ -1,0 +1,7 @@
+---
+output: word_document
+---
+
+```{r, echo= F, results = "asis"}
+print(x)
+```

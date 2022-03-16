@@ -1,0 +1,102 @@
+---
+title: "Simulation testing of survey designs for the US Chukchi bottom trawl survey"
+output: 
+  word_document:
+      reference_docx: template-worddoc.docx
+bibliography: Oyafuso_etal_Chukchi_survey_testing.bib
+---
+
+```{r, echo = F, message = F, warning = F}
+library(tidyr)
+```
+
+Abstract
+====================================
+
+Introduction
+====================================
+
+Methods
+====================================
+
+## Survey Area
+
+* The Chukchi interpolation grid (2 nmi  resolution, N = 15733 cells) extends norths of the Bering Strait to Barrow Canyon and the 100 m isobaths to the north, US-Russia Maritime Boundary to the west, and the 10 m isobath along the Alaska coastline to the east. 
+
+## Survey Data
+
+* 83-112, 2012: A systematic sampling design was based on a 30 nmi square grid with the planned trawl stations located at the approximate center of each grid cell, resulting in a total of 73 sampling locations of which 71 successful tows were used in the analysis.
+
+## Species List
+
+Table 1: List of taxa surveyed by each bottom trawl gear. 
+```{r Table 1, echo = F, fig.align="center", message=FALSE, results='hide'}
+species_list <- read.csv(file = "../results/good_species.csv")
+species_list <- tidyr::spread(data = species_list, 
+                              key = gear, value = gear)
+species_list <- species_list[order(species_list$taxon_group, 
+                                   species_list$taxon), ]
+species_list$gear <- 
+  c("NAotter" = "otter trawl",
+    "beamotter" = "otter and beam trawl",
+    "beamNA" = "beam trawl")[paste0(species_list$beam, species_list$otter)]
+species_list$sci_name <- ifelse(test = species_list$species_name == TRUE,
+                                yes = paste0("*", species_list$sci_name, "*"),
+                                no = species_list$sci_name)
+
+x = knitr::kable(x = subset(x = species_list, 
+                            select = c(sci_name, 
+                                       taxon, 
+                                       gear)),
+                 row.names = F,
+                 col.names = c("Scientific Name", 
+                               "Common Name", 
+                               "Gear"),
+                 align = "c", format = "pipe")
+
+rmarkdown::render(input = "table_creation.Rmd", 
+                  output_file = "Table_1.docx",
+                  output_dir = paste0("../", draft_dir),
+                  output_format = "word_document", 
+                  params = list(x = x))
+```
+
+```{r, echo = F, results = "asis"} 
+print(x)
+```
+
+## Optimization Workflow
+
+Optimization: things to intro before: genetic algorithm bethel algorithm, number of strata, which gears, which species
+
+a)	Initial stratification solution: the optimization was first run with initial CV constraints set to the SRS CVs across the species set assuming 100 stations. The algorithm settings included: 100 candidate solutions, a 10% elitism rate, and a mutation rate inversely proportional to the total number of strata specified. The algorithm was run for 300 iterations and the best solution (i.e., lowest sample size) solution was chosen as the optimal solution.
+b)	Single-species solutions: Given this initial solution, the Bethel algorithm was conducted to calculate the lowest CV for the range of total stations of interest for each species separately. This is done by iteratively conducting the Bethel algorithm, modifying the CV constraint until the sample sizes of interest are calculated. This serves two purposes. First is that by evaluating how stations are allocated for each species individually, we can visualize the tradeoffs in survey design across the species set. Second, these CVs can be used as lower limits in the multispecies optimization because we assume that optimizing the bethel algorithm with only one species would provide the lowest CV given a stratification. Thus, taken together the single-species optimized CV and the SRS CVs for a given sample size is the range of CVs that will constrain the multispecies optimization.
+c)	Multispecies solutions: Given the initial stratification, the Bethel algorithm was iterated to calculate the lowest CV for the range of total stations of interests across the species set. This was done by modifying the CV constraint for each species by a given rate (e.g., 0.001) scaled by the difference between the current CV constraint and the single species CV (if aiming to increase the current total sample size) or the SRS CV (if aiming to decrease the total sample size). The advantage of this approach is that the multispecies optimal CV will be below the SRS CV which we expect due to the nature of stratification (Cochran 1977) but above the single species optimal CV due to the inherent interspecific tradeoffs in optimizing survey design.
+
+Results
+====================================
+
+
+
+Discussion
+====================================
+
+* We streamlined the protocol of Oyafuso et al. 2022 (Tech Memo) (@Oyafuso2021) by only using one optimized stratification solution throughout the optimization process, thereby reducing the total computation time. Iteratively running the Bethel algorithm subject to one stratification is faster than iteratively running the genetic algorithm.
+
+Acknowledgments
+====================================
+
+References
+====================================
+
+<div id="refs"></div>
+
+
+```{r Appendices, echo = F, message = F, warning = F, results='hide'}
+rmarkdown::render(input = "Appendix A.Rmd", 
+                  output_format = "word_document", 
+                  output_dir = paste0("../", draft_dir), 
+                  output_file = "Appendix_A.docx")
+```
+
+
