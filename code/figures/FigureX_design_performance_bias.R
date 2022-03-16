@@ -19,14 +19,13 @@ load(paste0("results/chukchi_", igear, "/survey_sim_results.RData"),
 
 settings <- list(
   otter = list(
-    spp_idx = list(fish = c(2, 3, 4, 6, 8, 10, 11, 13, 14, 16, 20, 21),
-                   inverts = c(5, 7, 9, 12, 15, 17, 18, 19)),
+    spp_idx = list(fish = c(1:3, 5, 7, 9, 10, 12, 13, 15, 19, 20),
+                   inverts = c(4, 6, 8, 11, 14, 16:18)),
     mfrow = list(fish = c(4, 6),
                  inverts = c(3, 6)),
-    plot_height_cm = c(fish = 20, inverts = 15)
+    plot_height_cm = c(fish = 20, inverts = 15) 
   )
 )
-
 
 for (taxon in c("fish", "inverts")) {
   
@@ -62,7 +61,7 @@ for (taxon in c("fish", "inverts")) {
                25))
     
     plot(1, type = "n", axes = F, ann = F, 
-         ylim = c(-ylim, ylim), xlim = c(35, 110))
+         ylim = c(-ylim, ylim), xlim = c(35, 180))
     
     points(x = target_n, y = rowMeans(rb_index_srs[, idx[ispp], ]), pch = 16)
     lines(x = target_n, y = rowMeans(rb_index_srs[, idx[ispp], ]), pch = 16)
@@ -113,7 +112,7 @@ for (taxon in c("fish", "inverts")) {
                25))
     
     plot(1, type = "n", axes = F, ann = F, 
-         ylim = c(-ylim, ylim), xlim = c(35, 110))
+         ylim = c(-ylim, ylim), xlim = c(35, 180))
     
     points(x = target_n, y = rowMeans(rb_cv_srs[, idx[ispp], ]), pch = 16)
     lines(x = target_n, y = rowMeans(rb_cv_srs[, idx[ispp], ]), pch = 16)
