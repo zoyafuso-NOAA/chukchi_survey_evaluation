@@ -6,22 +6,43 @@
 ##                No covariates
 ## 
 ## Notes:         Versions to use
-rm(list = ls())
-r_version <- "R version 4.0.2 (2020-06-22)"
-vast_version <- "3.6.1"
-fishstatsutils_version <- "2.8.0"
-vast_cpp_version <- "VAST_v12_0_0"
 ###############################################################################
+rm(list = ls())
 
 ##################################################
 ####  Check that versions of R and relevant packages are consistent 
 ##################################################
-ifelse(test = sessionInfo()$R.version$version.string == r_version &
-         packageVersion("VAST") == vast_version &
-         packageVersion("FishStatsUtils") == fishstatsutils_version &
-         FishStatsUtils::get_latest_version() == vast_cpp_version,
-       yes = "versions are good to go", 
-       no = "check your versions")
+R_version <- "R version 4.0.2 (2020-06-22)"
+VAST_cpp_version <- "VAST_v13_1_0"
+pck_version <- c("VAST" = "3.8.2", "FishStatsUtils" = "2.10.2", 
+                 "Matrix" = "1.4-0", "TMB" = "1.7.22", "DHARMa" = "0.4.5")
+
+{
+  if(sessionInfo()$R.version$version.string == R_version) 
+    message(paste0(sessionInfo()$R.version$version.string, 
+                   " is consistent with the 2022 TOR."))
+  
+  if(!sessionInfo()$R.version$version.string == R_version) 
+    message(paste0(sessionInfo()$R.version$version.string, 
+                   " is NOT consistent with the 2022 TOR. ",
+                   "Please update R version to ", R_version))
+  
+  for (pck in 1:length(pck_version)) {
+    temp_version <- packageVersion(pkg = names(pck_version)[pck])
+    
+    if(temp_version == pck_version[pck])
+      message(paste0("The version of the '", names(pck_version)[pck], 
+                     "' package (", temp_version, ") is consistent",
+                     " with the 2022 TOR."))
+    
+    if(!temp_version == pck_version[pck])
+      message(paste0("The version of the '", names(pck_version)[pck], 
+                     "' package (", temp_version, ") is NOT consistent",
+                     " with the 2022 TOR. Please update the '", 
+                     names(pck_version)[pck], "' package to ", pck_version[pck]))
+  }
+  rm(pck, temp_version)
+}
 
 ##################################################
 ####  Import Libraries
@@ -30,6 +51,8 @@ ifelse(test = sessionInfo()$R.version$version.string == r_version &
 # devtools::install_local("C:/Users/zack.oyafuso/Downloads/FishStatsUtils-2.8.0")
 # devtools::install_github("James-Thorson-NOAA/VAST@3.6.1") #for a specific VAST package version
 library(VAST)
+library(googledrive)
+library(purrr)
 
 ##################################################
 ####  Import interpolation grids
@@ -42,21 +65,15 @@ chukchi_grid$Area_km2 <- chukchi_grid$Shape_Area / 1000 / 1000
 ##################################################
 ####   VAST Model Settings
 ##################################################
-settings <- FishStatsUtils::make_settings( 
-  Version = vast_cpp_version,
+settings <- FishStatsUtils::make_settings(
+  Version = VAST_cpp_version,
   n_x = 200,   # Number of knots
   Region = "User", #User inputted extrapolation grid
   purpose = "index2",
-  bias.correct = FALSE,
-  FieldConfig = c(
-    "Omega1" = 1,   #Spatial random effect on occurence 
-    "Epsilon1" = 1, #Spatiotemporal random effect on occurence
-    "Omega2" = 1,   #Spatial random effect on positive response 
-    "Epsilon2" = 1  #Spatiotemporal random effect on positive response
-  ), 
+  bias.correct = TRUE,
   ObsModel = c(2, 1),
   max_cells = Inf,
-  use_anisotropy = F, 
+  use_anisotropy = TRUE, 
   Options = c('SD_site_logdensity' = FALSE, 'Calculate_Range' = FALSE,
               'Calculate_effective_area' = FALSE, 'Calculate_Cov_SE' = FALSE,
               'Calculate_Synchrony' = FALSE, 'Calculate_proportion' = FALSE))
@@ -109,17 +126,18 @@ for (igear in c("beam", "otter")) { ## Loop over gear -- start
     model_settings <- expand.grid( region = "chukchi",
                                    gear = igear,
                                    common_name = ispp,
-                                   Omega1 = 0:1,
-                                   Epsilon1 = 0:1,
-                                   Omega2 = 0:1,
-                                   Epsilon2 = 0:1,
-                                   obs_model = c("PosLink", "Log_Delta", "Gamma_Delta"),
+                                   Omega1 = c(0, "IID"),
+                                   Epsilon1 = c(0, "IID"),
+                                   Omega2 = c(0, "IID"),
+                                   Epsilon2 = c(0, "IID"),
+                                   obs_model = c("PosLink", 
+                                                 "Log_Delta", 
+                                                 "Gamma_Delta"),
                                    stringsAsFactors = FALSE)
     model_settings[, c("status", "max_grad", "rrmse", "aic")] <- NA
     
     ## Setup result directory and create one if running for the first time
-    result_dir <- paste0(getwd(), "/results/chukchi_", 
-                         igear, "/vast_fits/", ispp, "/")
+    result_dir <- paste0(getwd(), "/results/chukchi_", igear, "/")
     if(!dir.exists(result_dir)) dir.create(result_dir, recursive = TRUE)
     
     for (irow in 1:nrow(model_settings)) { ## Loop over Configs -- start
