@@ -14,7 +14,7 @@ rm(list = ls())
 ##################################################
 R_version <- "R version 4.0.2 (2020-06-22)"
 VAST_cpp_version <- "VAST_v13_1_0"
-pck_version <- c("VAST" = "3.8.2", "FishStatsUtils" = "2.10.2", 
+pck_version <- c("VAST" = "3.9.0", "FishStatsUtils" = "2.11.0", 
                  "Matrix" = "1.4-0", "TMB" = "1.7.22", "DHARMa" = "0.4.5")
 
 {
@@ -67,13 +67,6 @@ if( nrow(googledrive::drive_get(path = "Oyafuso_Chukchi_VAST")) == 0 ) {
   google_folder <- googledrive::drive_mkdir("Oyafuso_Chukchi_VAST")
 }
 
-##################################################
-####  Import interpolation grids
-##################################################
-chukchi_grid <- read.csv(file = paste0("data/spatial_data/",
-                                       "BS_Chukchi_extrapolation_grids/",
-                                       "ChukchiThorsonGrid.csv"))
-chukchi_grid$Area_km2 <- chukchi_grid$Shape_Area / 1000 / 1000
 
 ##################################################
 ####   VAST Model Settings
@@ -81,9 +74,8 @@ chukchi_grid$Area_km2 <- chukchi_grid$Shape_Area / 1000 / 1000
 settings <- FishStatsUtils::make_settings(
   Version = VAST_cpp_version,
   n_x = 200,   # Number of knots
-  Region = "User", #User inputted extrapolation grid
+  Region = "chukchi_sea", #User inputted extrapolation grid
   purpose = "index2",
-  bias.correct = TRUE,
   ObsModel = c(2, 1),
   max_cells = Inf,
   use_anisotropy = TRUE, 
@@ -156,6 +148,9 @@ for (igear in c("beam", "otter")[2]) { ## Loop over gear -- start
                                    stringsAsFactors = FALSE)
     model_settings[, c("status", "max_grad", "rrmse", "aic")] <- NA
     
+    
+    settings$bias.correct <- FALSE ## Turn off during initial runs
+    
     for (irow in 1:nrow(model_settings)) { ## Loop over Configs -- start
       ## Set settings based on the irow-th row in model_settings
       settings$FieldConfig <- unlist(model_settings[irow, c("Omega1", 
@@ -180,8 +175,7 @@ for (igear in c("beam", "otter")[2]) { ## Loop over gear -- start
         "a_i" = data_geostat[, "AreaSwept_km2"],
         "getJointPrecision" = TRUE,
         "newtonsteps" = 1,
-        "test_fit" = F,
-        "input_grid" = chukchi_grid)
+        "test_fit" = F)
       },
       error = function(cond) {
         message("Did not converge. Here's the original error message:")
@@ -261,9 +255,10 @@ for (igear in c("beam", "otter")[2]) { ## Loop over gear -- start
                                   "PosLink" = c(2, 4),
                                   "Log_Delta" = c(1, 0), 
                                   "Gamma_Delta" = c(2, 0))
+      settings$bias.correct <- TRUE ## Turn on for final model
       
       ## Fit model with best settings
-      fit <- tryCatch( {FishStatsUtils::fit_model( 
+      fit <- FishStatsUtils::fit_model( 
         "settings" = settings,
         "working_dir" = result_dir,
         "Lat_i" = data_geostat[, "Lat"],
@@ -273,33 +268,7 @@ for (igear in c("beam", "otter")[2]) { ## Loop over gear -- start
         "a_i" = data_geostat[, "AreaSwept_km2"],
         "getJointPrecision" = TRUE,
         "newtonsteps" = 1,
-        "test_fit" = FALSE,
-        "input_grid" = chukchi_grid)},
-        
-        error = function(cond) {
-          message("Did not converge. Here's the original error message:")
-          message(cond)
-          # Choose a return value in case of error
-          return(NULL)
-        },
-        
-        finally={
-          # NOTE:
-          # Here goes everything that should be executed at the end,
-          # regardless of success or error.
-          # If you want more than one expression to be executed, then you 
-          # need to wrap them in curly brackets ({...}); otherwise you could
-          # just have written 'finally=<expression>' 
-          # message( paste0("Processed ", 
-          #                 model_settings$region[irow], ", ",
-          #                 model_settings$gear[irow], ", ",
-          #                 model_settings$common_name[irow],
-          #                 ", with settings\n",
-          #                 "Omega1 = ", model_settings$Omega1[irow],
-          #                 " Omega2 = ", model_settings$Omega2[irow],
-          #                 " Epsilon1 = ", model_settings$Epsilon1[irow],
-          #                 " Epsilon2 = ", model_settings$Epsilon2[irow]) )
-        })    
+        "test_fit" = FALSE)
       
       ## Diagnostics
       if(!dir.exists(paste0(result_dir, "diagnostics/")))
@@ -363,7 +332,7 @@ for (igear in c("beam", "otter")[2]) { ## Loop over gear -- start
         "getJointPrecision" = TRUE,
         "newtonsteps" = 1,
         "test_fit" = F,
-        "input_grid" = chukchi_grid,
+        
         "PredTF_i" = pred_TF,
         "Parameters" = ParHat)
       
