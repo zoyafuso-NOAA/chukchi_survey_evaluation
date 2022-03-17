@@ -20,11 +20,11 @@ pck_version <- c("VAST" = "3.8.2", "FishStatsUtils" = "2.10.2",
 {
   if(sessionInfo()$R.version$version.string == R_version) 
     message(paste0(sessionInfo()$R.version$version.string, 
-                   " is consistent with the 2022 TOR."))
+                   " IS CONSISTENT with the 2022 TOR."))
   
   if(!sessionInfo()$R.version$version.string == R_version) 
     message(paste0(sessionInfo()$R.version$version.string, 
-                   " is NOT consistent with the 2022 TOR. ",
+                   " IS NOT CONSISTENT with the 2022 TOR. ",
                    "Please update R version to ", R_version))
   
   for (pck in 1:length(pck_version)) {
@@ -32,12 +32,12 @@ pck_version <- c("VAST" = "3.8.2", "FishStatsUtils" = "2.10.2",
     
     if(temp_version == pck_version[pck])
       message(paste0("The version of the '", names(pck_version)[pck], 
-                     "' package (", temp_version, ") is consistent",
+                     "' package (", temp_version, ") IS CONSISTENT",
                      " with the 2022 TOR."))
     
     if(!temp_version == pck_version[pck])
       message(paste0("The version of the '", names(pck_version)[pck], 
-                     "' package (", temp_version, ") is NOT consistent",
+                     "' package (", temp_version, ") IS NOT CONSISTENT",
                      " with the 2022 TOR. Please update the '", 
                      names(pck_version)[pck], "' package to ", pck_version[pck]))
   }
@@ -53,6 +53,19 @@ pck_version <- c("VAST" = "3.8.2", "FishStatsUtils" = "2.10.2",
 library(VAST)
 library(googledrive)
 library(purrr)
+
+##################################################
+####   Authorize google drive, create folder in google drive where
+####      VAST output will be saved to (easier to save in google drive 
+####      because of the size of the result objects)
+##################################################  
+googledrive::drive_deauth()
+googledrive::drive_auth() 
+1
+
+if( nrow(googledrive::drive_get(path = "Oyafuso_Chukchi_VAST")) == 0 ) {
+  google_folder <- googledrive::drive_mkdir("Oyafuso_Chukchi_VAST")
+}
 
 ##################################################
 ####  Import interpolation grids
@@ -74,14 +87,14 @@ settings <- FishStatsUtils::make_settings(
   ObsModel = c(2, 1),
   max_cells = Inf,
   use_anisotropy = TRUE, 
-  Options = c('SD_site_logdensity' = FALSE, 'Calculate_Range' = FALSE,
+  Options = c('SD_site_logdensity' = FALSE, 'Calculate_Range' = TRUE,
               'Calculate_effective_area' = FALSE, 'Calculate_Cov_SE' = FALSE,
               'Calculate_Synchrony' = FALSE, 'Calculate_proportion' = FALSE))
 
 ##################################################
 ####   Model fit
 ##################################################
-for (igear in c("beam", "otter")) { ## Loop over gear -- start
+for (igear in c("beam", "otter")[2]) { ## Loop over gear -- start
   
   ## Species list
   spp_list <- 
@@ -93,9 +106,14 @@ for (igear in c("beam", "otter")) { ## Loop over gear -- start
          pattern = ".csv",
          replacement = "")
   
-  
-  for (ispp in spp_list[-c(1:7)] ) { ## Loop over species -- start
+  for (ispp in spp_list[1] ) { ## Loop over species -- start
     
+    ## Create species folder locally
+    result_dir <- paste0(getwd(), "/results/chukchi_", igear, 
+                         "/vast_fits/", ispp, "/")
+    if(!dir.exists(result_dir)) dir.create(result_dir, recursive = TRUE)
+    
+    ## CPUE Data for species ispp
     AKBTS_data <- read.csv(paste0("data/fish_data/AK_BTS_OtterAndBeam/",
                                   "data_long_by_taxa/", 
                                   ispp, ".csv"))
@@ -103,6 +121,7 @@ for (igear in c("beam", "otter")) { ## Loop over gear -- start
                                       "data_long_by_taxa/", 
                                       ispp, ".csv"))
     
+    ## subset gear igear
     spp_data <- subset(x = AKBTS_data, subset = gear == igear,
                        select = c(year, lon, lat, cpue_kg_km2))
     
@@ -112,6 +131,7 @@ for (igear in c("beam", "otter")) { ## Loop over gear -- start
                                select = c(year, lon, lat, cpue_kg_km2)))  
     }
     
+    ## Data input for VAST
     data_geostat <- data.frame(
       region = "chukchi",
       spp = ispp,
@@ -135,10 +155,6 @@ for (igear in c("beam", "otter")) { ## Loop over gear -- start
                                                  "Gamma_Delta"),
                                    stringsAsFactors = FALSE)
     model_settings[, c("status", "max_grad", "rrmse", "aic")] <- NA
-    
-    ## Setup result directory and create one if running for the first time
-    result_dir <- paste0(getwd(), "/results/chukchi_", igear, "/")
-    if(!dir.exists(result_dir)) dir.create(result_dir, recursive = TRUE)
     
     for (irow in 1:nrow(model_settings)) { ## Loop over Configs -- start
       ## Set settings based on the irow-th row in model_settings
@@ -194,9 +210,11 @@ for (igear in c("beam", "otter")) { ## Loop over gear -- start
       })    
       
       ## Fit model
-      model_settings$status[irow] <- ifelse(test = is.null(fit) == T , 
-                                            yes = "no_convergence",
-                                            no = "confirm_gradient")
+      model_settings$status[irow] <- 
+        ifelse(test = is.null(fit) == T | 
+                 is.null(fit$parameter_estimates$max_gradient) , 
+               yes = "no_convergence",
+               no = "confirm_gradient")
       
       if (model_settings$status[irow]  == "confirm_gradient") {
         
@@ -220,7 +238,7 @@ for (igear in c("beam", "otter")) { ## Loop over gear -- start
       rm(fit)
       
     } ## Loop over Configs -- end
-    dyn.unload(paste0(result_dir, "/", vast_cpp_version, ".dll"))
+    # dyn.unload(paste0(result_dir, "/", VAST_cpp_version, ".dll"))
     
     ## Save model settings
     write.csv(x = model_settings, 
@@ -284,8 +302,12 @@ for (igear in c("beam", "otter")) { ## Loop over gear -- start
         })    
       
       ## Diagnostics
-      diagnostics <- plot(fit, working_dir = result_dir)
-      save(list = "diagnostics", file = paste0(result_dir, "diagnostics.RData"))
+      if(!dir.exists(paste0(result_dir, "diagnostics/")))
+        dir.create(paste0(result_dir, "diagnostics/"))
+      
+      diagnostics <- plot(fit, working_dir = paste0(result_dir, "diagnostics/"))
+      save(list = "diagnostics", 
+           file = paste0(result_dir, "diagnostics/diagnostics.RData"))
       
       ## Save fit and diagnostics
       saveRDS(fit, paste0(result_dir, "fit_full.rds"))
@@ -297,12 +319,15 @@ for (igear in c("beam", "otter")) { ## Loop over gear -- start
       fit <- fit[c("parameter_estimates", "data_frame", "data_list", "Report")] 
       save(list = "fit", file = paste0(result_dir, "fit.RData"))
       
-      dyn.unload(paste0(result_dir, '/', vast_cpp_version, ".dll"))
+      # dyn.unload(paste0(result_dir, '/', VAST_cpp_version, ".dll"))
       
       ##################################################
       ####   Refit the model with grid locations attached to data in order
       ####       to simulate density values
       ##################################################
+      if(!dir.exists(paste0(result_dir, "simulated_data/")))
+        dir.create(paste0(result_dir, "simulated_data/"))
+      
       ## Prediction Grid: df of the grid to simulate data onto
       grid_df <- data.frame()
       for (itime in sort(unique(data_geostat$Year))) {
@@ -343,7 +368,7 @@ for (igear in c("beam", "otter")) { ## Loop over gear -- start
         "Parameters" = ParHat)
       
       ## Save local copy of the fit
-      saveRDS(fit_sim, paste0(result_dir, "fit_sim_full.rds"))
+      saveRDS(fit_sim, paste0(result_dir, "simulated_data/fit_sim_full.rds"))
       
       ##################################################
       ####   Simulate 1000 iterations of densities
@@ -369,6 +394,7 @@ for (igear in c("beam", "otter")) { ## Loop over gear -- start
       ##################################################
       ####   Save simulated densities by year so they can be pushed to github
       ##################################################
+
       for (iyear in 1:length(unique(data_geostat$Year))) {
         
         obj_name <- paste0("sim_data_",
@@ -376,28 +402,66 @@ for (igear in c("beam", "otter")) { ## Loop over gear -- start
                            "_simtype1")
         
         ## Save iteration 1:500
-        assign(value = sim_data[, iyear, 1:500],
+        assign(value = sim_data[, iyear, ],
                x = obj_name )
         save(list = obj_name,
-             file = paste0(result_dir, obj_name, "_iter1to500.RData") )
-        
-        ## Save iteration 501:1000
-        assign(value = sim_data[, iyear, 501:1000],
-               x = obj_name )
-        save(list = obj_name,
-             file = paste0(result_dir, obj_name, "_iter501to1000.RData") )
-        
-        
+             file = paste0(result_dir, "simulated_data/", obj_name, ".RData") )
       }
       
       ## partial output to sync to remote
       fit_sim <- fit_sim[c("parameter_estimates", "data_frame",
                            "data_list", "Report")]
       save(list = "fit_sim",
-           file = paste0(result_dir, "fit_sim.RData"))
+           file = paste0(result_dir, "simulated_data/fit_sim.RData"))
       
-      dyn.unload(paste0(result_dir, "/", vast_cpp_version, ".dll"))
+      # dyn.unload(paste0(result_dir, "/", vast_cpp_version, ".dll"))
       
+      
+      ## Create species folders within the google folder
+      spp_folder <- googledrive::drive_mkdir(paste0("Oyafuso_Chukchi_VAST/", 
+                                                    igear, "/", ispp))
+      diagnostics_folder <- 
+        googledrive::drive_mkdir(paste0("Oyafuso_Chukchi_VAST/",
+                                        igear, "/", ispp, 
+                                        "/diagnostics"))
+      simualtion_folder <- 
+        googledrive::drive_mkdir(paste0("Oyafuso_Chukchi_VAST/",
+                                        igear, "/", ispp, 
+                                        "/simulated_densities"))
+      
+      ## Upload files related to the VAST fit
+      googledrive::with_drive_quiet(
+        files <- purrr::map(paste0(result_dir, 
+                                   c("fit.RData", 
+                                     "fit_full.rds",
+                                     "Kmeans_knots-200.RData", 
+                                     "model_settings.csv", 
+                                     "packageDescription.txt", 
+                                     "parameter_estimates.RData", 
+                                     "parameter_estimates.txt", 
+                                     "settings.txt")), 
+                            ~ drive_upload(.x, path = spp_folder)))
+      
+      ## Upload files related to the diagnostics and outputs from VAST
+
+      
+      googledrive::with_drive_quiet(
+        files <- purrr::map(paste0(result_dir, "diagnostics/", 
+                                   c("Aniso.png", "Data_and_knots.png", 
+                                     "diagnostics.RData", "Index.csv", 
+                                     "Index.png", "ln_density-predicted.png", 
+                                     "quantile_residuals.png", 
+                                     "quantile_residuals_on_map.png")), 
+                            ~ drive_upload(.x, path = diagnostics_folder )))
+      
+      ## Upload simulated densities
+      googledrive::with_drive_quiet(
+        files <- purrr::map(paste0(result_dir, "simulated_data/", 
+                                   c(paste0("sim_data_",
+                                          sort(unique(data_geostat$Year)),
+                                          "_simtype1.RData"),
+                                     "fit_sim_full.rds", "fit_sim.RData")), 
+                            ~ drive_upload(.x, path = simualtion_folder )))
     }
   } ## Loop over species -- end
 } ## Loop over gear -- end
