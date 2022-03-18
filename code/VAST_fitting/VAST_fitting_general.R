@@ -82,7 +82,7 @@ settings <- FishStatsUtils::make_settings(
   purpose = "index2",
   ObsModel = c(2, 1),
   max_cells = Inf,
-  use_anisotropy = TRUE, 
+  use_anisotropy = FALSE, 
   Options = c('SD_site_logdensity' = FALSE, 'Calculate_Range' = TRUE,
               'Calculate_effective_area' = FALSE, 'Calculate_Cov_SE' = FALSE,
               'Calculate_Synchrony' = FALSE, 'Calculate_proportion' = FALSE))
