@@ -1,55 +1,26 @@
-This repository contains preliminary operating models for Arctic (Chukchi Sea) 
-groundfishes. Currently, vector autoregressive spatiotemporal models using the
-[VAST package](https://github.com/James-Thorson-NOAA/VAST).
+## Workflow:
 
-Contributors: Zack Oyafuso, Lewis Barnett, and Stan Kotwicki
+### 1) [Data Inputs](https://github.com/zoyafuso-NOAA/Arctic_GF_OM/tree/main/code/data_processing)
 
-## Versions
-R version 4.0.2 (2020-06-22) was used for this analysis. Here are some relevant
-package versions used:
+* Pull Chukchi 1990 and 2012 otter (83-112 eastern bottom trawl) catch and effort data from RACE database.
+* Pull Chukchi 2012, 2017, and 2019 beam trawl data from IERL survey.
 
-| Package Name    | Version        |
-|-----------------|----------------|
-| VAST            | 3.6.1          | 
-| TMB             | 1.7.19         |   
-| FishStatsUtils  | 2.8.0          | 
-| Matrix          | 1.2-18         | 
-| INLA            | 21.02.23       | 
-| dplyr           | 1.0.5          | 
-| readxl          | 1.3.1          | 
-| reshape         | 0.8.8          | 
-| raster          | 3.4.5          | 
-| sp              | 1.4.5          | 
-| rgdal           | 1.5.23         | 
-|                 |                | 
+### 2) [Operating Model](https://github.com/zoyafuso-NOAA/Arctic_GF_OM/tree/main/code/VAST_fitting)
 
-## Species List
+* Fit single-species VAST models with different model configurations (e.g., spatial/spatiotemporal fields, observation models). Save the best (lowest-aic) model, run diagnostics, and simulate densities.  
 
-## Spatiotemporal Extent of Beam Trawl Stations
-![Location of stations for each gear and year surveyed via beam trawl](graphics/map_of_beamtrawl_stations.png)
+### 3) [Stratified Survey Optimization](https://github.com/zoyafuso-NOAA/Arctic_GF_OM/tree/main/code/survey_optimization)
 
-## Spatiotemporal Extent of Otter Trawl Stations
-![Location of stations for each gear and year surveyed via otter trawl](graphics/map_of_ottertrawl_stations.png)
+* Conduct stratified-random design optimization.
 
-## VAST Model Settings
-Four versions of random field configurations were conducted for each 
-single-species run. The converged models (e.g., max convergence < 1e-4)
-with the lowest AIC was the best candidate model. No density or catchability
-covariates were used at the moment. 200 spatial knots were used.
+### 4) Survey Design Evaluation
 
-## Estimated Precision (Updates Beam Trawl pre-Nov 2021; Otter Trawl Nov 2021)
-|                            |      | Beam   Trawl |      |   | Otter   Trawl |      |
-|----------------------------|------|--------------|------|---|---------------|------|
-|                            | 2012 | 2017         | 2019 |   | 1990          | 2012 |
-| Number of stations         | 42   | 58           | 45   |   | 69            | 72   |
-|                            |      |              |      |   |               |      |
-| Species                    |      |              |      |   |               |      |
-| Alaska plaice              |      |              |      |   | 0.81          | 0.22 |
-| Arctic cod                 | 0.23 | 0.2          | 0.25 |   | 0.60          | 0.12 |
-| Bering flounder            | 0.25 | 0.4          | 0.31 |   | 0.24          | 0.18 |
-| saffron cod                | 0.62 | 0.57         | 0.58 |   | 1.51          | 0.85 |
-| snow crab                  | 0.24 | 0.2          | 0.25 |   | 0.40          | 0.31 |
-| walleye pollock            |      |              |      |   | 0.47          | 0.23 |
-| yellowfin sole             | 0.97 | 1.14         | 1.04 |   | 0.90          | 0.39 |
+* Simulate different survey designs and calculate performance metrics.
 
+### 5) [Figure Production](https://github.com/zoyafuso-NOAA/Arctic_GF_OM/tree/main/code/figures)
 
+* Create figures for use in manuscripts and presentations.
+
+### 6) Manuscript Production
+
+* Create manuscript for publication. 
