@@ -34,30 +34,37 @@ curr_dir <- getwd()
 ##  Define species list and years given the gear
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
 iregion = "chukchi"
-igear = "beam"
+igear = "otter"
 n_spp <- get(paste0("n_spp_", igear))
 spp_list <- get(paste0("spp_list_", igear))
 frame_df <- get(paste0("frame_df_", igear))
 n_years <- c("otter" = 2, "beam" = 3)[igear]
 
-stratas <- 3:5
+stratas <- 2
 total_n <- seq(from = 50, to = 200, by = 10)
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ##   Conduct Optimization ----
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
 
-for (istrata in stratas[3]) {
+n_dom <- c(1, 2)[2]
+
+for (istrata in stratas) {
   
-  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   ##   1) Initialize Optimization ----
   ##   Calculate spatiotemporal variance given a simple random sample with 
   ##   200 stations for each species. These variances are used as the starting
   ##   points for the survey design optimization because we assume the optimized
   ##   stratified design will produce better variances than the simple random
   ##   design for a given level of sampling effort.
-  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
-  srs_n <- 200
+  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  if (n_dom == 2) frame_df$domainvalue <- ifelse(test = frame_df$X1 > 70, 
+                                                 yes = 2, 
+                                                 no = 1)
+  srs_n <- switch(paste(n_dom), 
+                  "1" = 200, 
+                  "2" = table(frame_df$domainvalue) / nrow(frame_df) * 200)
   srs_stats <- SamplingStrata::buildStrataDF(
     dataset = cbind( frame_df[, -grep(x = names(frame_df), pattern = "X")],
                      X1 = 1))
@@ -70,16 +77,19 @@ for (istrata in stratas[3]) {
   ##   CV dataframe for optimization input 
   ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
   cv <- list()
-  cv[["DOM"]] <- 1
-  for (ispp in 1:n_spp) cv[[paste0("CV", ispp)]] <- as.numeric( srs_cv[ispp] )
-  cv[["domainvalue"]] <- 1
+  cv[["DOM"]] <- c(1:n_dom)
+  for (ispp in 1:n_spp) cv[[paste0("CV", ispp)]] <- as.numeric( srs_cv[, ispp] )
+  cv[["domainvalue"]] <- c(1:n_dom)
   cv <- as.data.frame(cv)
   
   ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   ##   3) Create result directory ----
   ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
   result_dir <- paste0(curr_dir, "/results/",
-                       iregion, "_", igear, "/survey_opt",
+                       iregion, "_", igear, "/survey_opt/",
+                       ifelse(n_dom == 1,
+                              yes = "full_domain", 
+                              no = "split"),
                        "/Str_", istrata, "/")
   
   if (!dir.exists(result_dir)) dir.create(result_dir, recursive = TRUE)
@@ -90,16 +100,17 @@ for (istrata in stratas[3]) {
   ##   subject to the SRS CVs
   ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
   par(mfrow = c(6, 6), mar = c(2, 2, 0, 0))
-  solution <- SamplingStrata::optimStrata(method = "continuous",
-                                          errors = cv, 
-                                          framesamp = frame_df,
-                                          iter = 300,
-                                          pops = 100,
-                                          elitism_rate = 0.1,
-                                          mut_chance = 1 / (istrata + 1),
-                                          nStrata = istrata,
-                                          showPlot = T,
-                                          writeFiles = T)
+  solution <- SamplingStrata::optimStrata(
+    method = "continuous",
+    errors = cv, 
+    framesamp = frame_df,
+    iter = 300,
+    pops = 100,
+    elitism_rate = 0.1,
+    mut_chance = 1 / (rep(istrata, n_dom) + 1),
+    nStrata = rep(istrata, n_dom),
+    showPlot = T,
+    writeFiles = T)
   
   ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   ##   5) Clean up results ---- 
@@ -114,13 +125,15 @@ for (istrata in stratas[3]) {
                                              solution$aggr_strata,
                                              progress=FALSE)
   sum_stats$stratum_id <- 1:nrow(sum_stats)
+  sum_stats$Population <- sum_stats$Population / n_years
   sum_stats$wh <- sum_stats$Allocation / sum_stats$Population
   sum_stats$Wh <- sum_stats$Population / nrow(frame_df)
   sum_stats <- cbind(sum_stats,
                      subset(x = solution$aggr_strata,
                             select = -c(STRATO, N, COST, CENS, DOM1, X1)))
   
-  plot_solution <- solution$indices$X1
+  plot_solution <- as.integer(factor(paste(solution$framenew$DOMAINVALUE, 
+                                           solution$framenew$LABEL)))
   
   ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   ##   6) Save results ----
@@ -132,11 +145,26 @@ for (istrata in stratas[3]) {
                       sol_by_cell = plot_solution)
   save(list = "result_list", file = "result_list.RData")
   
+  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ##   6.5) Recalculate srs statistics, assuming one domain
+  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  frame_df$domainvalue <- as.integer(1)
+  srs_n <- 200
+  srs_stats <- SamplingStrata::buildStrataDF(
+    dataset = cbind( frame_df[, -grep(x = names(frame_df), pattern = "X")],
+                     X1 = 1))
+  
+  ## SRS statistics
+  srs_var <- srs_stats[, paste0("S", 1:n_spp)]^2 * (1 - srs_n / n_cells) / srs_n
+  srs_cv <- sqrt(srs_var) / srs_stats[, paste0("M", 1:n_spp)]
+  n_strata <- nrow(solution$aggr_strata)
+  
   ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   ##   7) Single-Species Optimization ----
   ##   Calculate single-species CV subject to the initial stratification
   ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
   ss_sample_allocations <- expand.grid(n = total_n, species = spp_list)
+  
   for (ispp in 1:n_spp) {
     temp_n <- result_list$n
     
@@ -146,11 +174,11 @@ for (istrata in stratas[3]) {
                                paste0("Y", ispp), paste0("Y", ispp, "_SQ_SUM")))
     names(ss_df)[grep(x = names(ss_df), pattern = "Y")] <- c("Y1", "Y1_SQ_SUM")
     
-    for (isample in total_n[-1]){
+    for (isample in total_n) {
       
       ## Create CV inputs to the Bethel algorithm; initialize at SRS CV
       error_df <- data.frame("DOM" = "DOM1",
-                             as.numeric(srs_cv)[ispp],
+                             as.numeric(srs_cv[1, ispp]),
                              "domainvalue"  = 1)
       names(error_df)[2] <- "CV1"
       
@@ -161,6 +189,7 @@ for (istrata in stratas[3]) {
                                  paste0("M", ispp), paste0("S", ispp), 
                                  "COST", "CENS", "DOM1", "X1" , "SOLUZ"
         )]
+      temp_stratif$STRATO <- 1:nrow(temp_stratif)
       temp_stratif$N <- temp_stratif$N / n_years
       temp_stratif$DOM1 <- 1
       names(temp_stratif)[3:4] <- paste0(c("M", "S"), 1)
@@ -205,7 +234,7 @@ for (istrata in stratas[3]) {
       ss_sample_allocations[temp_idx, "CV"] <- 
         as.numeric(attributes(temp_bethel)$outcv[, "ACTUAL CV"])
       
-      ss_sample_allocations[temp_idx, paste("Str_", 1:istrata)] <- 
+      ss_sample_allocations[temp_idx, paste("Str_", 1:n_strata)] <- 
         as.integer(temp_bethel)
       
     }
@@ -219,7 +248,7 @@ for (istrata in stratas[3]) {
   ms_sample_allocations <- expand.grid(n = total_n)
   temp_n <- result_list$n
   
-  for (isample in total_n[-(1:3)]){
+  for (isample in total_n) {
     
     ## Subset lower limits of CVs from the ss cvs
     ss_cvs <- subset(ss_sample_allocations, n == isample)$CV
@@ -295,7 +324,7 @@ for (istrata in stratas[3]) {
     ms_sample_allocations[temp_idx, paste0("CV", 1:n_spp)] <- 
       as.numeric(attributes(temp_bethel)$outcv[, "ACTUAL CV"])
     
-    ms_sample_allocations[temp_idx, paste("Str_", 1:istrata)] <- 
+    ms_sample_allocations[temp_idx, paste("Str_", 1:n_strata)] <- 
       as.integer(temp_bethel)
     
   }
@@ -307,7 +336,7 @@ for (istrata in stratas[3]) {
   plot_survey_opt_map(file_name = paste0("solution.png"),
                       grid_object =  grid_pts,
                       sol_by_cell = plot_solution, 
-                      allocations = as.numeric(ms_sample_allocations[ms_sample_allocations$n == 200, paste0("Str_ ", 1:istrata)]),
+                      allocations = as.numeric(ms_sample_allocations[ms_sample_allocations$n == 200, paste0("Str_ ", 1:n_strata)]),
                       draw_stations = TRUE)
   
   ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
