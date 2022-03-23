@@ -1,35 +1,34 @@
-###############################################################################
-## Project:      Chukchi optimization 
-## Author:       Zack Oyafuso (zack.oyafuso@noaa.gov)
-## Description:  Constants used in survey optimization
-###############################################################################
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+## Project:       Chukchi bottom trawl stratified survey optimization
+## Author:        Zack Oyafuso (zack.oyafuso@noaa.gov)
+## Description:   Constants used in survey optimization
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 rm(list = ls())
 
-##################################################
-####   Import Libraries
-##################################################
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+##   Import Libraries ----
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
 library(sp)
 library(rgdal)
 library(rgeos)
 library(raster)
+library(VAST)
 
-##################################################
-#### Import Chukchi Grid and AK land   
-##################################################
-chukchi_grid <- read.csv(paste0("data/spatial_data/",
-                                "BS_Chukchi_extrapolation_grids/",
-                                "ChukchiThorsonGrid.csv"))
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+##   Import Chukchi Grid and AK land   ----
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 AKland <- rgdal::readOGR("data/spatial_data/land_shapefiles/AKland.shp")
 
 aea_crs <- raster::crs(AKland)
 latlon_crs <- sp::CRS("+proj=longlat +datum=WGS84")
-n_cells <- nrow(chukchi_grid)
+n_cells <- nrow(chukchi_sea_grid)
 n_iters <- 1000
 
-##################################################
-#### Calculate minimum distance to land for each grid point
-##################################################
-grid_pts <- sp::SpatialPoints(coords = chukchi_grid[, c("Lon", "Lat")], 
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+##   Dist to shore ----
+##   Calculate minimum distance to land for each grid point
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
+grid_pts <- sp::SpatialPoints(coords = chukchi_sea_grid[, c("Lon", "Lat")], 
                               proj4string = latlon_crs)
 grid_pts <- sp::spTransform(x = grid_pts, CRSobj = aea_crs)
 
@@ -42,43 +41,44 @@ dist_to_shore <- apply(X = rgeos::gDistance(spgeom1 = grid_pts,
 xrange <- bbox(grid_pts)[1, ]
 yrange <- bbox(grid_pts)[2, ]
 
-##################################################
-#### Species included
-##################################################
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+##   Species Included for each gear ----
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
 spp_list <- read.csv(file = "results/good_species.csv")
 
-spp_list_otter <- spp_list$taxon[spp_list$gear == "otter"]
+spp_list_otter <- spp_list$taxon[spp_list$otter]
 n_spp_otter <- length(spp_list_otter)
 names(spp_list_otter) <- paste0("Y", 1:n_spp_otter)
 
-spp_list_beam <- spp_list$taxon[spp_list$gear == "beam"]
+spp_list_beam <- spp_list$taxon[spp_list$beam]
 n_spp_beam <- length(spp_list_beam)
 names(spp_list_beam) <- paste0("Y", 1:n_spp_beam)
 
-##################################################
-#### Constants related to gear type
-##################################################
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+##   Years sampled for each gear type ----
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 years_otter <- c(1990, 2012)
 year_idx_otter <- c(1, 23)
 
 years_beam <- c(2012, 2017, 2019)
 year_idx_beam <- c(1, 6, 8)
 
-##################################################
-#### Species optimization data input
-#### X1 and X2 are stratum variables latitude (X1) and distance from shore (X2)
-#### Y1, Y2, ..., Yn_spp are density predictions from VAST and 
-#### Y1_SUM_SQ, ..., is the square of the density prediction
-####
-#### true_index is the true index from VAST
-##################################################
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+##   SamplingStrata Data Input ----
+##   X1 and X2 are stratum variables latitude (X1) and distance from shore (X2)
+##   Y1, Y2, ..., Yn_spp are density predictions from VAST and 
+##   Y1_SUM_SQ, ..., is the square of the density prediction
+##
+##   true_index is the true index claculated from VAST
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
 frame_df_otter <- frame_df_beam <- data.frame(domainvalue = 1,
-                                              id = 1:nrow(chukchi_grid),
-                                              X1 = chukchi_grid$Lat,
+                                              id = 1:nrow(chukchi_sea_grid),
+                                              X1 = chukchi_sea_grid[, "Lat"],
                                               X2 = dist_to_shore)
 
-for (igear in c("otter", "beam")) {
+for (igear in c("otter", "beam")) { ## Loop over gear -- start
   
+  ## Grab species list and years based on gear igear
   spp_list <- get(paste0("spp_list_", igear))
   n_spp <- get(paste0("n_spp_", igear))
   
@@ -94,7 +94,7 @@ for (igear in c("otter", "beam")) {
   idir <- paste0("chukchi_", igear, "/vast_fits/")
 
   
-  for (ispp in 1:n_spp) {
+  for (ispp in 1:n_spp) { ## Loop over species -- start
     load(paste0("results/", idir, spp_list[ispp], "/fit.RData"))
     frame_df[, paste0("Y", ispp)] <- 
       rowSums(as.matrix(fit$Report$D_gct[, 1, year_idx]))
@@ -102,17 +102,18 @@ for (igear in c("otter", "beam")) {
       rowSums(as.matrix(fit$Report$D_gct[, 1, year_idx]^2))
     
     true_index[, ispp] <- fit$Report$Index_ctl[1, year_idx, 1]
-  }
+  } ## Loop over species -- end
   
   assign(x = paste0("frame_df_", igear), value = frame_df)
   assign(x = paste0("true_index_", igear), value = true_index)  
   
   rm(igear, spp_list, n_spp, years, year_idx, true_index, frame_df, idir, ispp)
-}
+}  ## Loop over gear -- end
 
-##################################################
-#### Save
-##################################################
+
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+##   Save
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
 save(list = c("aea_crs", "latlon_crs", "xrange", "yrange", "grid_pts", 
               "n_cells", "n_iters", 
               as.vector(sapply(X = c( "spp_list", "n_spp", 

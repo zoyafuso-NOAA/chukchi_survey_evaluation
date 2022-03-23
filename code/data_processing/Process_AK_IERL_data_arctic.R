@@ -1,18 +1,18 @@
-###############################################################################
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## Project:       Synthesize Alaska Bottom Trawl Arctic beam trawl survey data 
 ## Author:        Zack Oyafuso (zack.oyafuso@noaa.gov)
-###############################################################################
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 rm(list = ls())
 
-##################################################
-####  Import Libraries
-##################################################
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+##   Import Libraries ----
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
 library(dplyr)
 library(readxl)
 
-##################################################
-####  Import Data
-##################################################
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+##   Import Data ----
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
 main_haul <- as.data.frame(readxl::read_xlsx(
   "data/fish_data/2017_2019_Beam/Hauls2017_2019.xlsx"))
 main_haul <- subset(main_haul, 
@@ -28,16 +28,17 @@ main_catch <- as.data.frame(readxl::read_xlsx(
 species_codes <- read.csv("data/fish_data/AK_BTS_OtterAndBeam/species.csv")
 taxa <- read.csv("data/fish_data/AK_BTS_OtterAndBeam/taxonomy.csv")
 
-###############################################################################
-####   Create output result directory if does not exist already
-############################################################################### 
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+##   Create  result directory ----
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 output_dir <- "data/fish_data/2017_2019_Beam/data_long_by_taxa/"
 if (!dir.exists(output_dir)) dir.create(output_dir)
 
-##################################################
-####  Subset catch data to selected fish species 
-####  Sum over subsampling?
-##################################################
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+##   Subset species ----
+##   Subset catch data to selected fish species 
+##   Sum over subsampling?
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 main_catch <- subset(x = main_catch,
                        select = c(CLAMS_EVENT_NUMBER, 
                                   TOTAL_WEIGHT_IN_HAUL,
@@ -48,9 +49,10 @@ main_catch <- aggregate(catch_kg ~ species_code + station_id,
                           data = main_catch,
                           FUN = sum)
 
-##################################################
-####  Match haul data information with catch data
-##################################################
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+##   Match haul data ----
+##   Match haul data information with catch data
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
 idx <- match(main_catch$station_id,
              main_haul$EVENT_EVENT_NUMBER)
 
@@ -61,9 +63,10 @@ main_catch[, c("year", "station_id", "area_swept_km2", "lat", "lon",
                      "bottom_temp_C", "BOTTOM_DEPTH_m")]
 main_catch$cpue_kg_km2 <- main_catch$catch_kg / main_catch$area_swept_km2
 
-##################################################
-#### Create a wide df with zeros filled for stations where species not observed
-##################################################
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+##   Widen data ----
+##   Create a wide df with zeros filled for stations where species not observed
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
 data_wide <- tidyr::spread(data = subset(main_catch,
                                          select = -c(catch_kg, area_swept_km2)),
                            key = "species_code", 
@@ -71,16 +74,17 @@ data_wide <- tidyr::spread(data = subset(main_catch,
                            fill = 0)
 data_wide <- data_wide[!is.na(data_wide$year), ]
 
-###############################################################################
-####   
-###############################################################################  
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+##   Create datasets ----
+##   Create VAST data input for each species
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 species_info <- data.frame()
 
 solo_spp <- subset(x = species_codes, 
                    subset = COMMON_NAME %in% 
-                     c("Alaska plaice", "Arctic cod",  "Pacific cod", "walleye pollock", 
-                       "snow crab", "Pacific halibut", "yellowfin sole", 
-                       "Bering flounder", "saffron cod",
+                     c("Alaska plaice", "Arctic cod",  "Pacific cod", 
+                       "walleye pollock", "snow crab", "yellowfin sole", 
+                       "Bering flounder", "saffron cod", 
                        "purple-orange sea star") )
 
 for (irow in 1:nrow(solo_spp)) {
@@ -110,9 +114,9 @@ for (irow in 1:nrow(solo_spp)) {
   }
 }
 
-###############################################################################
-####   Aggregate species
-############################################################################### 
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+##   Aggregate species ----
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 aggregate_species <- read.csv(file = "data/fish_data/aggregates_species.csv")
 for (irow in 1:nrow(aggregate_species)) {
   
@@ -150,9 +154,10 @@ for (irow in 1:nrow(aggregate_species)) {
   }
 }
 
-###############################################################################
-####   Save species info data
-###############################################################################  
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+##   Save ----
+##   Create VAST data input for each species group
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
 write.csv(x = species_info, 
           file = paste0(dirname(output_dir), "/species_info.csv"),
           row.names = F)
