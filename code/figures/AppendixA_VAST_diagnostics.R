@@ -32,6 +32,7 @@ good_species <- read.csv(file = "results/good_species.csv")
 ##################################################  
 if(!dir.exists("figures/Appendix_A/"))
   dir.create("figures/Appendix_A/")
+
 ##################################################
 #### Synthesize density predictions for each gear and species
 ##################################################
@@ -44,8 +45,9 @@ for (igear in c("otter", "beam")) {
                                     year = c(2012, 2017, 2019)))[[igear]]
   
   ## Species that gear sampled
-  species <- subset(x = read.csv("results/good_species.csv"),
-                    subset = gear == igear)$taxon
+  species <- read.csv("results/good_species.csv")
+  species_idx <- species[, igear]
+  species <- species[species_idx, ]$taxon
   
   ## Temporary result object
   ms_dens <- array(data = NA,
@@ -71,10 +73,20 @@ for (igear in c("otter", "beam")) {
 col_otter <- brewer.pal(n = 9, name = "Blues")
 col_beam <- brewer.pal(n = 9, name = "Greens")
 
-for (ispp_name in unique(good_species$taxon)[]){
-  
-  available_gears <- subset(x = good_species,
-                            subset = taxon == ispp_name)$gear
+##################################################
+#### Plot
+##################################################
+col_otter <- brewer.pal(n = 9, name = "Blues")
+col_beam <- brewer.pal(n = 9, name = "Greens")
+
+# for (irow in 1:nrow(good_species)){
+for (irow in c(4, 5, 13) ){ 
+  ispp_name <- good_species$taxon[irow]
+  ispp_name_plot <- good_species$taxon_plot[irow]
+  available_gears <- unlist(subset(x = good_species,
+                                   subset = taxon == ispp_name,
+                                   select = c(otter, beam)))
+  available_gears <- sort(names(available_gears)[available_gears])
   
   n_gears <- length(available_gears)
   
@@ -93,10 +105,10 @@ for (ispp_name in unique(good_species$taxon)[]){
                             "beam" = matrix(data = c(1, 2, 3, 4, 7, 5, 6),
                                             byrow = TRUE, nrow = 1),
                             "otter" = matrix(data = c(1, 2, 3, 6, 4, 5),
-                                            byrow = TRUE, nrow = 1))
+                                             byrow = TRUE, nrow = 1))
   layout_widths <- switch(paste0(available_gears, collapse = ""),
                           "beamotter" = c(1, 1, 1, 1, 1.5, 1.5),
-                          "beam" = c(0.5, 1, 1, 1, 0.5, 1, 1),
+                          "beam" = c(0.75, 1, 1, 1, 0.5, 1, 1),
                           "otter" = c(1, 1, 1, 0.5, 1, 1))
   
   layout(mat = plot_layout_mat,
@@ -108,28 +120,29 @@ for (ispp_name in unique(good_species$taxon)[]){
   ## Name 
   plot(1, axes = F, ann = F, pch = 16, type = "n",
        xlim = c(0, 1), ylim = c(0, 1))
-  mtext(side = 3, 
-        text = gsub(x = ispp_name,
-                    pattern = " ",
-                    replacement = "\n"), 
+  mtext(side = 3,
+        text = gsub(x = ispp_name_plot,
+                    pattern = "\\n",
+                    replacement = "\n", fixed = TRUE),
         line = -3)
   
   if(file.exists(paste0("data/taxon_images/", ispp_name, ".jpg"))) {
+    
+    xleft <- good_species[good_species$taxon == ispp_name, "xleft"]
+    xright <- good_species[good_species$taxon == ispp_name, "xright"]
+    ybottom <- good_species[good_species$taxon == ispp_name, "ybottom"]
+    ytop <- good_species[good_species$taxon == ispp_name, "ytop"]
+    
     fish_img <- jpeg::readJPEG(source = paste0("data/taxon_images/", 
                                                ispp_name, ".jpg"))
     img_orientation <- ifelse(test = dim(fish_img)[1] > dim(fish_img)[2],
                               yes = "portrait", no = "landscape")
     rasterImage(image = fish_img, 
-                xleft = ifelse(test = img_orientation == "portrait", 
-                               yes = 0.3, no = 0.05),
-                xright = ifelse(test = img_orientation == "portrait", 
-                                yes = 0.7, no = 0.95),
-                ybottom = ifelse(test = img_orientation == "portrait", 
-                                 yes = 0.3, no = 0.4),
-                ytop = ifelse(test = img_orientation == "portrait", 
-                              yes = 0.7, no = 0.6))
+                xleft = xleft,
+                xright = xright,
+                ybottom = ybottom,
+                ytop = ytop)
   }
- 
   
   box()
   
@@ -140,7 +153,6 @@ for (ispp_name in unique(good_species$taxon)[]){
     ## Load full VAST result
     fit <- readRDS(paste0("results/chukchi_", igear, "/vast_fits/", 
                           ispp_name, "/fit_full.rds"))
-    
     
     ## Years that gear was used
     years <- list("otter" = data.frame(idx = c(1, 23),
@@ -158,15 +170,20 @@ for (ispp_name in unique(good_species$taxon)[]){
     for (iyear in 1:nrow(years)){
       plot_this <- data.frame(X1 = temp_density[, iyear])
       
-      plot_this$X1 <- as.numeric(base::cut(x = plot_this$X1, 
-                                           breaks = density_cuts, 
-                                           labels = 1:(length(density_cuts) - 1),
-                                           include.lowest = TRUE,
-                                           right = FALSE))
-      chukchi_shp <- sp::SpatialPointsDataFrame(coords = grid_pts@coords, 
-                                                proj4string = aea_crs,
-                                                data = plot_this)
-      chukchi_ras <- raster::raster(x = chukchi_shp, resolution = 3700)
+      plot_this$X1 <- 
+        as.numeric(base::cut(x = plot_this$X1, 
+                             breaks = density_cuts, 
+                             labels = 1:(length(density_cuts) - 1),
+                             include.lowest = TRUE,
+                             right = FALSE))
+      
+      chukchi_shp <- 
+        sp::SpatialPointsDataFrame(coords = chukchi_sea_grid[, c("Lon", "Lat")], 
+                                   proj4string = latlon_crs,
+                                   data = plot_this)
+      chukchi_shp <- sp::spTransform(x = chukchi_shp, CRSobj = aea_crs)
+      
+      chukchi_ras <- raster::raster(x = chukchi_shp, resolution = 4000)
       chukchi_ras <- raster::rasterize(x = chukchi_shp,
                                        y = chukchi_ras, 
                                        field = "X1")
@@ -201,23 +218,24 @@ for (ispp_name in unique(good_species$taxon)[]){
     
     ## Index
     index <- read.csv(paste0("results/chukchi_", igear, "/vast_fits/", 
-                             ispp_name, "/Table_for_SS3.csv" ))[years$idx, ]
+                             ispp_name, 
+                             "/diagnostics/Index.csv" ))[years$idx, ]
     
-    index_est <- rbind(index$Estimate_metric_tons - index$SD_mt,
-                       index$Estimate_metric_tons,
-                       index$Estimate_metric_tons + index$SD_mt) 
+    index_est <- rbind(index$Estimate - index$Std..Error.for.Estimate,
+                       index$Estimate,
+                       index$Estimate + index$Std..Error.for.Estimate) * 1e-3
     
-    scale_est <- ifelse(test = max(log10(abs(index_est))) > 6, 
+    scale_est <- ifelse(test = max(log10(abs(index_est / 1000))) > 6, 
                         yes = "million",
                         no = "thousand")
     
     index_est <- index_est / c("thousand" = 1e3, "million" = 1e6)[scale_est]
     
-    year_bounds <- list("otter" = c(1985, 2017),
+    year_bounds <- list("otter" = c(1980, 2017),
                         "beam" = c(2010, 2021))[[igear]]
     
-    par(mar = c(4, 4, 2, 0.5))
-    plot(x = index$Year,
+    par(mar = c(4, 3.5, 2, 0.5))
+    plot(x = index$Time,
          y = index_est[2, ],
          axes = F,
          yaxs = "i", yaxt = "n",
@@ -226,13 +244,13 @@ for (ispp_name in unique(good_species$taxon)[]){
          pch = 16, col = get(paste0("col_", igear))[8],
          xlab = "Year", ylab = "")
     axis(side = 2, las = 1, cex.axis = 0.75)
-    mtext(side = 2, text = paste0("Index (", scale_est, "\nmetric tons)"), 
-          line = 2, cex = 0.5)
-    segments(x0 = index$Year, x1 = index$Year,
+    mtext(side = 2, text = paste0("Index (", scale_est, " metric tons)"), 
+          line = 2.5, cex = 0.5)
+    segments(x0 = index$Time, x1 = index$Time,
              y0 = index_est[1, ], y1 = index_est[3, ],
              col = get(paste0("col_", igear))[7])
-    text(x = index$Year, y = index_est[3, ], xpd = NA,
-         labels = paste("CV =", round(index$SD_log, 2)),
+    text(x = index$Time, y = index_est[3, ], xpd = NA,
+         labels = paste("CV =", round(index$Std..Error.for.ln.Estimate., 2)),
          pos = 3, cex = 0.7, col = get(paste0("col_", igear))[8])
     # axis(side = 2, las = 1)
     axis(side = 1, at = c(0, years$year), labels = c(0, years$year), las = 2)
@@ -241,18 +259,14 @@ for (ispp_name in unique(good_species$taxon)[]){
     ###################################
     ## Calculate DHarma Residuals
     ###################################
-    dyn.load(paste0("results/chukchi_", igear, "/vast_fits/", 
-                    ispp_name, "/VAST_v12_0_0.dll"))
-    
-    dharmaRes = summary( fit, what = "residuals", working_dir = NA )
-    dyn.unload(paste0("results/chukchi_", igear, "/vast_fits/", 
-                      ispp_name, "/VAST_v12_0_0.dll"))
-    
-    par(mar = c(3.5, 4.5, 1.25, 1))
+    load(paste0("results/chukchi_", igear, "/vast_fits/",
+                ispp_name, "/diagnostics/diagnostics.RData"))
+    dharmaRes <- diagnostics$dharmaRes
     
     ###################################
     ## QQ Plot
     ###################################
+    par(mar = c(3.5, 3.5, 1, 1))
     gap::qqunif(dharmaRes$scaledResiduals, 
                 pch = 2, 
                 bty = "n",
@@ -260,12 +274,12 @@ for (ispp_name in unique(good_species$taxon)[]){
                 col = "black", 
                 cex = 0.2,
                 cex.main = 1, 
-                las = 1,
+                las = 2,
                 ann = F, 
-                cex.axis = 1)
+                cex.axis = 0.7)
     
     mtext(side = 1, line = 2, text = "Expected", cex = 0.7)
-    mtext(side = 2, line = 2.5, text = "Observed", cex = 0.7)
+    mtext(side = 2, line = 2, text = "Observed", cex = 0.7)
     
     box()
     box(which = "figure")
@@ -273,7 +287,7 @@ for (ispp_name in unique(good_species$taxon)[]){
     ## Legend
     par(mar = c(0,0,0,0))
     plot(1, type = "n", xlim = c(0, 100), ylim = c(0, 100), ann = F, axes = F)
-
+    
     if (igear == "otter")
       plotrix::color.legend(
         xl = 10, xr = 20,
@@ -283,7 +297,7 @@ for (ispp_name in unique(good_species$taxon)[]){
         gradient = "y",
         align = "rb",
         cex = 0.4)
-
+    
     if (igear == "beam")
       plotrix::color.legend(
         xl = 10, xr = 20,
@@ -293,7 +307,7 @@ for (ispp_name in unique(good_species$taxon)[]){
         gradient = "y",
         align = "rb",
         cex = 0.4)
-
+    
     points(x = rep(70, 6),
            y = seq(from = 10, to = 80, length = 6),
            pch = c(3, rep(1, 5)),
@@ -302,13 +316,13 @@ for (ispp_name in unique(good_species$taxon)[]){
          y = seq(from = 10, to = 80, length = 6) - 5,
          labels = c(0, "< 1", 10, 100, 1000, 10000),
          cex = 0.65)
-
+    
     mtext(side = 3, line = -1.75, cex = 0.55,
           text = paste0(igear, " trawl\n(kg/km2)"))
     box()
   }
   
-
+  
   dev.off()
   
 }
