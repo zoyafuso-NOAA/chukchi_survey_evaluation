@@ -51,25 +51,6 @@ pck_version <- c("VAST" = "3.9.0", "FishStatsUtils" = "2.11.0",
 ##   Import Libraries ----
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
 library(VAST)
-library(googledrive)
-library(purrr)
-
-##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-##   Authorize Google Drive ----
-##   Create folder in google drive where the VAST output will be saved. 
-##   This is done because VAST outputs and the simulated density objects are
-##   often very large (i.e., > 100 MB) and go over github's data limits. This
-##   makes it very bulky to push and pull these outputs over github.
-##
-##   For downstream analyses, VAST output is to be downloaded from google drive. 
-##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-googledrive::drive_deauth()
-googledrive::drive_auth() 
-1
-
-if( nrow(googledrive::drive_get(path = "Oyafuso_Chukchi_VAST")) == 0 ) {
-  google_folder <- googledrive::drive_mkdir("Oyafuso_Chukchi_VAST")
-}
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ##   VAST Model Settings ----
@@ -83,7 +64,7 @@ settings <- FishStatsUtils::make_settings(
   ObsModel = c(2, 1),
   max_cells = Inf,
   use_anisotropy = FALSE, 
-  Options = c('SD_site_logdensity' = FALSE, 'Calculate_Range' = TRUE,
+  Options = c('SD_site_logdensity' = FALSE, 'Calculate_Range' = FALSE,
               'Calculate_effective_area' = FALSE, 'Calculate_Cov_SE' = FALSE,
               'Calculate_Synchrony' = FALSE, 'Calculate_proportion' = FALSE))
 
@@ -92,16 +73,7 @@ settings <- FishStatsUtils::make_settings(
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
 
 ## Loop over gears: start ---- 
-for (igear in c("beam", "otter")[2]) { 
-  
-  ## Create a folder in google drive for gear igear if it doesn't exist
-  gear_folder <- paste0("Oyafuso_Chukchi_VAST", "/", igear, "/") 
-  if(nrow(googledrive::drive_get(path = paste0("Oyafuso_Chukchi_VAST/", 
-                                               igear, "/"))) == 0) {
-    googledrive::drive_mkdir(path = "Oyafuso_Chukchi_VAST/", 
-                             name = igear, 
-                             overwrite = TRUE)
-  }
+for (igear in c("beam", "otter")[1]) { 
   
   ## Species list
   spp_list <- 
@@ -114,7 +86,7 @@ for (igear in c("beam", "otter")[2]) {
          replacement = "")
   
   ## Loop over species: start ---- 
-  for (ispp in spp_list[2] ) { 
+  for (ispp in spp_list) { 
     
     ## Create species folder locally
     result_dir <- paste0(getwd(), "/results/chukchi_", igear, 
@@ -125,19 +97,22 @@ for (igear in c("beam", "otter")[2]) {
     AKBTS_data <- read.csv(paste0("data/fish_data/AK_BTS_OtterAndBeam/",
                                   "data_long_by_taxa/", 
                                   ispp, ".csv"))
-    ierl_beam_data <- read.csv(paste0("data/fish_data/2017_2019_Beam/",
-                                      "data_long_by_taxa/", 
-                                      ispp, ".csv"))
     
     ## subset gear igear
     spp_data <- subset(x = AKBTS_data, subset = gear == igear,
                        select = c(year, lon, lat, cpue_kg_km2))
     
     if (igear == "beam") { #add ierl beam data
+      ierl_beam_data <- read.csv(paste0("data/fish_data/2017_2019_Beam/",
+                                        "data_long_by_taxa/", 
+                                        ispp, ".csv"))
+      
       spp_data <- rbind(spp_data,
                         subset(x = ierl_beam_data,
                                select = c(year, lon, lat, cpue_kg_km2)))  
     }
+
+
     
     ## Data input for VAST
     data_geostat <- data.frame(
@@ -273,12 +248,12 @@ for (igear in c("beam", "otter")[2]) {
       
       settings$ObsModel <- switch(sub_df$obs_model[best_model_idx], 
                                   "PosLink" = c(2, 4),
-                                  "Log_Delta" = c(1, 0), 
+                                  "Log_Delta" = c(1, 0),
                                   "Gamma_Delta" = c(2, 0))
       
       ## Fit model with best settings ----
       ## Turn on bias correction
-      settings$bias.correct <- TRUE
+      settings$bias.correct <- FALSE
       fit <- FishStatsUtils::fit_model( 
         "settings" = settings,
         "working_dir" = result_dir,
@@ -380,7 +355,7 @@ for (igear in c("beam", "otter")[2]) {
                                       chukchi_sea_grid[, "Area_in_survey_km2"],
                                     nrow = nrow(chukchi_sea_grid))
         
-        if(isim%%50 == 0) print(paste("Done with", ispp, "Iteration", isim))
+        if(isim%%10 == 0) print(paste("Done with", ispp, "Iteration", isim))
       }
       
       ## Save simulated densities by year locally
@@ -402,56 +377,6 @@ for (igear in c("beam", "otter")[2]) {
                            "data_list", "Report")]
       save(list = "fit_sim",
            file = paste0(result_dir, "simulated_densities/fit_sim.RData"))
-      
-      ## Upload to Google Drive ----
-      
-      ## Create species folder in google, Upload files related to the VAST fit
-      if(nrow(googledrive::drive_get(
-        path = paste0(gear_folder, ispp, "/"))) == 0) {
-        spp_folder <- googledrive::drive_mkdir(path = gear_folder, 
-                                               name = ispp)
-      }
-      
-      googledrive::with_drive_quiet(
-        files <- purrr::map(paste0(result_dir, 
-                                   c("Kmeans_knots-200.RData", 
-                                     "model_settings.csv", 
-                                     "packageDescription.txt", 
-                                     "parameter_estimates.RData", 
-                                     "parameter_estimates.txt", 
-                                     "settings.txt",
-                                     "fit.RData", 
-                                     "fit_full.rds")), 
-                            ~ drive_upload(.x, path = spp_folder)))
-      
-      ## Create diagnostics folder in Google Drive, Upload Diagnostics
-      if(nrow(googledrive::drive_get(
-        path = paste0(gear_folder, ispp, "/diagnostics/"))) == 0) {
-        diagnostics_folder <- 
-          googledrive::drive_mkdir(paste0("Oyafuso_Chukchi_VAST/",
-                                          igear, "/", ispp, 
-                                          "/diagnostics"))
-      }
-      
-      googledrive::with_drive_quiet(
-        files <- purrr::map(dir(paste0(result_dir, "diagnostics/"), 
-                                full.names = T), 
-                            ~ drive_upload(.x, path = diagnostics_folder )))
-      
-      ## Create simulated_densities folder in Google Drive, upload 
-      ## simulated densities
-      if(nrow(googledrive::drive_get(
-        path = paste0(gear_folder, ispp, "/simulated_densities/"))) == 0) {
-        simualtion_folder <- 
-          googledrive::drive_mkdir(paste0("Oyafuso_Chukchi_VAST/",
-                                          igear, "/", ispp, 
-                                          "/simulated_densities"))
-      }
-      
-      googledrive::with_drive_quiet(
-        files <- purrr::map(dir(paste0(result_dir, "simulated_densities/"),
-                                full.names = T), 
-                            ~ drive_upload(.x, path = simualtion_folder )))
       
     }  
   } ## Loop over species: end
