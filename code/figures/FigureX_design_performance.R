@@ -91,7 +91,7 @@ for (taxon in c("fish", "inverts")) {
     ##################################################
     ####   Plot Species Subtitle
     ##################################################
-    text(x = 110,
+    text(x = 170,
          y = ylim * 1.15,
          labels = spp_name[ispp],
          font = 2,
