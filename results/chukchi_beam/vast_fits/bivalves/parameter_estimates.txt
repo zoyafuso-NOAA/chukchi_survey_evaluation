@@ -1,9 +1,9 @@
 $par
   beta1_ft   beta1_ft   beta1_ft   beta2_ft   beta2_ft   beta2_ft L_omega2_z  logkappa2  logSigmaM 
- 1.7346011  1.8325815  0.4989912  8.3465434  7.2330968  6.7232420  1.7003400 -3.3195304  0.5888055 
+ 1.7346011  1.8325815  0.4989912  8.7156344  7.6081458  7.0981272  1.1782941 -4.1311712  0.6878904 
 
 $objective
-[1] 985.6231
+[1] 985.6932
 attr(,"logarithm")
 [1] TRUE
 
@@ -15,34 +15,34 @@ function gradient
        2        1 
 
 $time_for_MLE
-Time difference of 0.6522589 secs
+Time difference of 1.00342 secs
 
 $max_gradient
-[1] 2.648462e-14
+[1] 6.656483e-13
 
 $Convergence_check
 [1] "There is no evidence that the model is not converged"
 
 $number_of_coefficients
  Total  Fixed Random 
-   264      9    255 
+   268      9    259 
 
 $AIC
-[1] 1989.246
+[1] 1989.386
 attr(,"logarithm")
 [1] TRUE
 
 $diagnostics
        Param starting_value     Lower        MLE     Upper final_gradient
-1   beta1_ft      1.7346011      -Inf  1.7346011       Inf  -2.664535e-15
-2   beta1_ft      1.8325815      -Inf  1.8325815       Inf  -1.421085e-14
-3   beta1_ft      0.4989912      -Inf  0.4989912       Inf  -1.776357e-15
-4   beta2_ft      8.3465434      -Inf  8.3465434       Inf  -1.693908e-15
-5   beta2_ft      7.2330968      -Inf  7.2330968       Inf   2.284480e-14
-6   beta2_ft      6.7232420      -Inf  6.7232420       Inf   1.022250e-14
-7 L_omega2_z      1.7003400      -Inf  1.7003400       Inf  -2.097435e-14
-8  logkappa2     -3.3195304 -5.728812 -3.3195304 -2.156649   2.648462e-14
-9  logSigmaM      0.5888055      -Inf  0.5888055 10.000000   2.376090e-14
+1   beta1_ft      1.7346011      -Inf  1.7346011       Inf  -8.881784e-16
+2   beta1_ft      1.8325815      -Inf  1.8325815       Inf  -1.776357e-15
+3   beta1_ft      0.4989912      -Inf  0.4989912       Inf  -1.065814e-14
+4   beta2_ft      8.7156344      -Inf  8.7156344       Inf   2.208467e-15
+5   beta2_ft      7.6081458      -Inf  7.6081458       Inf   2.397398e-14
+6   beta2_ft      7.0981272      -Inf  7.0981272       Inf   3.476419e-14
+7 L_omega2_z      1.1782941      -Inf  1.1782941       Inf  -3.908251e-14
+8  logkappa2     -4.1311712 -5.728946 -4.1311712 -2.231622  -6.656483e-13
+9  logSigmaM      0.6878904      -Inf  0.6878904 10.000000  -6.759255e-14
 
 $SD
 sdreport(.) result
@@ -50,17 +50,17 @@ sdreport(.) result
 beta1_ft    1.7346011  0.4428074
 beta1_ft    1.8325815  0.3807886
 beta1_ft    0.4989912  0.3074700
-beta2_ft    8.3465434  0.6722020
-beta2_ft    7.2330968  0.6925989
-beta2_ft    6.7232420  0.7726346
-L_omega2_z  1.7003400  0.7702221
-logkappa2  -3.3195304  0.8516007
-logSigmaM   0.5888055  0.1561657
-Maximum gradient component: 2.648462e-14 
+beta2_ft    8.7156344  0.7321997
+beta2_ft    7.6081458  0.6964115
+beta2_ft    7.0981272  0.7240401
+L_omega2_z  1.1782941  0.5254363
+logkappa2  -4.1311712  0.9311322
+logSigmaM   0.6878904  0.1046222
+Maximum gradient component: 6.656483e-13 
 
 $time_for_sdreport
-Time difference of 3.948009 secs
+Time difference of 5.433244 secs
 
 $time_for_run
-Time difference of 4.651132 secs
+Time difference of 6.505895 secs
 

@@ -1,11 +1,11 @@
 $Version
-[1] "VAST_v12_0_0"
+[1] "VAST_v13_1_0"
 
 $n_x
 [1] 200
 
 $Region
-[1] "User"
+[1] "chukchi_sea"
 
 $strata.limits
      STRATA
@@ -16,7 +16,7 @@ $zone
 
 $FieldConfig
   Omega1 Epsilon1   Omega2 Epsilon2 
-       1        0        1        0 
+   "IID"      "0"    "IID"      "0" 
 
 $RhoConfig
    Beta1    Beta2 Epsilon1 Epsilon2 

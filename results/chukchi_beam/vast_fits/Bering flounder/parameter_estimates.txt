@@ -1,9 +1,9 @@
 $par
-    beta1_ft     beta1_ft     beta1_ft   L_omega1_z    logkappa1     beta2_ft     beta2_ft     beta2_ft   L_omega2_z    logkappa2    logSigmaM 
--0.069249880 -0.563152810 -0.444351418  1.101830533 -3.440802558  3.188224706  3.350606683  3.684917246  1.029463939 -4.261805548 -0.007775726 
+   beta1_ft    beta1_ft    beta1_ft  L_omega1_z   logkappa1    beta2_ft    beta2_ft    beta2_ft  L_omega2_z   logkappa2   logSigmaM 
+-0.06395135 -0.56992085 -0.43173063  1.14140834 -3.36139880  3.19569671  3.34044569  3.67631511  1.05470369 -4.20517774 -0.01364165 
 
 $objective
-[1] 499.8942
+[1] 500.0904
 attr(,"logarithm")
 [1] TRUE
 
@@ -15,56 +15,56 @@ function gradient
        2        1 
 
 $time_for_MLE
-Time difference of 2.235077 secs
+Time difference of 1.517958 secs
 
 $max_gradient
-[1] 2.540411e-07
+[1] 1.204215e-11
 
 $Convergence_check
 [1] "There is no evidence that the model is not converged"
 
 $number_of_coefficients
  Total  Fixed Random 
-   521     11    510 
+   529     11    518 
 
 $AIC
-[1] 1021.788
+[1] 1022.181
 attr(,"logarithm")
 [1] TRUE
 
 $diagnostics
-        Param starting_value     Lower          MLE     Upper final_gradient
-1    beta1_ft   -0.069249888      -Inf -0.069249880       Inf   2.997040e-08
-2    beta1_ft   -0.563152808      -Inf -0.563152810       Inf  -1.369129e-08
-3    beta1_ft   -0.444351421      -Inf -0.444351418       Inf   2.536874e-08
-4  L_omega1_z    1.101830509      -Inf  1.101830533       Inf   1.576634e-07
-5   logkappa1   -3.440802609 -5.728812 -3.440802558 -2.156649   1.739718e-07
-6    beta2_ft    3.188224714      -Inf  3.188224706       Inf  -1.192734e-08
-7    beta2_ft    3.350606683      -Inf  3.350606683       Inf   1.545574e-08
-8    beta2_ft    3.684917252      -Inf  3.684917246       Inf  -1.079365e-09
-9  L_omega2_z    1.029463945      -Inf  1.029463939       Inf  -1.045044e-07
-10  logkappa2   -4.261805508 -5.728812 -4.261805548 -2.156649  -1.975308e-07
-11  logSigmaM   -0.007775729      -Inf -0.007775726 10.000000   2.540411e-07
+        Param starting_value     Lower         MLE     Upper final_gradient
+1    beta1_ft    -0.06395135      -Inf -0.06395135       Inf   1.754819e-12
+2    beta1_ft    -0.56992085      -Inf -0.56992085       Inf   5.973000e-13
+3    beta1_ft    -0.43173063      -Inf -0.43173063       Inf  -3.055334e-13
+4  L_omega1_z     1.14140834      -Inf  1.14140834       Inf   8.846035e-12
+5   logkappa1    -3.36139880 -5.728946 -3.36139880 -2.231622  -6.836753e-13
+6    beta2_ft     3.19569671      -Inf  3.19569671       Inf   1.909584e-14
+7    beta2_ft     3.34044569      -Inf  3.34044569       Inf   3.321787e-13
+8    beta2_ft     3.67631511      -Inf  3.67631511       Inf   9.880985e-14
+9  L_omega2_z     1.05470369      -Inf  1.05470369       Inf   1.562639e-13
+10  logkappa2    -4.20517774 -5.728946 -4.20517774 -2.231622  -3.468337e-13
+11  logSigmaM    -0.01364165      -Inf -0.01364165 10.000000   1.204215e-11
 
 $SD
 sdreport(.) result
-               Estimate Std. Error
-beta1_ft   -0.069249880 0.34309137
-beta1_ft   -0.563152810 0.33047996
-beta1_ft   -0.444351418 0.33819357
-L_omega1_z  1.101830533 0.33080823
-logkappa1  -3.440802558 0.50616828
-beta2_ft    3.188224706 0.54207791
-beta2_ft    3.350606683 0.52247039
-beta2_ft    3.684917246 0.56303487
-L_omega2_z  1.029463939 0.24951868
-logkappa2  -4.261805548 0.45900644
-logSigmaM  -0.007775726 0.08706109
-Maximum gradient component: 2.540411e-07 
+              Estimate Std. Error
+beta1_ft   -0.06395135 0.33967096
+beta1_ft   -0.56992085 0.32693307
+beta1_ft   -0.43173063 0.33457022
+L_omega1_z  1.14140834 0.36449473
+logkappa1  -3.36139880 0.55213984
+beta2_ft    3.19569671 0.53330183
+beta2_ft    3.34044569 0.51518099
+beta2_ft    3.67631511 0.55963040
+L_omega2_z  1.05470369 0.25262904
+logkappa2  -4.20517774 0.46885608
+logSigmaM  -0.01364165 0.08918277
+Maximum gradient component: 1.204215e-11 
 
 $time_for_sdreport
-Time difference of 7.133992 secs
+Time difference of 4.988149 secs
 
 $time_for_run
-Time difference of 9.524654 secs
+Time difference of 6.574002 secs
 
