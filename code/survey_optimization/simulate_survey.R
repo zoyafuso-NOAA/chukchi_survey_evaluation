@@ -16,21 +16,22 @@ library(rgeos)
 library(raster)
 library(rgdal)
 library(viridis )
+library(VAST)
 
 ##################################
 ## Load input data and single-species survey outputs
 ## Load Chukchi grid
 ##################################
 load("data/survey_opt_data/optimization_data.RData")
-chukchi_grid <- read.csv(paste0("data/spatial_data/",
-                                "BS_Chukchi_extrapolation_grids/",
-                                "ChukchiThorsonGrid.csv"))
+# chukchi_grid <- read.csv(paste0("data/spatial_data/",
+#                                 "BS_Chukchi_extrapolation_grids/",
+#                                 "ChukchiThorsonGrid.csv"))
 
 ##################################################
 ####   convert shape area (m2) to km2, assign some area constants
 ##################################################  
-chukchi_grid$Area_km2 <- chukchi_grid$Shape_Area / 1000 / 1000
-cell_area <- chukchi_grid$Area_km2
+# chukchi_grid$Area_km2 <- chukchi_grid$Shape_Area / 1000 / 1000
+cell_area <- chukchi_sea_grid[, "Area_in_survey_km2"]
 total_area <- sum(cell_area)
 
 ##################################################
@@ -107,16 +108,10 @@ ms_dens <- array(dim = c(n_spp, n_cells, 1000),
 
 for (ispp in 1:n_spp) { ## Loop over species -- start
   load(paste0("results/chukchi_", igear,
-              "/vast_fits/", spp_list[ispp], "/sim_data_", iyear, 
-              "_simtype1_iter1to500.RData"))
+              "/vast_fits/", spp_list[ispp], "/simulated_densities/sim_data_",
+              iyear, "_simtype1.RData"))
   
-  ms_dens[ispp, , 1:500] <- get(paste0("sim_data_", iyear, "_simtype1"))
-  
-  load(paste0("results/chukchi_", igear,
-              "/vast_fits/", spp_list[ispp], "/sim_data_", iyear, 
-              "_simtype1_iter501to1000.RData"))
-  
-  ms_dens[ispp, , 501:1000] <- get(paste0("sim_data_", iyear, "_simtype1"))
+  ms_dens[ispp, , ] <- get(paste0("sim_data_", iyear, "_simtype1"))
 } ## Loop over species -- end
 
 ##################################
@@ -142,9 +137,9 @@ for (isample in 1:length(target_n)) { ## Loop over total effort -- start
                      total_area^2 / target_n[isample])
     
     ## Record Survey Performance Metrics
-    index_srs[isample, , iter] <- srs_tau / 1000
+    index_srs[isample, , iter] <- srs_tau 
     rb_index_srs[isample, , iter] <- 
-      100 * (srs_tau / 1000 - true_index) / true_index
+      100 * (srs_tau - true_index) / true_index
     cv_srs[isample, , iter] <-  srs_sd / srs_tau
     
   }  ## Loop over iterations -- end
@@ -195,7 +190,7 @@ for (isample in 1:nrow(sys_settings)) { ## Loop over survey effort -- start
     sys_mean <- rowMeans(ms_dens[, sys_idx[[isample]], iter])
     
     ## Record survey statistics
-    index_sys[isample, , iter] <- sys_mean * total_area / 1000
+    index_sys[isample, , iter] <- sys_mean * total_area
     cv_sys[isample, , iter] <- sys_sd_LO5 / sys_mean
     rb_index_sys[isample, , iter] <- 
       100 * (index_sys[isample, , iter] - true_index) / true_index
@@ -248,7 +243,7 @@ for (itarget in target_n){ ## Loop over sampling effort -- start
                                                   FUN = mean))
     
     tau_strs <- as.numeric(t(strata_mean) %*% matrix(Ah) )
-    index_ms_strs[paste0("ms_strs_n = ", itarget), , iter] <- tau_strs / 1000
+    index_ms_strs[paste0("ms_strs_n = ", itarget), , iter] <- tau_strs
     
     # Calculate STRS variance of mean density
     strata_var <- apply(X = sample_df, 
@@ -266,7 +261,7 @@ for (itarget in target_n){ ## Loop over sampling effort -- start
       sqrt(STRS_var) / tau_strs
     
     rb_index_ms_strs[paste0("ms_strs_n = ", itarget), , iter] <- 
-      100 * (tau_strs / 1000 - true_index) / true_index
+      100 * (tau_strs - true_index) / true_index
     
   } ## Loop over iterations -- end
 } ## Loop over sampling effort -- end
