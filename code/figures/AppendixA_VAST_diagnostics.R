@@ -1,13 +1,13 @@
-###############################################################################
-## Project:       Figure X: VAST output
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+## Project:       Appendix A: VAST output
 ## Author:        Zack Oyafuso (zack.oyafuso@noaa.gov)
-## Description:   predicted density, index, qq plots for each species/gear
-###############################################################################
+## Description:   Plot predicted density, index, qq plots for each species/gear
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 rm(list = ls())
 
-##################################################
-#### Import relevant libraries   
-##################################################
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+##   Import relevant libraries   ----
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
 library(rgdal)
 library(sp)
 library(raster)
@@ -17,9 +17,9 @@ library(plotrix)
 library(VAST)
 library(jpeg)
 
-##################################################
-#### Import Data and Constants
-##################################################
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+##   Import data and constants ----
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 load("data/survey_opt_data/optimization_data.RData")
 AK_land <- rgdal::readOGR(dsn = "data/spatial_data/land_shapefiles/AKland.shp")
 cropped_extent <- extent(grid_pts)
@@ -27,15 +27,20 @@ cropped_extent[2] <- cropped_extent[2] + 10000
 ak_land_cropped <- raster::crop(x = AK_land, y = cropped_extent)
 good_species <- read.csv(file = "results/good_species.csv")
 
-##################################################
-####   Result directory
-##################################################  
+## Plotting colors
+col_otter <- brewer.pal(n = 9, name = "Blues")
+col_beam <- brewer.pal(n = 9, name = "Greens")
+
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+##   Result directory ----
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
 if(!dir.exists("figures/Appendix_A/"))
   dir.create("figures/Appendix_A/")
 
-##################################################
-#### Synthesize density predictions for each gear and species
-##################################################
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+##   Collate density ----
+##    predictions for each gear and species
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
 for (igear in c("otter", "beam")) {
   
   ## Years that gear was used
@@ -67,37 +72,29 @@ for (igear in c("otter", "beam")) {
   assign(x = paste0("ms_dens_", igear), value = ms_dens)
 }
 
-##################################################
-#### Plot
-##################################################
-col_otter <- brewer.pal(n = 9, name = "Blues")
-col_beam <- brewer.pal(n = 9, name = "Greens")
-
-##################################################
-#### Plot
-##################################################
-col_otter <- brewer.pal(n = 9, name = "Blues")
-col_beam <- brewer.pal(n = 9, name = "Greens")
-
-# for (irow in 1:nrow(good_species)){
-for (irow in c(4, 5, 13) ){ 
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+##   Plot ----
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
+for (irow in 1:nrow(good_species)){
+  
+  ## Taxon constants
   ispp_name <- good_species$taxon[irow]
   ispp_name_plot <- good_species$taxon_plot[irow]
   available_gears <- unlist(subset(x = good_species,
                                    subset = taxon == ispp_name,
                                    select = c(otter, beam)))
   available_gears <- sort(names(available_gears)[available_gears])
-  
   n_gears <- length(available_gears)
   
+  ## Open plot device
   png(filename = paste0("figures/Appendix_A/VAST_output_", ispp_name, ".png"),
       width = 190, units = "mm", res = 500, family = "serif",
       height = switch(paste0(available_gears, collapse = ""),
                       "beam" =  40, "otter" = 45,
                       "beamotter" = 75))
-  ## Setup layout of 
-  par(mar = c(0, 0, 0, 0))
   
+  ## Setup plot layout 
+  par(mar = c(0, 0, 0, 0))
   plot_layout_mat <- switch(paste0(available_gears, collapse = ""),
                             "beamotter" = matrix(data = c(2, 3, 6, 1, 4, 5,
                                                           12, 7, 8, 9, 10, 11),
@@ -113,11 +110,9 @@ for (irow in c(4, 5, 13) ){
   
   layout(mat = plot_layout_mat,
          widths = layout_widths)
-  
-  
   par(mar = c(0, 0, 0, 0))
   
-  ## Name 
+  ## Taxon name 
   plot(1, axes = F, ann = F, pch = 16, type = "n",
        xlim = c(0, 1), ylim = c(0, 1))
   mtext(side = 3,
@@ -126,6 +121,7 @@ for (irow in c(4, 5, 13) ){
                     replacement = "\n", fixed = TRUE),
         line = -3)
   
+  ## Taxon image
   if(file.exists(paste0("data/taxon_images/", ispp_name, ".jpg"))) {
     
     xleft <- good_species[good_species$taxon == ispp_name, "xleft"]
@@ -252,20 +248,15 @@ for (irow in c(4, 5, 13) ){
     text(x = index$Time, y = index_est[3, ], xpd = NA,
          labels = paste("CV =", round(index$Std..Error.for.ln.Estimate., 2)),
          pos = 3, cex = 0.7, col = get(paste0("col_", igear))[8])
-    # axis(side = 2, las = 1)
     axis(side = 1, at = c(0, years$year), labels = c(0, years$year), las = 2)
     box(which = "figure")
     
-    ###################################
     ## Calculate DHarma Residuals
-    ###################################
     load(paste0("results/chukchi_", igear, "/vast_fits/",
                 ispp_name, "/diagnostics/diagnostics.RData"))
     dharmaRes <- diagnostics$dharmaRes
     
-    ###################################
     ## QQ Plot
-    ###################################
     par(mar = c(3.5, 3.5, 1, 1))
     gap::qqunif(dharmaRes$scaledResiduals, 
                 pch = 2, 
@@ -321,8 +312,5 @@ for (irow in c(4, 5, 13) ){
           text = paste0(igear, " trawl\n(kg/km2)"))
     box()
   }
-  
-  
   dev.off()
-  
 }
