@@ -41,13 +41,13 @@ frame_df <- get(paste0("frame_df_", igear))
 n_years <- c("otter" = 2, "beam" = 3)[igear]
 
 stratas <- 3:5
-total_n <- seq(from = 50, to = 200, by = 10)
+total_n <- seq(from = 55, to = 200, by = 15)
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ##   Conduct Optimization ----
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
 
-for (istrata in stratas[3]) {
+for (istrata in 4) {
   
   ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   ##   1) Initialize Optimization ----
@@ -146,7 +146,7 @@ for (istrata in stratas[3]) {
                                paste0("Y", ispp), paste0("Y", ispp, "_SQ_SUM")))
     names(ss_df)[grep(x = names(ss_df), pattern = "Y")] <- c("Y1", "Y1_SQ_SUM")
     
-    for (isample in total_n[-1]){
+    for (isample in total_n){
       
       ## Create CV inputs to the Bethel algorithm; initialize at SRS CV
       error_df <- data.frame("DOM" = "DOM1",
@@ -205,7 +205,7 @@ for (istrata in stratas[3]) {
       ss_sample_allocations[temp_idx, "CV"] <- 
         as.numeric(attributes(temp_bethel)$outcv[, "ACTUAL CV"])
       
-      ss_sample_allocations[temp_idx, paste("Str_", 1:istrata)] <- 
+      ss_sample_allocations[temp_idx, paste("Str_", 1:length(temp_bethel))] <- 
         as.integer(temp_bethel)
       
     }
@@ -219,7 +219,7 @@ for (istrata in stratas[3]) {
   ms_sample_allocations <- expand.grid(n = total_n)
   temp_n <- result_list$n
   
-  for (isample in total_n[-(1:3)]){
+  for (isample in total_n){
     
     ## Subset lower limits of CVs from the ss cvs
     ss_cvs <- subset(ss_sample_allocations, n == isample)$CV
@@ -295,7 +295,7 @@ for (istrata in stratas[3]) {
     ms_sample_allocations[temp_idx, paste0("CV", 1:n_spp)] <- 
       as.numeric(attributes(temp_bethel)$outcv[, "ACTUAL CV"])
     
-    ms_sample_allocations[temp_idx, paste("Str_", 1:istrata)] <- 
+    ms_sample_allocations[temp_idx, paste("Str_", 1:length(temp_bethel))] <- 
       as.integer(temp_bethel)
     
   }
@@ -307,7 +307,8 @@ for (istrata in stratas[3]) {
   plot_survey_opt_map(file_name = paste0("solution.png"),
                       grid_object =  grid_pts,
                       sol_by_cell = plot_solution, 
-                      allocations = as.numeric(ms_sample_allocations[ms_sample_allocations$n == 200, paste0("Str_ ", 1:istrata)]),
+                      allocations = as.numeric(ms_sample_allocations[ms_sample_allocations$n == 200, 
+                                                                     paste0("Str_ ", 1:length(temp_bethel))]),
                       draw_stations = TRUE)
   
   ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
