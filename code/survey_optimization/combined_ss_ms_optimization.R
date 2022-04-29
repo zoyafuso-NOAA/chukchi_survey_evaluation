@@ -47,7 +47,7 @@ total_n <- seq(from = 55, to = 200, by = 15)
 ##   Conduct Optimization ----
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
 
-for (istrata in 4) {
+for (istrata in 3) {
   
   ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   ##   1) Initialize Optimization ----
@@ -205,7 +205,7 @@ for (istrata in 4) {
       ss_sample_allocations[temp_idx, "CV"] <- 
         as.numeric(attributes(temp_bethel)$outcv[, "ACTUAL CV"])
       
-      ss_sample_allocations[temp_idx, paste("Str_", 1:length(temp_bethel))] <- 
+      ss_sample_allocations[temp_idx, paste0("Str_", 1:length(temp_bethel))] <- 
         as.integer(temp_bethel)
       
     }
@@ -295,7 +295,7 @@ for (istrata in 4) {
     ms_sample_allocations[temp_idx, paste0("CV", 1:n_spp)] <- 
       as.numeric(attributes(temp_bethel)$outcv[, "ACTUAL CV"])
     
-    ms_sample_allocations[temp_idx, paste("Str_", 1:length(temp_bethel))] <- 
+    ms_sample_allocations[temp_idx, paste0("Str_", 1:length(temp_bethel))] <- 
       as.integer(temp_bethel)
     
   }
@@ -307,8 +307,8 @@ for (istrata in 4) {
   plot_survey_opt_map(file_name = paste0("solution.png"),
                       grid_object =  grid_pts,
                       sol_by_cell = plot_solution, 
-                      allocations = as.numeric(ms_sample_allocations[ms_sample_allocations$n == 200, 
-                                                                     paste0("Str_ ", 1:length(temp_bethel))]),
+                      allocations = as.numeric(ms_sample_allocations[ms_sample_allocations$n == 190, 
+                                                                     paste0("Str_", 1:length(temp_bethel))]),
                       draw_stations = TRUE)
   
   ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
