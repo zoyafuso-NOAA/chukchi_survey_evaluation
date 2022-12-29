@@ -6,7 +6,6 @@
 "walleye pollock","Gadus chalcogrammus","walleye pollock",21740
 "Bering flounder","Hippoglossoides robustus","Bering flounder",10140
 "yellowfin sole","Limanda aspera","yellowfin sole",10210
-"Pacific halibut","Hippoglossus stenolepis","Pacific halibut",10120
 "Alaska plaice","Pleuronectes quadrituberculatus","Alaska plaice",10285
 "purple-orange sea star","Asterias amurensis","purple-orange sea star",81742
 "tunicates","Ascidiacea unid.","tunicates",98000
@@ -18,34 +17,18 @@
 "tunicates","Halocynthia aurantium","tunicates",98205
 "tunicates","Ascidiacea unid.","tunicates",98300
 "tunicates","Chelyosoma macleayanum","tunicates",98332
-"corals","Actinoscyphia sp.","corals",43003
-"corals","Actinernus sp.","corals",43005
-"corals","Metridium farcimen","corals",43021
-"corals","Stomphia sp.","corals",43030
-"corals","Zoanthus sp.","corals",43225
-"corals","Anthozoa unid.","corals",41000
-"corals","Gersemia sp.","corals",41201
-"corals","Actiniaria unid.","corals",43000
+"soft corals and sea anemones","Actinoscyphia sp.","soft corals and sea anemones",43003
+"soft corals and sea anemones","Actinernus sp.","soft corals and sea anemones",43005
+"soft corals and sea anemones","Metridium farcimen","soft corals and sea anemones",43021
+"soft corals and sea anemones","Stomphia sp.","soft corals and sea anemones",43030
+"soft corals and sea anemones","Zoanthus sp.","soft corals and sea anemones",43225
+"soft corals and sea anemones","Anthozoa unid.","soft corals and sea anemones",41000
+"soft corals and sea anemones","Gersemia sp.","soft corals and sea anemones",41201
+"soft corals and sea anemones","Actiniaria unid.","soft corals and sea anemones",43000
 "sea cucumbers","Holothuroidea unid.","sea cucumbers",85000
 "sea cucumbers","Ocnus glacialis","sea cucumbers",85013
 "sea cucumbers","Myriotrochus rinkii","sea cucumbers",85085
 "sea cucumbers","Psolus peroni","sea cucumbers",85221
-"other seastars","Asteroidea unid.","other seastars",80000
-"other seastars","Evasterias troschelii","other seastars",80015
-"other seastars","Evasterias echinosoma","other seastars",80020
-"other seastars","Urasterias lincki","other seastars",80030
-"other seastars","Leptasterias groenlandica","other seastars",80110
-"other seastars","Lethasterias nanimensis","other seastars",80200
-"other seastars","Henricia sp.","other seastars",80540
-"other seastars","Henricia tumida","other seastars",80546
-"other seastars","Leptasterias polaris","other seastars",80590
-"other seastars","Leptasterias arctica","other seastars",80594
-"other seastars","Leptasterias sp.","other seastars",80595
-"other seastars","Solaster sp.","other seastars",81060
-"other seastars","Asterias sp.","other seastars",81741
-"other seastars","Ctenodiscus crispatus","other seastars",81780
-"other seastars","Leptychaster arcticus","other seastars",81835
-"other seastars","Crossaster papposus","other seastars",81095
 "snails","Gastropoda unid.","snails",71405
 "snails","Gastropoda unid.","snails",71500
 "snails","Cryptonatica affinis","snails",71526
@@ -95,12 +78,6 @@
 "snails","Admete regina","snails",73186
 "snails","Cylichna alba","snails",73351
 "snails","Gastropoda unid.","snails",99994
-"other flatfishes","Reinhardtius hippoglossoides","other flatfishes",10115
-"other flatfishes","Liopsetta glacialis","other flatfishes",10155
-"other flatfishes","Limanda proboscidea","other flatfishes",10211
-"other flatfishes","Limanda sakhalinensis","other flatfishes",10212
-"other flatfishes","Platichthys stellatus","other flatfishes",10220
-"other flatfishes","Lepidopsetta polyxystra","other flatfishes",10261
 "bryozoans","Bryozoa unid.","bryozoans",95000
 "bryozoans","Bryozoa unid.","bryozoans",95010
 "urchins","Strongylocentrotus droebachiensis","urchins",82510

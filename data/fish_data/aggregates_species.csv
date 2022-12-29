@@ -1,10 +1,7 @@
 taxon_name,species_query
 tunicates,SUBPHYLUM_TAXON == 'Tunicata'
-corals,CLASS_TAXON == 'Anthozoa'
-sea cucumbers,CLASS_TAXON == 'Holothuroidea'
-other seastars,CLASS_TAXON == 'Asteroidea'
+soft corals and sea anemones,CLASS_TAXON == 'Anthozoa'
 snails,CLASS_TAXON == 'Gastropoda'
-other flatfishes,FAMILY_TAXON == 'Pleuronectidae'
 bryozoans,PHYLUM_TAXON == 'Bryozoa'
 urchins,GENUS_TAXON == 'Strongylocentrotus'
 poachers,FAMILY_TAXON == 'Agonidae'

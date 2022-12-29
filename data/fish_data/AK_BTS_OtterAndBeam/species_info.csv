@@ -27,21 +27,21 @@
 "tunicates","Chelyosoma productum","tunicates",98331
 "tunicates","Molgula sp.","tunicates",99900
 "tunicates","Molgula griffithsii","tunicates",99902
-"corals","Ptychodactis patula","corals",43008
-"corals","Metridium sp.","corals",43010
-"corals","Stomphia sp.","corals",43030
-"corals","Stomphia coccinea","corals",43032
-"corals","Urticina sp.","corals",43040
-"corals","Urticina crassicornis","corals",43042
-"corals","Oceanactis diomedeae","corals",43050
-"corals","Cribrinopsis sp.","corals",43081
-"corals","Cribrinopsis fernaldi","corals",43082
-"corals","Actinostolidae unid.","corals",43100
-"corals","Actinostola sp.","corals",43110
-"corals","Actinostola groenlandica","corals",43113
-"corals","Gersemia sp.","corals",41201
-"corals","Gersemia fruticosa","corals",41220
-"corals","Actiniaria unid.","corals",43000
+"soft corals and sea anemones","Ptychodactis patula","soft corals and sea anemones",43008
+"soft corals and sea anemones","Metridium sp.","soft corals and sea anemones",43010
+"soft corals and sea anemones","Stomphia sp.","soft corals and sea anemones",43030
+"soft corals and sea anemones","Stomphia coccinea","soft corals and sea anemones",43032
+"soft corals and sea anemones","Urticina sp.","soft corals and sea anemones",43040
+"soft corals and sea anemones","Urticina crassicornis","soft corals and sea anemones",43042
+"soft corals and sea anemones","Oceanactis diomedeae","soft corals and sea anemones",43050
+"soft corals and sea anemones","Cribrinopsis sp.","soft corals and sea anemones",43081
+"soft corals and sea anemones","Cribrinopsis fernaldi","soft corals and sea anemones",43082
+"soft corals and sea anemones","Actinostolidae unid.","soft corals and sea anemones",43100
+"soft corals and sea anemones","Actinostola sp.","soft corals and sea anemones",43110
+"soft corals and sea anemones","Actinostola groenlandica","soft corals and sea anemones",43113
+"soft corals and sea anemones","Gersemia sp.","soft corals and sea anemones",41201
+"soft corals and sea anemones","Gersemia fruticosa","soft corals and sea anemones",41220
+"soft corals and sea anemones","Actiniaria unid.","soft corals and sea anemones",43000
 "sea cucumbers","Holothuroidea unid.","sea cucumbers",85000
 "sea cucumbers","Ocnus sp.","sea cucumbers",85012
 "sea cucumbers","Ocnus glacialis","sea cucumbers",85013
@@ -51,27 +51,6 @@
 "sea cucumbers","Psolus sp.","sea cucumbers",85210
 "sea cucumbers","Psolus phantapus","sea cucumbers",85211
 "sea cucumbers","Psolus fabricii","sea cucumbers",85219
-"other seastars","Asteroidea unid.","other seastars",80000
-"other seastars","Evasterias echinosoma","other seastars",80020
-"other seastars","Urasterias lincki","other seastars",80030
-"other seastars","Orthasterias koehleri","other seastars",80106
-"other seastars","Leptasterias groenlandica","other seastars",80110
-"other seastars","Lethasterias nanimensis","other seastars",80200
-"other seastars","Henricia sp.","other seastars",80540
-"other seastars","Henricia sanguinolenta","other seastars",80542
-"other seastars","Henricia tumida","other seastars",80546
-"other seastars","Leptasterias polaris","other seastars",80590
-"other seastars","Leptasterias arctica","other seastars",80594
-"other seastars","Aleutihenricia beringiana","other seastars",80597
-"other seastars","Solaster sp.","other seastars",81060
-"other seastars","Pteraster obscurus","other seastars",81355
-"other seastars","Ctenodiscus sp.","other seastars",81779
-"other seastars","Ctenodiscus crispatus","other seastars",81780
-"other seastars","Solaster arcticus","other seastars",81073
-"other seastars","Crossaster papposus","other seastars",81095
-"other seastars","Pteraster sp.","other seastars",81310
-"other seastars","Pteraster tesselatus","other seastars",81315
-"other seastars","Pteraster octaster","other seastars",81322
 "snails","Dorididae unid.","snails",71250
 "snails","Gastropoda unid.","snails",71405
 "snails","Gastropoda unid.","snails",71500
@@ -177,11 +156,6 @@
 "snails","Admete laevior","snails",73185
 "snails","Admete regina","snails",73186
 "snails","Gastropoda unid.","snails",99994
-"other flatfishes","Reinhardtius hippoglossoides","other flatfishes",10115
-"other flatfishes","Liopsetta glacialis","other flatfishes",10155
-"other flatfishes","Limanda proboscidea","other flatfishes",10211
-"other flatfishes","Limanda sakhalinensis","other flatfishes",10212
-"other flatfishes","Platichthys stellatus","other flatfishes",10220
 "bryozoans","Bryozoa unid.","bryozoans",95000
 "urchins","Strongylocentrotus droebachiensis","urchins",82510
 "poachers","Pallasina barbata","poachers",20001
