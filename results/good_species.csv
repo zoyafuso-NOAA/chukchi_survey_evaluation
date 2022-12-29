@@ -1,23 +1,21 @@
 species_name,taxon,sci_name,beam,otter,taxon_group,taxon_plot,xleft,xright,ybottom,ytop
-T,Alaska plaice,Pleuronectes quadrituberculatus,FALSE,TRUE,fish,Alaska\nplaice,0.1,0.9,0.35,0.65
-T,Arctic cod,Boreogadus saida,TRUE,TRUE,fish,Arctic\ncod,0.1,0.9,0.35,0.65
-T,Bering flounder,Hippoglossoides robustus,TRUE,TRUE,fish,Bering\nflounder,0.1,0.9,0.35,0.65
+T,Alaska plaice,Pleuronectes quadrituberculatus,FALSE,TRUE,fish,Alaska plaice,0.1,0.9,0.35,0.65
+T,Arctic cod,Boreogadus saida,TRUE,TRUE,fish,Arctic cod,0.1,0.9,0.35,0.65
+T,Bering flounder,Hippoglossoides robustus,TRUE,TRUE,fish,Bering flounder,0.1,0.9,0.35,0.65
 F,bivalves,Class: Bivalvia,TRUE,FALSE,invert,bivalves,0.1,0.9,0.35,0.65
-F,bryozoans,Phylum: Bryozoa ,TRUE,FALSE,invert,bryozoans,0.1,0.9,0.35,0.65
-F,corals,Class: Anthozoa,TRUE,TRUE,invert,corals,0.1,0.9,0.35,0.65
+F,bryozoans,Phylum: Bryozoa,TRUE,FALSE,invert,bryozoans,0.1,0.9,0.35,0.65
+F,soft corals and sea anemones,Class: Anthozoa,TRUE,TRUE,invert,soft corals & anemones,0.1,0.9,0.35,0.65
 F,eelpouts,Family: Zoarchidae,FALSE,TRUE,fish,eelpouts,0.1,0.9,0.4,0.6
 F,jellyfishes,Class: Scyphozoa,TRUE,TRUE,invert,jellyfishes,0.1,0.9,0.35,0.65
-F,other seastars,Class: Asteroidea,TRUE,TRUE,invert,other\nseastars,0.3,0.6,0.35,0.65
-T,Pacific herring,Clupea pallasii,FALSE,TRUE,fish,Pacific\nherring,0.1,0.9,0.4,0.6
+T,Pacific herring,Clupea pallasii,FALSE,TRUE,fish,Pacific herring,0.1,0.9,0.4,0.6
 F,poachers,Family: Agonidae,TRUE,TRUE,fish,poachers,0.1,0.9,0.35,0.6
 F,pricklebacks,Family: Stichaeidae,TRUE,FALSE,fish,pricklebacks,0.1,0.9,0.4,0.6
-T,purple-orange sea star,Asterias amurensis,TRUE,TRUE,invert,purple-orange\nsea star,0.2,0.8,0.35,0.65
-T,saffron cod,Eleginus gracilis,TRUE,TRUE,fish,saffron\ncod,0.1,0.9,0.4,0.6
+T,purple-orange sea star,Asterias amurensis,TRUE,TRUE,invert,purple-orange sea star,0.2,0.8,0.35,0.65
+T,saffron cod,Eleginus gracilis,TRUE,TRUE,fish,saffron cod,0.1,0.9,0.4,0.6
 F,sculpins,Family: Cottidae,TRUE,TRUE,fish,sculpins,0.1,0.9,0.35,0.65
-F,sea cucumbers,Class: Holothuroidea,TRUE,TRUE,invert,sea\ncucumbers,0.1,0.9,0.35,0.65
 F,snailfishes,Family: Liparidae,TRUE,TRUE,fish,snailfishes,0.1,0.9,0.35,0.65
 F,snails,Class: Gastropoda,TRUE,TRUE,invert,snails,0.3,0.7,0.35,0.65
-T,snow crab,Chionoecetes opilio,TRUE,TRUE,invert,snow\ncrab,0.1,0.9,0.35,0.65
+T,snow crab,Chionoecetes opilio,TRUE,TRUE,invert,snow crab,0.1,0.9,0.35,0.65
 F,tunicates,Subphylum: Tunicata,TRUE,TRUE,invert,tunicates,0.1,0.9,0.35,0.65
-T,walleye pollock,Gadus chalcogrammus,FALSE,TRUE,fish,walleye\npollock,0.1,0.9,0.35,0.65
-T,yellowfin sole,Limanda aspera,FALSE,TRUE,fish,yellowfin\nsole,0.1,0.9,0.35,0.65
+T,walleye pollock,Gadus chalcogrammus,FALSE,TRUE,fish,walleye pollock,0.1,0.9,0.35,0.65
+T,yellowfin sole,Limanda aspera,FALSE,TRUE,fish,yellowfin sole,0.1,0.9,0.35,0.65
