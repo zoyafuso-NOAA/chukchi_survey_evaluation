@@ -9,15 +9,32 @@ good_species <- read.csv("../results/good_species.csv")
 
 string = c()
 fig_num <- 1
-for (ispp in unique(good_species$taxon)){
- string = paste0(string,
-                 "![](../figures/Appendix_A/VAST_output_", ispp, ".png)\n",
-                 "Appendix A", fig_num, ": VAST output for ", ispp, 
-                 ". A) Predicted density with observed densities superimposed,",
-                 " B) Abundance Indices with coefficients of variation, and ",
-                 "C) QQ plot.", "\n\n<br>\n\n")
- 
- fig_num <- fig_num + 1
+for (ispp in 1:nrow(good_species)){
+  
+  taxon_name <- good_species$taxon[ispp]
+  sci_name <- paste0(ifelse(test = good_species$species_name[ispp], 
+                            yes = "*", no = ""),
+                     good_species$sci_name[ispp], 
+                     ifelse(test = good_species$species_name[ispp], 
+                            yes = "*", no = ""))
+  which_gear <- unlist(good_species[ispp, c("beam", "otter")])
+  which_gear <- 
+    switch(paste(which(which_gear == T), collapse = ""),
+           "1" = "the beam trawl",
+           "2" = "the otter trawl",
+           "12" = "the otter trawl (top row) and the beam trawl (bottom row)") 
+  
+  string = paste0(
+    string,
+    "![](../figures/Appendix_A/VAST_output_", taxon_name, ".png)\n",
+    "Appendix A", fig_num, ": VAST output for ", taxon_name, 
+    " (", sci_name, ") for the ", which_gear,
+    ". From left to right, plots are generally formatted as: ",
+    "A) predicted density with observed densities superimposed, ",
+    "B) abundance indices with associated coefficients of variation, and ",
+    "C) QQ diagnostic plot.", "\n\n<br>\n\n")
+  
+  fig_num <- fig_num + 1
 }
 
 cat(string)
