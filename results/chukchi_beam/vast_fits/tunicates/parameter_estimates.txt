@@ -1,6 +1,8 @@
 $par
-  beta1_ft   beta1_ft   beta1_ft L_omega1_z  logkappa1   beta2_ft   beta2_ft   beta2_ft  logSigmaM 
--1.3881526 -1.8526719 -1.7662027  1.3044940 -4.2258025  7.8018460  5.6377333  5.9954548  0.3609065 
+     beta1_ft      beta1_ft      beta1_ft    L_omega1_z  L_epsilon1_z     logkappa1      beta2_ft      beta2_ft      beta2_ft    L_omega2_z 
+-1.388153e+00 -1.852672e+00 -1.766203e+00  1.304494e+00  3.299448e-12 -4.225802e+00  7.801846e+00  5.637733e+00  5.995455e+00 -1.424023e-11 
+ L_epsilon2_z     logkappa2     logSigmaM 
+ 3.442500e-13 -5.678102e+00  3.609065e-01 
 
 $objective
 [1] 362.0027
@@ -15,52 +17,60 @@ function gradient
        2        1 
 
 $time_for_MLE
-Time difference of 0.695751 secs
+Time difference of 5.659034 secs
 
 $max_gradient
-[1] 4.949049e-09
+[1] 1.190943e-08
 
 $Convergence_check
 [1] "There is no evidence that the model is not converged"
 
 $number_of_coefficients
  Total  Fixed Random 
-   268      9    259 
+  4675     13   4662 
 
 $AIC
-[1] 742.0055
+[1] 750.0055
 attr(,"logarithm")
 [1] TRUE
 
 $diagnostics
-       Param starting_value     Lower        MLE     Upper final_gradient
-1   beta1_ft     -1.3881526      -Inf -1.3881526       Inf  -1.116489e-10
-2   beta1_ft     -1.8526719      -Inf -1.8526719       Inf   7.765837e-10
-3   beta1_ft     -1.7662027      -Inf -1.7662027       Inf   2.104494e-11
-4 L_omega1_z      1.3044940      -Inf  1.3044940       Inf   4.949049e-09
-5  logkappa1     -4.2258025 -5.728946 -4.2258025 -2.231622   8.860113e-10
-6   beta2_ft      7.8018460      -Inf  7.8018460       Inf  -2.035366e-11
-7   beta2_ft      5.6377333      -Inf  5.6377333       Inf   4.128053e-11
-8   beta2_ft      5.9954548      -Inf  5.9954548       Inf   2.615239e-10
-9  logSigmaM      0.3609065      -Inf  0.3609065 10.000000   1.186067e-09
+          Param starting_value     Lower           MLE     Upper final_gradient
+1      beta1_ft  -1.388153e+00      -Inf -1.388153e+00       Inf  -1.440913e-09
+2      beta1_ft  -1.852672e+00      -Inf -1.852672e+00       Inf  -4.530132e-10
+3      beta1_ft  -1.766203e+00      -Inf -1.766203e+00       Inf   7.205321e-10
+4    L_omega1_z   1.304494e+00      -Inf  1.304494e+00       Inf  -1.190943e-08
+5  L_epsilon1_z   3.510664e-15      -Inf  3.299448e-12       Inf  -5.488450e-14
+6     logkappa1  -4.225802e+00 -5.728946 -4.225802e+00 -2.231622  -8.657262e-09
+7      beta2_ft   7.801846e+00      -Inf  7.801846e+00       Inf   6.233102e-10
+8      beta2_ft   5.637733e+00      -Inf  5.637733e+00       Inf   1.300999e-09
+9      beta2_ft   5.995455e+00      -Inf  5.995455e+00       Inf  -1.084062e-10
+10   L_omega2_z  -5.775445e-13      -Inf -1.424023e-11       Inf   2.109325e-11
+11 L_epsilon2_z   1.415721e-13      -Inf  3.442500e-13       Inf  -6.662825e-13
+12    logkappa2  -5.677836e+00 -5.728946 -5.678102e+00 -2.231622  -1.782041e-10
+13    logSigmaM   3.609065e-01      -Inf  3.609065e-01 10.000000  -7.862085e-10
 
 $SD
 sdreport(.) result
-             Estimate Std. Error
-beta1_ft   -1.3881526 0.65912071
-beta1_ft   -1.8526719 0.66392486
-beta1_ft   -1.7662027 0.67429218
-L_omega1_z  1.3044940 0.36088299
-logkappa1  -4.2258025 0.41572412
-beta2_ft    7.8018460 0.44162157
-beta2_ft    5.6377333 0.42265254
-beta2_ft    5.9954548 0.45069434
-logSigmaM   0.3609065 0.09572232
-Maximum gradient component: 4.949049e-09 
+                  Estimate   Std. Error
+beta1_ft     -1.388153e+00   0.65912072
+beta1_ft     -1.852672e+00   0.66392487
+beta1_ft     -1.766203e+00   0.67429219
+L_omega1_z    1.304494e+00   0.36088300
+L_epsilon1_z  3.299448e-12   0.28518808
+logkappa1    -4.225802e+00   0.41572413
+beta2_ft      7.801846e+00   0.44162157
+beta2_ft      5.637733e+00   0.42265254
+beta2_ft      5.995455e+00   0.45069434
+L_omega2_z   -1.424023e-11   0.13604271
+L_epsilon2_z  3.442500e-13   0.14504340
+logkappa2    -5.678102e+00 995.77605086
+logSigmaM     3.609065e-01   0.09572232
+Maximum gradient component: 1.190943e-08 
 
 $time_for_sdreport
-Time difference of 2.102794 mins
+Time difference of 11.90382 secs
 
 $time_for_run
-Time difference of 126.9093 secs
+Time difference of 17.83958 secs
 

@@ -4,10 +4,11 @@ Title: Vector-Autoregressive Spatio-Temporal (VAST) Model
 Version: 3.9.0
 Date: 2022-03-17
 Authors@R: c(person(given = "James", family = "Thorson", role = c("aut", "cre"), email = "James.Thorson@noaa.gov", comment = c(ORCID =
-                "0000-0001-7415-1010")), person(given="Cole", family="Monnahan", role="ctb", email="Cole.Monnahan@noaa.gov") )
-Description: VAST is an R package for conducting spatio-temporal analysis of data from multiple categories (species, sizes, etc.), and includes
-                both spatial and spatio-temporal variation in density for each category, with either factor-analysis or autoregressive
-                correlations among categories, with derived calculation of abundance indices, center-of-gravity, and area-occupied.
+               "0000-0001-7415-1010")), person(given="Cole", family="Monnahan", role="ctb", email="Cole.Monnahan@noaa.gov") )
+Description: VAST is an R package for conducting spatio-temporal analysis of data from multiple categories (species, sizes, etc.), and
+               includes both spatial and spatio-temporal variation in density for each category, with either factor-analysis or
+               autoregressive correlations among categories, with derived calculation of abundance indices, center-of-gravity, and
+               area-occupied.
 Imports: deldir, stats, devtools, abind, MatrixModels, ThorsonUtilities, effects, INLA, SpatialDeltaGLMM
 Depends: TMB, R (>= 3.5.0),
 Suggests: testthat, knitr, rmarkdown, FishStatsUtils, pscl, tweedie, mgcv, lme4
@@ -35,12 +36,12 @@ Title: Utilities (shared code and data) for FishStats spatio-temporal modeling t
 Version: 2.11.0
 Date: 2022-03-17
 Authors@R: c(person(given = "James", family = "Thorson", role = c("aut", "cre"), email = "James.Thorson@noaa.gov", comment = c(ORCID =
-                "0000-0001-7415-1010")) )
-Description: FishStatsUtils contains utilities (shared code and data) used by multiple packages (VAST, SpatialDeltaGLMM, MIST, Spatial_FA,
-                SpatialDFA, surplus_production, EOFR) that are designed for spatio-temporal analysis of ecological data.
-Imports: graphics, utils, mapproj, maptools, deldir, RANN, stats, colorspace, RandomFields, RandomFieldsUtils, shape, devtools, mixtools, sp, sf,
-                raster, plotrix, TMB, MatrixModels, rgdal, ThorsonUtilities, TMBhelper, abind, corpcor, pander, rnaturalearth, rnaturalearthdata,
-                formatR, splancs, DHARMa, viridisLite
+               "0000-0001-7415-1010")) )
+Description: FishStatsUtils contains utilities (shared code and data) used by multiple packages (VAST, SpatialDeltaGLMM, MIST,
+               Spatial_FA, SpatialDFA, surplus_production, EOFR) that are designed for spatio-temporal analysis of ecological data.
+Imports: graphics, utils, mapproj, maptools, deldir, RANN, stats, colorspace, RandomFields, RandomFieldsUtils, shape, devtools,
+               mixtools, sp, sf, raster, plotrix, TMB, MatrixModels, rgdal, ThorsonUtilities, TMBhelper, abind, corpcor, pander,
+               rnaturalearth, rnaturalearthdata, formatR, splancs, DHARMa, viridisLite
 Depends: R (>= 3.5.0), units
 Suggests: testthat
 Remotes: james-thorson/utilities, kaskr/TMB_contrib_R/TMBhelper

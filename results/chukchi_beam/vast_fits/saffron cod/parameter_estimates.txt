@@ -1,6 +1,8 @@
 $par
-  beta1_ft   beta1_ft   beta1_ft L_omega1_z  logkappa1   beta2_ft   beta2_ft   beta2_ft L_omega2_z  logkappa2  logSigmaM 
--2.5617942 -2.0049693 -1.2904140  1.6171599 -4.3702593  2.0929118  2.1002781  3.1388622  0.8205798 -4.8270459 -0.1991212 
+  beta1_ft   beta1_ft   beta1_ft L_omega1_z  logkappa1   beta2_ft   beta2_ft   beta2_ft 
+-2.5617942 -2.0049693 -1.2904140  1.6171599 -4.3702593  2.0929118  2.1002781  3.1388622 
+L_omega2_z  logkappa2  logSigmaM 
+ 0.8205798 -4.8270459 -0.1991212 
 
 $objective
 [1] 213.1715
@@ -15,7 +17,7 @@ function gradient
        2        1 
 
 $time_for_MLE
-Time difference of 1.211504 secs
+Time difference of 1.841622 secs
 
 $max_gradient
 [1] 7.109463e-09
@@ -63,8 +65,8 @@ logSigmaM  -0.1991212  0.1447548
 Maximum gradient component: 7.109463e-09 
 
 $time_for_sdreport
-Time difference of 1.519644 mins
+Time difference of 7.527408 secs
 
 $time_for_run
-Time difference of 92.45087 secs
+Time difference of 9.551289 secs
 
