@@ -13,6 +13,6 @@
 * [combined_ss_ms_optimization.R](https://github.com/zoyafuso-NOAA/Arctic_GF_OM/blob/main/code/01_analysis/combined_ss_ms_optimization.R): Conducts stratified-random design optimization for both gears.
 * [simulate_survey.R](https://github.com/zoyafuso-NOAA/Arctic_GF_OM/blob/main/code/01_analysis/simulate_survey.R): Simulates simple random, stratified random, and systematic surveys and calculates evaluation metrics. 
 
-### 5) [Figure Production](https://github.com/zoyafuso-NOAA/Arctic_GF_OM/tree/main/code/02_figures): Create figures for use in manuscripts and presentations.
+### 3) [Figure Production](https://github.com/zoyafuso-NOAA/Arctic_GF_OM/tree/main/code/02_figures): Create figures for use in manuscripts and presentations.
 
-### 6) [Manuscript Production](https://github.com/zoyafuso-NOAA/Arctic_GF_OM/tree/main/manuscript): Creates manuscript for publication using RMarkdown. Don't know whether this should be shown when made public though...
+### 4) [Manuscript Production](https://github.com/zoyafuso-NOAA/Arctic_GF_OM/tree/main/manuscript): Creates manuscript for publication using RMarkdown. Don't know whether this should be shown when made public though...
