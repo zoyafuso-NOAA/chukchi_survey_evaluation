@@ -1,0 +1,171 @@
+---
+title: "Simulation testing of survey designs for the US Chukchi bottom trawl survey"
+output: 
+  word_document:
+      reference_docx: template-worddoc.docx
+bibliography: Oyafuso_etal_Chukchi_survey_testing.bib
+---
+
+```{r, echo = F, message = F, warning = F}
+library(tidyr)
+load("../data/survey_opt_data/optimization_data.RData")
+```
+
+Abstract
+====================================
+
+The US Chukchi sea consists of the Arctic waters off the northwest of Alaska and is a naturally dynamic ice-informed ecosystem.  Climate change is affecting the marine ecosystem as well as the Arctic coastal communities that rely on healthy marine ecosystems. In anticipation of a potential bottom trawl survey in the region, there is an opportunity to evaluate the best means of continuing this survey, an area seldomly sampled compared to other regions in Alaska. This analysis focused on the types of bottom trawl surveys (otter and beam trawl) standardized by the NOAA-NMFS-AFSC and three types of survey designs: simple random, stratified random, and systematic. First, spatiotemporal distributions for 15 representative demersal fish and invertebrate taxa were fitted using the VAST R package. We then simulated spatiotemporal taxon densities to replicate the three survey designs to evaluate design-based estimates of abundance and precision across a range of sampling effort. Modest increases in precision were gained from stratifying the design when compared to a simple random design with either a similar or decreasing level of uncertainty and bias of the precision estimates. There were often strong tradeoffs between the precision and bias of the systematic estimates of precision across species and gear type. The stratified random design provided the most consistent, reliable, and precise estimates of abundance indices and is likely to be the most robust to changes in the survey design. This analysis is intended to provide the template for how we could change the survey design in the Chukchi going forward and will be important when transitioning into new survey objectives that are more ecosystem-focused. 
+
+Introduction
+====================================
+
+The recent environmental and ecological changes occuring in the Arctic ocean is unprecedented. The diminishing of the extent of the sea ice observed in the past century is perhaps the most visual representation of the changes occurring in the Arctic ocean (@POLYAK20101757). The Arctic ice pack reached its lowest point in 2012 relative to 1979-2000 (@Parkinson2013Ice). Sea ice and the cold conditions associated with it are important drivers in atmospheric and oceanographic regulation (@BUDIKOVA2009149). The edges of the sea ice are active in primary and secondary production, creating important foraging habitats for fish and marine mammals (@Post2013). Seals haul out on the surface of the ice to rest and nurse their pups, and polar bears and walruses depend on the ice to hunt for prey. Many Arctic communities hunt these mammals for subsistence. Warmer waters can expand the habitat ranges of more temperate species. For example, the discovery of large mature distributions of walleye pollock in the Russian western portion of the Chukchi sea (e.g., @Emelin2022) led to the development of a fishery in the region in 2021.
+
+The portion of the Chukchi sea within the US exclusive economic zone is within the purview of the surveying missions of the Alaska Fisheries Science Center (NOAA-NMFS). The Chukchi sea is connected to the Bering sea via the Bering strait and the Beaufort sea extends to the northeast of the Chukchi sea to the waters north of Alaska and Canada. The eastern Bering sea (EBS) continental shelf bottom trawl survey (BTS) has been surveyed with standardized protocol annually since 1982. The survey was conducted under a fixed-station systematic fixed-grid survey design with an 83-112 eastern otter trawl (@2021NEBS2022). Predicated by poleward expansions of many EBS groundfish species like walleye pollock, Pacific cod, and various flatfishes (@Spies2020; @Stevenson2019), the EBS BTS has periodically extended into the northern Bering sea (NBS) since 2010 and more regularly since 2017. The further poleward extension north of the Bering strait into the Chukchi sea is similarly predicated by further poleward advances in the distributions of species targeted by the EBS BTS. Evidence of northward expansion of Bering sea groundfish has been observed in bottom trawl and acoustic surveys conducted the past five years (@Datsky2022).
+
+Unlike the EBS/NBS NMFS BTS, the US Chukchi sea has not been consistently sampled with standardized bottom trawl gear but may change in the future due to shifting priorities in the region. The naïve assumption for future CHukchi survey designs is to extend the fixed NMFS Bering sea 20-nmi systematic grid onto the Chukchi sea shelf as done in 2012 (source this TM). However, until funding is available for a groundfish survey in the Chukchi sea, there is an opportunity to evaluate different survey designs that could provide more reliable abundance estimates while allowing for more flexibility in survey extent and total survey effort. Systematic sampling has its advantages especially in survey logistics (e.g., stations are equally spaced apart) and variance reduction for homogeneously distributed populations. Randomized designs, especially with stratification, can allow for higher flexibility to different levels of total survey effort while providing robust and unbiased survey estimates of abundance and variance. Strata boundaries and station allocations among strata can also be optimized to weight species of importance (@Oyafuso2021).
+
+We evaluated the bias and precision of survey estimates of abundance using a systematic fixed-grid survey design along with two types of randomized designs in the US Chukchi sea BTS. Spatiotemporal distributions for 15 representative demersal fish and invertebrate taxa were fitted based on bottom trawl catch and effort data. The models used to fit these spatiotemporal relationships were then used to simulate taxon densities from which surveys under different designs could be conducted. Three conventional survey designs were evaluated: simple random sampling (SRS), stratified random sampling (STRS), and a fixed-grid systematic grid similar to what is employed in the NMFS Bering sea BTS. Design-based estimates of abundance and precision from the three survey designs across a range of sampling effort were calculated, from which the performance of each design was evaluated. We evaluated the advantages and tradeoffs of using a systematic grid as previously done in the NMFS Chukchi sea BTS and then highlighted potential improvements to the survey by using more randomized designs. This analysis is intended to provide the template for how we could change the survey design in the Chukchi sea going forward and will be important when transitioning into new survey objectives that are more ecosystem-focused. 
+
+Methods
+====================================
+
+## Survey Area and Historical Datasets
+
+The US Chukchi sampling frame consists of a 2-nmi resolution grid (N = `r n_cells` cells or sampling units) that extends north of the Bering Strait and is bounded by the Barrow Canyon 100 m isobath to the north, US-Russia Maritime Boundary to the west, and the 10-m isobath along the Alaska coastline to the east.
+
+Readers are referred to @RN933 and @Deary2021 for a detailed specification of the gears used in this study. We will briefly introduce and identify the major differences between the two gears used.
+
+83-112 Eastern otter trawl (“otter trawl” hereafter): Surveys from two years, 1990 and 2012 were included in this analysis due to the consistencies in the gear type. In 1990, 48 stations were sampled along 11 transect lines perpendicular to shore (@barber1997demersal). In 2012, a systematic sampling design was employed based on a 30-nmi square grid with the planned trawl stations located at the approximate center of each grid cell, resulting in a total of 73 sampling locations of which 71 successful tows were used in the analysis. The mesh sizes of the wings and throat of the net were 10.2 cm and 8.9 cm in the intermediate and codend. The codend also contained a smaller-meshed 32-mm liner for retaining smaller organisms. Otter trawl tows were trawled at a target speed of 3 knots for 15 minutes. Acoustic net mensuration sensors were used to assess trawl performance and to provide net width to calculate effort (total area swept, the product of net width and distance trawled with bottom contact).
+
+Plumb staff beam trawl (“beam trawl” hereafter): Surveys from three years, 2012, 2017, and 2019 were included in this analysis and used the same systematic grid as the 2012 otter trawl survey. Beam trawl tows from 2017 and 2019 were conducted as part of the Arctic IES component of the Arctic Integrated Ecosystem Research Program (IERP). The body of the trawl has 7-mm mesh with a 4-mm mesh at the cod end. In 2012, a tickler chain preceded the footrope (@GUNDERSON198635; @KOTWICKI201776). In 2017 and 2019, the tickler chain was removed, and the trawl was modified with a footrope of 10.2-cm rubber discs over a steel chain as in Abookire and Rose (2005). Effort was calculated similar to the otter trawl, with a bottom contact sensor to determine distance fished by the trawl. Effective trawl width of the trawl was assumed to be 2.26 m in 2012 (@GUNDERSON198635; @KOTWICKI201776), and 2.1 m in 2017 and 2019 (@ABOOKIRE2005247). Beam trawl tows were trawled at a target speed of 1.5 knots for 2.9-7.5 minutes. Catch samples from the beam and otter trawls were identified and sorted to the lowest possible taxonomic group, weighed, and counted. Field identifications of a subset of age-0 gadids in 2017 and 2019 were confirmed with genetic techniques (See @WILDES2022105165).
+
+## Species List
+
+The set of taxa we chose to include in this analysis was influenced by cultural importance to Bering Strait and Chukchi Sea communities, availability in the dataset, appropriateness to the two bottom trawl gears, and the ability to fit informative spatiotemporal distribution models. Taxa groupings were first defined from a prior Northern Bering sea analysis of bottom-trawl surveys conducted from 2010-2021 (@2021NEBS2022). These taxa groupings were important representatives of the demersal marine community as identified by the Bering Sea native communities. We do not have similar distinctions for those communities living within the Chukchi Sea, however these taxa groupings represent a diverse range of fish and invertebrate taxa in an area proximal to the Chukchi Sea via the Bering Strait. Taxa were further filtered to reflect the relative catchability of the two gears (Kotwicki et al. in review) and models were fit for each taxon separately for each gear type to reflect those differences in catchability.
+
+Table 1: List of the various fish and invertebrate taxa and associated gears included in the analysis.  
+```{r Table 1, echo = F, fig.align="center", message=FALSE, results='hide'}
+species_list <- read.csv(file = "../results/good_species.csv")
+# species_list <- tidyr::spread(data = species_list, 
+#                               key = gear, value = gear)
+species_list <- species_list[order(species_list$taxon_group, 
+                                   species_list$taxon), ]
+
+species_list$gear <- 
+  ifelse(test = paste(species_list$beam, 
+                      species_list$otter) == "TRUE TRUE", 
+         yes = "beam and otter trawl",
+         no = ifelse(test = paste(species_list$beam, 
+                                  species_list$otter) == "FALSE TRUE",
+                     yes = "otter trawl",
+                     no = "beam trawl"))
+
+species_list$sci_name <- ifelse(test = species_list$species_name == TRUE,
+                                yes = paste0("*", species_list$sci_name, "*"),
+                                no = species_list$sci_name)
+
+x = knitr::kable(x = subset(x = species_list, 
+                            select = c(sci_name, 
+                                       taxon, 
+                                       gear)),
+                 row.names = F,
+                 col.names = c("Scientific Name", 
+                               "Common Name", 
+                               "Gear"),
+                 align = "c", format = "pipe")
+
+rmarkdown::render(input = "table_creation.Rmd", 
+                  output_file = "Table_1.docx",
+                  output_dir = paste0("../", draft_dir),
+                  output_format = "word_document", 
+                  params = list(x = x))
+```
+
+```{r Pritn Table 1, echo = F, results = "asis"} 
+print(x)
+```
+
+## Conditional and Operating Models
+
+We conditioned univariate spatiotemporal distribution models on historical catch and effort survey data for each species using a vector-autoregressive spatiotemporal (VAST) model using the VAST R Package (v. 4.0.2; @thorson2017comparing, @thorson2019guidance). The VAST model is spatiotemporal generalized linear mixed‐effects model where random effects describe spatial and/or spatiotemporal variation (spatial variation that is constant or time-varying, respectively) in density while temporal variation in the mean density is modeled as a fixed effect of survey year. Continuous spatial and/or spatiotemporal random fields are approximated using the INLA R package (www.r-inla.org; @rue2009approximate) using a mesh with 200 spatial “knots” where the values of spatial variables between knot locations are calculated via bilinear interpolation. Spatiotemporal fields were modeled as independent and identically distributed among years. If a model with spatiotemporal variation included resulted in a decreased (>= 2 units) AIC value, it was chosen as the conditional model for a taxon/gear combination. The “Poisson-link” reformulation of a conventional delta model was used to model (@thorson2018three), where a gamma distribution was specified for modeling biomass density.
+
+The density ($kg km^{-2}$) of each taxon was predicted onto the Chukchi spatial domain based on the MLE parameter estimates of the chosen model for each gear type. Taxon densities were simulated with observation error and were used when simulating surveys under different sampling designs. The total abundance index ($I_{st}$) of taxon $s$ in year $t$ was calculated using an epsilon bias-correction technique (@THORSON201666) and represented the “true” abundance from which to evaluate the design-based indices of the different surveys tested. 
+
+## Survey designs
+
+Three survey designs were tested: SRS, STRS, and a fixed-station systematic grid under a range of total sampling effort from roughly 50 - 175 total stations. Distance from shore and latitude were used as stratum variables for the STRS designs and the SamplingStrata R package (@Barcaroli2014) was used to optimize the placement of strata boundaries and allocation of effort across strata subject to user-inputted pre-specified precision targets for each taxon. A full explanation of the methods can be found in (@Barcaroli2014) and an application of the STRS optimization in the Gulf of Alaska is described in Oyafuso et al. (2021, 2022). Appendix A provides more detail into how the STRS optimization was set up for the Chukchi BTS. 
+
+## Survey simulation
+
+The abundance index $\hat{I_{st}}$ for taxon $s$ in year $t$ and associated variance for the three designs were estimated following @RN939:
+
+$\hat{I_{st}} = \sum_i^L A_l CPUE_{.st}$
+
+where $CPUE_{.st}$ is a vector of CPUE from stations in stratum $l$ ($L$ total strata) for taxon $s$ and year $t$ and $A_l$ is the total area (units $km^2$) of stratum $l$.
+
+$Var(\hat{I_{st}}) = \sum_i^L A_l^2 Var(CPUE_{.st})$
+
+The above equations can be used for calculating total abundances and variances under simple random sampling and the fixed systematic grid by assuming one stratum, $L = 1$. While it is inappropriate to treat the fixed systematic grid as a simple random sample, this is what is done currently for the Bering sea BTS abundance index calculations (@2021NEBS2022). 
+<!-- Calculating the variance of the systematic design similar to a simple random is common but is known to be biased. Thus, we also included a local-five (LO5) calculation of the variance for the fixed-grid systematic design as an alternative way of calculating a potentially less biased estimate of the variance (@AUNELUNDBERG201487). -->
+
+Each survey was replicated for 1000 iterations ($M = 1000$). It was assumed that all sampling units were available for trawling, however in practice, variation in bottom rugosity and currents may render some sampling units untrawlable (i.e., unavailable to the sampling frame). Due to the limited data used to condition the operating model, high positive outliers in density masked the trends in the performance metrics. Thus, prior to calculating the performance metrics, positive outliers greater than 3 standard deviations above the mean among survey replicates were removed.
+
+## Performance metrics
+Three performance metrics are used to evaluate surveys. First, bias is the residual of a quantity relative to its assumed "true" value. Bias of the estimated index of abundance from a sample is relative to the assumed true index conditioned by the data. Bias of the estimated sample CVs associated with the index of abundance is relative to the True CV.  Second, the True CV ($TrueCV_{st}$ ) is the variability of the estimated abundance index across the survey replicates and is defined as the standard deviation of the estimated indices of abundance normalized by the true value, $\frac{\sqrt{Var(I_{st.})}}{I_{st}}$, where $I_{st.}$  refers to the vector of estimated indices replicates for taxon $s$ and year $t$ across the $M$ replicates. Lastly, the spread of the estimated sample CVs and the bias of these CVs with respect to the True CV is relative root mean square error (RRMSE) of CV, defined as $\frac{\sqrt{\sum_m^M(CV_{stm} - TrueCV_{st})^2 / M}}{ \bar{CV_{st.}}}$ where $CV_{st.}$ refers to the vector of estimated sample CVs for taxon $s$ and year $t$ across the $M$ replicates.
+
+Results
+====================================
+
+## Species Distributions
+
+The species included in this analysis exhibited a diversity of spatiotemporal distributions (Appendix B). Alaska plaice, saffron cod, and yellowfin sole were restricted to the southwestern portion of the domain including Kotzebue Sound. Pacific herring, tunicates, and jellyfishes were more commonly observed in the middle of the domain around Point Hope. Purple-orange sea star had a broad nearshore distribution whereas eelpouts, snailfishes, and Bering flounder had more offshore distributions along the western edge of the domain. In the northern part of the domain, bivalves and sea cucumbers had higher densities in the northwest and northeast portion of the domain, respectively. Arctic cod and other sea stars were commonly observed species with broad distributions across the domain. Soft corals and anemones, bryozoans, sculpins, and walleye pollock (uncommonly observed) had patchier distributions. Pricklebacks were more commonly observed across beam trawl stations and had lower densities in the northern part of the domain. Poachers had patchier distributions across the otter trawl samples but a more offshore distribution for the beam trawl stations.
+
+## Multispecies STRS Design Optimization
+
+Stratum boundaries of both otter and beam trawl survey optimizations generally separated the domain of the Chukchi sea into two latitudinal sections split at roughly 69-70 degrees latitude. The three-strata beam trawl solution splits the upper section into two inshore/offshore strata whereas the three-strata otter trawl solution splits the upper section at roughly 71 degrees latitude. The four-strata solutions for both gears contained an inshore stratum in the lower section. Similar to the three-strata beam trawl solution, the four-strata beam trawl solutions have similar inshore/offshore strata in the upper section. The extra stratum in the four-strata otter trawl solution is a very narrow latitudinal stratum in the upper section compared to its three-strata otter trawl solution. Sampling densities for the otter trawl STRS designs were generally higher in the southern and central strata and less so in the northern strata. Sampling densities for the beam trawl STRS designs were proportional to stratum area. For the subsequent survey simulation section, the four-strata STRS solution for the beam trawl and the three-strata STRS solution for the otter trawl were used as the representatives of the STRS design in the survey simulations. 
+
+`r (paste0("![](Version_", draft_version, "/figures/FigureX_ms_strs_sols.png)"))`
+
+Figure 1: stratified random designs resulting from the stratified random design optimization algorithm using three and four strata for the otter and beam trawl gears. Distance to shore and latitude characterize the different strata. Locations of 100 stations drawn from their respective optimal allocations are superimposed. Sampling density in each stratum is shown in the legend. 
+
+## Survey Performance
+
+The random designs mostly monotonically decreased in True CV with increased sample size for both gears. The STRS designs often provided greater efficiency with True CV versus the simple random designs, especially taxa collected via the otter trawl (Figure 2). The increase in precision from a random to a stratified design was less for the taxa sampled with the beam trawl, with many taxa performing similarly to the SRS design (Figure 3). Given the limited number of data used to condition the operating model, the inconsistent +/- 10% bias observed with the estimated index is fairly low (Figures 4 and 5). 
+
+The fixed-grid systematic grid often provided the lowest True CVs compared to the two random designs. However the tradeoff of this low True CV for many of the taxa observed was often much higher RRMSE of CV. The higher RRMSE of CV of the fixed systematic grid was attributed to a high positive bias of the simulated sample CVs relative to the True CV (Figures 4 and 5). The level of bias in the index was comparable to the random designs. 
+
+<!-- Using the LO5 estimator tended to decrease the RRMSE of CV across sample size for many of the taxa but tended to lead to negatively biased CVs (roughly -20%) relative to the True CV (Appendix Figures C1 and C2). -->
+
+`r (paste0("![](Version_", draft_version, "/figures/FigureX_otter_performance.png)"))`
+Figure 2: True CV and relative root mean square error (RRMSE) of CV across a range of total sampling effort for each taxon and survey design for the otter trawl gear. 
+
+`r (paste0("![](Version_", draft_version, "/figures/FigureX_otter_bias.png)"))`
+Figure 3: Average percent bias of the 1) estimated abundance relative to the true abundance and 2) estimated sample coefficient of variation (CV) relative to the True CV across sample size for each taxon and survey design for the otter trawl gear.  
+
+`r (paste0("![](Version_", draft_version, "/figures/FigureX_beam_performance.png)"))`
+Figure 4: True CV and relative root mean square error (RRMSE) of CV across a range of total sampling effort for each taxon and survey design for the beam trawl gear. 
+
+`r (paste0("![](Version_", draft_version, "/figures/FigureX_beam_bias.png)"))`
+Figure 5: Average percent bias of the 1) estimated abundance relative to the true abundance and 2) estimated sample coefficient of variation (CV) relative to the True CV across sample size for each taxon and survey design for the beam trawl gear.  
+
+Discussion
+====================================
+
+A systematic fixed-grid design as currently done in the EBS and NBS BTS can be a logical choice for a Chukchi BTS as a natural extension to the established Bering sea systematic fixed-grid design. Having evenly spaced sampling stations is advantageous in that the completion rate of stations per day is more consistent than randomly chosen stations. Ideally, systematic survey designs should be created with random starts which sligthly vary the locations of stations. However, the fixed-grid setup is concurrent with how it would be implemented due to logistical efficiencies in survey planning similar to how Bering sea surveys are conducted currently. Systematic surveys also guarantee good spatial coverage of the spatial domain and can be advantageous in the early, data-limited stages of a survey time series.
+
+However, the main tradeoff of the logistical advantages of the systematic fixed-grid was the reduced quality of the statistical data products that result from such a design as observed in our simulation testing. From our simulation testing, randomized designs provided more reliable estimates of abundance and precision than systematic fixed-grid designs. While the True CV for many taxa were lower under a systematic fixed-grid, the estimates of the variance were less reliable (i.e., RRMSE of CV) when compared to both randomized designs. The tradeoff between the RRMSE of CV and True CV has been shown previously in the Gulf of Alaska when comparing proposed optimized STRS designs with historical STRS designs using similar simulation testing (@oyafuso2022flexible). Variance is a useful measure of the quality of a survey, however the estimation of variance can be unreliable depending on the design of the survey, along with other considerations like variability in catchability (@kotwicki2019effect). The stratified random designs created in our analysis provided an advantageous combination of increased precision relative to SRS but with increased reliability of the estimated CVs relative to the True CVs. 
+
+A challenge of designing STRS surveys in an ever-changing region like the Chukchi sea is that using past data to inform the design (i.e., stratification and effort allocation across strata) may not be representative of the current variability in the ecosystem, similar to the challenges of forecasting species distributions to novel environmental dynamics due to climate change (@Brodie2022). While the last NMFS beam trawl survey in the Chukchi occurred in 2019, the most recent otter trawl BTS conducted by NMFS was in 2012. Within the same range of time (i.e., the last ten years), there have been significant changes in many fish taxa seldom observed previously including many Bering sea gadids like walleye pollock (@Datsky2022; @WILDES2022105165). With continued sampling of the region, the opportunity to adjust the design of a STRS to reflect the variability of more recent years becomes more available. The discussion of the range of years to include when planning surveys is outside the scope of this paper, however our  approach to updating STRS designs is amenable to testing and planning STRS designs that incorporate varying ranges of years.
+
+We investigated survey designs under both otter and beam trawl gears in order to anticipate survey designs consistent with the standardized gears used in BTS in Alaska. The patterns among survey designs previously discussed were present in both the beam and otter trawl gears. However, there were some differences in the optimized STRS designs calculated for each trawl. The STRS designs for both gears had similar stratifications that split the Chukchi spatial domain by two or three latitudinal regions and inshore/offshore strata. However, the sampling densities for the otter trawl solutions were higher in the southern and central strata compared to the northern strata whereas the beam trawl sampling densities were nearly proportional to stratum area. As a result, the performance of the STRS beam trawl survey abundance estimates were similar to the SRS design with some improvement in True CV for a handful of taxa (e.g., Bering flounder, pricklebacks, saffron cod). We presume that the expected gains in precision that come from stratification were diminished because of the strong tradeoffs that exist when optimizing over a wide set of taxa with non-overlapping spatiotemporal distributions. 
+
+The list of taxa to include in survey planning is an important decision process and should be a part of broader discussions of survey objectives. We curated our taxa list by first considering taxa that can be appropriately sampled by either the otter and/or beam trawl gears informed by Kotwicki (cite Stan's tech memo). We then considered commercial importance given the shifting of commercially important Bering sea species into the Chukchi sea. Through more engagement with native coastal communities, we hope to further fine-tune and prioritize our taxa list for survey planning. We envision a process of engaging input from native coastal communities in the same vein of the NBS community report that AFSC provides to summarize survey results tailored specifically to community stakeholders as a model for the evolution of this work. Marine mammals are important taxa to native communities and while our surveys do not monitor marine mammals, they may provide useful information of important prey that could be sampled by the survey. 
+
+Acknowledgments
+====================================
+
+References
+====================================
+
+<div id="refs"></div>
