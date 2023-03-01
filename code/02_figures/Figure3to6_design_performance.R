@@ -64,15 +64,15 @@ for (igear in c("otter", "beam")) {
         
         if (iplot == "bias") {# Calculate mean for ispp across sample sizes
           srs_metric <- apply(X = get(paste0(temp_metric[1], "_srs")), 
-                              MARGIN = list(c(1, 3), c(2, 3))[[imetric]], 
+                              MARGIN = list(c(1, 2), c(2, 3))[[imetric]], 
                               FUN = "mean", 
                               na.rm = TRUE)[, ispp]
           strs_metric <- apply(X = get(paste0(temp_metric[1], "_ms_strs")), 
-                               MARGIN = list(c(1, 3), c(2, 3))[[imetric]], 
+                               MARGIN = list(c(1, 2), c(2, 3))[[imetric]], 
                                FUN = "mean", 
                                na.rm = TRUE)[, ispp]
           sys_metric <- apply(X = get(paste0(temp_metric[1], "_sys")), 
-                              MARGIN = list(c(1, 3), c(2, 3))[[imetric]], 
+                              MARGIN = list(c(1, 2), c(2, 3))[[imetric]], 
                               FUN = "mean", 
                               na.rm = TRUE)[, ispp]
         }
@@ -113,10 +113,15 @@ for (igear in c("otter", "beam")) {
         lines(x = sys_n$n, y = sys_metric, 
               pch = 16, col = "blue")
         
-        axis(side = 1, cex.axis = 0.65, at = c(50, 100, 150))
+        axis(side = 1, cex.axis = 0.8, at = c(50, 100, 150))
         axis(side = ifelse(test = imetric == 1, yes = 2, no = 4), 
-             las = 1, cex.axis = 0.7, 
+             las = 1, cex.axis = 1, tick = F,
+             line = ifelse(test = imetric == 1, yes = -0.5, no = -0.5),  
              labels = pretty(ylim_, n = 3),
+             at = pretty(ylim_, n = 3))
+        axis(side = ifelse(test = imetric == 1, yes = 2, no = 4), 
+             las = 1, cex.axis = 1, tick = T, tcl = -0.25,
+             labels = NA,
              at = pretty(ylim_, n = 3))
         box()
         if (iplot == "bias") abline(h = 0)
