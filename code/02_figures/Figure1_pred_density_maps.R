@@ -43,14 +43,6 @@ aea_grat_labs <- graticule::graticule_labels(
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ##   Which species were represented by both gears or just one gear?
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# two_spp_idx <- which(x = rowSums(spp_settings[, c("beam", "otter")]) == 2)
-
-# two_spp <- spp_settings$taxon[two_spp_idx]
-# n_two_spp <- length(two_spp)
-# two_spp_title <- spp_settings$taxon_plot[two_spp_idx]
-# two_spp_title <- gsub(x = two_spp_title, pattern = "\\n", replacement = "\n",
-#                       fixed = TRUE)
-
 otter_beam_idx <- which(spp_settings$otter == T & spp_settings$beam == T)
 otter_spp_idx <- which(spp_settings$otter == T & spp_settings$beam == F)
 beam_spp_idx <- which(spp_settings$otter == F & spp_settings$beam == T)
@@ -90,6 +82,7 @@ D_gct_w_pts <- data.frame(chukchi_sea_grid,
                           data.frame(D_gct, check.names = F),
                           check.names = F)
 
+## Project to aea by projecting from lon/lat
 D_gct_pts <- terra::vect(x = D_gct_w_pts,
                          geom = c("Lon", "Lat"),
                          crs = latlon_crs)
@@ -105,18 +98,19 @@ D_gct_pts <- terra::project(x = D_gct_pts, aea_crs)
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
 {
   # Open png device
-  png(filename = paste0("figures/FigureX_pred_density.png"),
+  png(filename = paste0("figures/Figure1_pred_density.png"),
       units = "mm", width = 190, height = 200, res = 500)
   
-  layout(mat = matrix(data = c(1, 2, 30, 3, 4, 30, 5, 6, 30, #23,27,
-                               7, 8, 30, 9,10, 30, 11,12,30, #24,28,
-                               13,14,30, 15,16,30, 17,18,30, #25,29,
-                               19,20,30, 21,22,30,  23,24,30,#30,26),
-                               26,27,30, 28,29,30,  30,25,30
-  ),
-  nrow = 5, byrow = TRUE),
-  widths = c(1,1,0.2, 1,1,0.2, 1,1,0.2))
+  ## Set the layout of the plot
+  layout(mat = matrix(data = c(1, 2, 30, 3, 4, 30, 5, 6, 30,
+                               7, 8, 30, 9,10, 30, 11,12,30, 
+                               13,14,30, 15,16,30, 17,18,30, 
+                               19,20,30, 21,22,30, 23,24,30,
+                               26,27,30, 28,29,30, 30,25,30),
+                      nrow = 5, byrow = TRUE),
+         widths = c(1,1,0.2, 1,1,0.2, 1,1,0.2))
   
+  ## Set plot width margins
   par(mar = c(0, 0, 2.5, 0),
       oma = c(0.5, 0.5, 0.5, 0.5),
       family = "serif")

@@ -7,17 +7,6 @@
 rm(list = ls())
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-##   Constants ----
-##   Setup the order that species results are presented
-##   Calculate the average sample size for each level of grid resolution 
-##      for the systematic designs
-##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
-# settings <- list(spp_idx = list(otter = c(1, 2, 3, 5, 8, 9, 11, 12, 14, 18, 19,
-#                                           4, 6, 7, 10, 13, 15, 16, 17),
-#                                 beam = c(1, 2, 8, 9, 11, 12, 14, 
-#                                          3, 4, 5, 6, 7, 10, 13, 15, 16, 17)))
-
-##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ##  Plot True CV and RRMSE of CV ----
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
 for (igear in c("otter", "beam")) {
@@ -29,16 +18,18 @@ for (igear in c("otter", "beam")) {
   ## Calculate sample sizes for systematic grid
   sys_n <- aggregate(n ~ res, data = sys_settings, FUN = mean)
   sys_n <- sys_n[order(sys_n$res, decreasing = TRUE), ]
-  
-  ## Set constants ----
-  # spp_order <- list(otter = c(1, 2, 3, 5, 8, 9, 11, 12, 14, 18, 19,
-  #                             4, 6, 7, 10, 13, 15, 16, 17),
-  #                   beam = c(1, 2, 8, 9, 11, 12, 14, 
-  #                            3, 4, 5, 6, 7, 10, 13, 15, 16, 17))[[igear]]
+
   spp_name <- dimnames(x = true_cv_srs)[[2]]
   
   for (iplot in c("performance", "bias")) {
-    file_name <- paste0("figures/FigureX_", igear, "_", iplot, ".png")
+    fig.number <- switch(paste0(igear, "_", iplot),
+                         "otter_performance" = 3,
+                         "otter_bias" = 4,
+                         "beam_performance" = 5,
+                         "beam_bias" = 6)
+    
+    file_name <- paste0("figures/Figure", fig.number, "_", 
+                        igear, "_", iplot, ".png")
     metrics <- 
       list(performance = c("True CV" = "true_cv", 
                            "RRMSE of CV" = "rrmse_cv"),

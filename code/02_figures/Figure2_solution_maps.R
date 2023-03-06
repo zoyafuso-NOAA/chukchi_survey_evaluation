@@ -43,7 +43,7 @@ aea_grat_labs <- graticule::graticule_labels(
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
 {
   ## Open png device
-  png(filename = paste0("figures/FigureX_ms_strs_sols.png"),
+  png(filename = paste0("figures/Figure2_ms_strs_sols.png"),
       units = "mm", width = 90, height = 125, res = 500)
   
   ## Panel Layout
