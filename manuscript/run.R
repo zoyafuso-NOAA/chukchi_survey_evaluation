@@ -18,7 +18,7 @@ library(FishStatsUtils)
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ##   Set draft version
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-draft_version <- 0
+draft_version <- 2
 draft_dir <- paste0("manuscript/Version_", draft_version, "/")
 if(!dir.exists(draft_dir)) dir.create(draft_dir)
 
@@ -32,23 +32,30 @@ file.copy(from = "figures/",
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ##   Render the main manuscript text
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+todays_date <- paste0(format(x = Sys.Date(), "%d"), 
+                      format(x = Sys.Date(), "%m"), 
+                      format(x = Sys.Date(), "%y"), 
+                      collapse = "")
+
 rmarkdown::render(input = "manuscript/Oyafuso_etal_Chukchi_MS.Rmd", 
                   output_format = "word_document", 
                   output_file = paste0("../", draft_dir,
-                                       "Oyafuso_etal_Chukchi_MS.docx"),
+                                       "Oyafuso_Chukchi Survey Designv", 
+                                       draft_version, "_", todays_date,".docx"),
                   params = list(draft_dir = draft_dir))
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ##   Render Appendix A and B
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-rmarkdown::render(input = "manuscript/Oyafuso_etal_Chukchi_Appendix_A.Rmd", 
-                  output_format = "word_document", 
-                  output_dir =  draft_dir, 
+rmarkdown::render(input = "manuscript/Oyafuso_etal_Chukchi_Appendix_A.Rmd",
+                  output_format = "word_document",
+                  output_dir =  draft_dir,
                   output_file = "Appendix_A.docx")
 
-rmarkdown::render(input = "manuscript/Oyafuso_etal_Chukchi_Appendix_B.Rmd", 
-                  output_format = "word_document", 
+rmarkdown::render(input = "manuscript/Oyafuso_etal_Chukchi_Appendix_B.Rmd",
+                  output_format = "word_document",
                   output_dir = draft_dir,
                   output_file = "Appendix_B.docx",
                   params = list(draft_dir = draft_dir))
