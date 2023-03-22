@@ -11,14 +11,17 @@ rm(list = ls())
 library(dplyr)
 library(RODBC)
 library(readr)
+library(getPass)
 
 ##################################################
 ####   load data from RACEBASE
 ##################################################
-channel <- odbcConnect(dsn = "AFSC",
-                       uid = "", # enter Oracle username
-                       pwd = "", # enter Oracle password
-                       believeNRows = FALSE)
+get.connected <- function(schema='AFSC'){(echo=FALSE)
+  username <- getPass(msg = "Enter your ORACLE Username: ")
+  password <- getPass(msg = "Enter your ORACLE Password: ")
+  channel  <- RODBC::odbcDriverConnect(paste0("Driver={Oracle in OraClient12Home1};Dbq=", schema, ";Uid=", username, ";Pwd=", password, ";"))
+}
+channel <- get.connected()
 
 # query directly (using function from Sean Rohan, as in coldpool package)
 sql_to_rqry <- function(sql_path) {
