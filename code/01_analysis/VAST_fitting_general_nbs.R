@@ -47,7 +47,6 @@ rm(list = ls())
 ##   Import Libraries ----
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
 library(VAST)
-library(readr)
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ##   VAST Model Settings ----
@@ -85,7 +84,6 @@ for (ispp in spp_list) {
   AKBTS_data <- read.csv(file = paste0("data/fish_data/AK_BTS_OtterAndBeam/",
                                        "data_long_by_taxa_nbs/", ispp, ".csv"))
   
-  ## Subset gear igear from the AFSC GAP BTS Data
   spp_data <- select(AKBTS_data, year, lon, lat, cpue_kg_km2)
   
   ## Data input for VAST
@@ -250,8 +248,7 @@ for (ispp in spp_list) {
     
     ## Prediction Grid: first, create a dataframe of locations, grid cell
     ## areas and dummy catches (set to the mean) for each year.
-    nbs_grid <- as.data.frame(read_csv("data/spatial_data/BS_Chukchi_extrapolation_grids/nbs_2022.csv",
-                         show_col_types = FALSE))
+    nbs_grid <- read.csv("data/spatial_data/BS_Chukchi_extrapolation_grids/nbs_2022.csv")
     grid_df <- data.frame()
     for (itime in sort(unique(data_geostat$Year))) {
       grid_df <-
