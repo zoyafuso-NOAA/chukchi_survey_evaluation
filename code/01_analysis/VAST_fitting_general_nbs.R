@@ -7,43 +7,6 @@
 rm(list = ls())
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-##    Software settings ----
-##    Check that versions of R and relevant packages are consistent
-##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
-# R_version <- "R version 4.0.2 (2020-06-22)"
-# VAST_cpp_version <- "VAST_v13_1_0"
-# pck_version <- c("VAST" = "3.9.0", "FishStatsUtils" = "2.11.0", 
-#                  "Matrix" = "1.4-0", "TMB" = "1.7.22", "DHARMa" = "0.4.5")
-# 
-# {
-#   if(sessionInfo()$R.version$version.string == R_version) 
-#     message(paste0(sessionInfo()$R.version$version.string, 
-#                    " IS CONSISTENT with the 2022 TOR."))
-#   
-#   if(!sessionInfo()$R.version$version.string == R_version) 
-#     message(paste0(sessionInfo()$R.version$version.string, 
-#                    " IS NOT CONSISTENT with the 2022 TOR. ",
-#                    "Please update R version to ", R_version))
-#   
-#   for (pck in 1:length(pck_version)) {
-#     temp_version <- packageVersion(pkg = names(pck_version)[pck])
-#     
-#     if(temp_version == pck_version[pck])
-#       message(paste0("The version of the '", names(pck_version)[pck], 
-#                      "' package (", temp_version, ") IS CONSISTENT",
-#                      " with the 2022 TOR."))
-#     
-#     if(!temp_version == pck_version[pck])
-#       message(paste0("The version of the '", names(pck_version)[pck], 
-#                      "' package (", temp_version, ") IS NOT CONSISTENT",
-#                      " with the 2022 TOR. Please update the '", 
-#                      names(pck_version)[pck], "' package to ", 
-#                      pck_version[pck]))
-#   }
-#   rm(pck, temp_version)
-# }
-
-##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ##   Import Libraries ----
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
 library(VAST)
@@ -52,7 +15,6 @@ library(VAST)
 ##   VAST Model Settings ----
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
 settings <- FishStatsUtils::make_settings(
-  Version = VAST_cpp_version,
   n_x = 200,
   Region = "northern_bering_sea", 
   purpose = "index2",
