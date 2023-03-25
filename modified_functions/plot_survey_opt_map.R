@@ -11,18 +11,15 @@ plot_survey_opt_map <- function( file_name,
                                  allocations){
   
   ## Import libraries
-  library(sp); library(raster)
+  # library(sp); library(raster)
+  library(terra)
   
   ## Set up spatial object
-  goa <- sp::SpatialPointsDataFrame(
-    coords = grid_object@coords,
-    data = data.frame(Str_no = sol_by_cell), 
-    proj4string = crs(grid_object) )
-  goa_ras <- raster::raster(x = goa,
-                            resolution = 5000)
-  goa_ras <- raster::rasterize(x = goa,
-                               y = goa_ras,
-                               field = "Str_no")
+  pts <- grid_object
+  pts$Str_no <- sol_by_cell
+  
+  ras <- terra::rast(x = pts, res = 5000)
+  ras <- terra::rasterize(x = pts, y = ras, field = "Str_no")
   
   ## Set up plot
   png(filename = file_name, width = 6, height = 3, units = "in", res = 500)
@@ -37,7 +34,7 @@ plot_survey_opt_map <- function( file_name,
   
   if (any(sol_by_cell == 0)) strata_colors <- c("black", strata_colors)
   
-  plot(goa_ras, axes = F, asp = 1, col =  strata_colors)
+  plot(ras, axes = F, asp = 1, col =  strata_colors)
   
   ## Draw samples if needed
   if (draw_stations) {
@@ -50,12 +47,9 @@ plot_survey_opt_map <- function( file_name,
                              size = allocations[istrata]) )
     }
     
-    samp_pts <- sp::SpatialPoints(
-      coords = grid_object@coords[sample_vec, ], 
-      proj4string = crs(grid_object))
+    samp_pts <- pts[sample_vec, ]
     
-    points(samp_pts,
-           pch = 16, cex = 0.5)
+    points(samp_pts, pch = 16, cex = 0.5)
   }
   
   ## Close device

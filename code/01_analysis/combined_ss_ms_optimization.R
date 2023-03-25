@@ -17,14 +17,14 @@ rm(list = ls())
 library(devtools)
 devtools::install_github(repo = "zoyafuso-NOAA/SamplingStrata")
 library(SamplingStrata)
-library(sp)
+library(terra)
 library(RColorBrewer)
-library(raster)
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ##   Load Input Data ----
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
 load("data/survey_opt_data/optimization_data.RData")
+grid_pts <- terra::vect("data/survey_opt_data/grid_pts.shp")
 source("modified_functions/plot_survey_opt_map.R")
 source("modified_functions/calc_expected_CV.R")
 curr_dir <- getwd()
@@ -49,14 +49,14 @@ total_n <- seq(from = 55, to = 200, by = 15)
 
 for (istrata in stratas[1]) {
   
-  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   ##   1) Initialize Optimization ----
   ##   Calculate spatiotemporal variance given a simple random sample with 
   ##   200 stations for each species. These variances are used as the starting
   ##   points for the survey design optimization because we assume the optimized
   ##   stratified design will produce better variances than the simple random
   ##   design for a given level of sampling effort.
-  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
+  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
   srs_n <- 200
   srs_stats <- SamplingStrata::buildStrataDF(
     dataset = cbind( frame_df[, -grep(x = names(frame_df), pattern = "X")],
@@ -65,19 +65,19 @@ for (istrata in stratas[1]) {
   srs_var <- srs_stats[, paste0("S", 1:n_spp)]^2 * (1 - srs_n / n_cells) / srs_n
   srs_cv <- sqrt(srs_var) / srs_stats[, paste0("M", 1:n_spp)]
   
-  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   ##   2) Create CV Input ----
   ##   CV dataframe for optimization input 
-  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
-  cv <- list()
-  cv[["DOM"]] <- 1
-  for (ispp in 1:n_spp) cv[[paste0("CV", ispp)]] <- as.numeric( srs_cv[ispp] )
-  cv[["domainvalue"]] <- 1
-  cv <- as.data.frame(cv)
+  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
+  cv_df <- list()
+  cv_df[["DOM"]] <- 1
+  for (ispp in 1:n_spp) cv_df[[paste0("CV", ispp)]] <- as.numeric(srs_cv[ispp])
+  cv_df[["domainvalue"]] <- 1
+  cv_df <- as.data.frame(cv_df)
   
-  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   ##   3) Create result directory ----
-  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
+  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
   result_dir <- paste0(curr_dir, "/results/",
                        iregion, "_", igear, "/survey_opt",
                        "/Str_", istrata, "/")
@@ -85,26 +85,26 @@ for (istrata in stratas[1]) {
   if (!dir.exists(result_dir)) dir.create(result_dir, recursive = TRUE)
   setwd(result_dir)
   
-  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   ##   4) Run initial optimization ----
   ##   subject to the SRS CVs
-  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
+  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
   par(mfrow = c(6, 6), mar = c(2, 2, 0, 0))
   solution <- SamplingStrata::optimStrata(method = "continuous",
-                                          errors = cv, 
+                                          errors = cv_df, 
                                           framesamp = frame_df,
-                                          iter = 200,
-                                          pops = 100,
+                                          iter = 20,
+                                          pops = 10,
                                           elitism_rate = 0.1,
                                           mut_chance = 1 / (istrata + 1),
                                           nStrata = istrata,
                                           showPlot = T,
                                           writeFiles = T)
   
-  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   ##   5) Clean up results ---- 
   ##   Clean optimization output and save
-  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
+  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
   solution$aggr_strata$STRATO <- as.integer(solution$aggr_strata$STRATO)
   solution$aggr_strata <- 
     solution$aggr_strata[order(solution$aggr_strata$DOM1,
@@ -122,9 +122,9 @@ for (istrata in stratas[1]) {
   
   plot_solution <- solution$indices$X1
   
-  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   ##   6) Save results ----
-  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
+  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
   result_list <- list(solution = solution,
                       sum_stats = sum_stats,
                       cvs = as.numeric(calc_expected_CV(sum_stats)),
@@ -132,10 +132,10 @@ for (istrata in stratas[1]) {
                       sol_by_cell = plot_solution)
   save(list = "result_list", file = "result_list.RData")
   
-  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   ##   7) Single-Species Optimization ----
   ##   Calculate single-species CV subject to the initial stratification
-  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
+  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
   ss_sample_allocations <- expand.grid(n = total_n, species = spp_list)
   for (ispp in 1:n_spp) {
     temp_n <- result_list$n
@@ -211,11 +211,11 @@ for (istrata in stratas[1]) {
     }
   }
   
-  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   ##   8) Adjust MS solution ----
   ##   Optimize allocation across a range of sample sizes, given the original
   ##   stratification.
-  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
+  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
   ms_sample_allocations <- expand.grid(n = total_n)
   temp_n <- result_list$n
   
@@ -300,20 +300,22 @@ for (istrata in stratas[1]) {
     
   }
   
-  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   ##   9) Save solution image ----
   ##   Save an image of the solution with 200 stations
-  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
+  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
   plot_survey_opt_map(file_name = paste0("solution.png"),
                       grid_object =  grid_pts,
                       sol_by_cell = plot_solution, 
-                      allocations = as.numeric(ms_sample_allocations[ms_sample_allocations$n == 190, 
-                                                                     paste0("Str_", 1:length(temp_bethel))]),
+                      allocations = as.numeric(
+                        ms_sample_allocations[ms_sample_allocations$n == 190, 
+                                              paste0("Str_", 
+                                                     1:length(temp_bethel))]),
                       draw_stations = TRUE)
   
-  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   ##   10) Save allocations ----
-  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
+  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
   save(list = c("ss_sample_allocations", "ms_sample_allocations"), 
        file = "allocations.RData")
 }
