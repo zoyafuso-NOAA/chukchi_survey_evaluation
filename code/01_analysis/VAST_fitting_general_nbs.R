@@ -211,17 +211,16 @@ for (ispp in spp_list) {
     
     ## Prediction Grid: first, create a dataframe of locations, grid cell
     ## areas and dummy catches (set to the mean) for each year.
-    nbs_grid <- read.csv("data/spatial_data/BS_Chukchi_extrapolation_grids/nbs_2022.csv")
     grid_df <- data.frame()
     for (itime in sort(unique(data_geostat$Year))) {
       grid_df <-
         rbind(grid_df,
               data.frame(spp = ispp,
-                         Year = rep(itime, nrow(nbs_grid)),
+                         Year = rep(itime, nrow(FishStatsUtils::northern_bering_sea_grid)),
                          Catch_KG = mean(data_geostat$Catch_KG),
-                         AreaSwept_km2 = nbs_grid[, "Area_KM2"],
-                         Lat = nbs_grid[, "lat"],
-                         Lon = nbs_grid[, "lon"],
+                         AreaSwept_km2 = FishStatsUtils::northern_bering_sea_grid[, "Area_KM2"],
+                         Lat = FishStatsUtils::northern_bering_sea_grid[, "lat"],
+                         Lon = FishStatsUtils::northern_bering_sea_grid[, "lon"],
                          stringsAsFactors = T)
         )
     }
@@ -264,7 +263,7 @@ for (ispp in spp_list) {
     ## Simulate_data() function produces simulated biomasses, and we 
     ## divide by the cell areas to get density.
     sim_data <- array(data = NA,
-                      dim = c(nrow(nbs_grid),
+                      dim = c(nrow(FishStatsUtils::northern_bering_sea_grid),
                               length(unique(data_geostat$Year)),
                               1000))
     
@@ -274,8 +273,8 @@ for (ispp in spp_list) {
                                             random_seed = isim)
       
       sim_data[, ,isim] <- matrix(Sim1$b_i[pred_TF == 1] / 
-                                    nbs_grid[, "Area_KM2"],
-                                  nrow = nrow(nbs_grid))
+                                    FishStatsUtils::northern_bering_sea_grid[, "Area_in_survey_km2"],
+                                  nrow = nrow(FishStatsUtils::northern_bering_sea_grid))
       
       if(isim%%10 == 0) print(paste("Done with", ispp, "Iteration", isim))
     }
