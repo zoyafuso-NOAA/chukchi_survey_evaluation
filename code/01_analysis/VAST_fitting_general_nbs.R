@@ -10,6 +10,7 @@ rm(list = ls())
 ##   Import Libraries ----
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
 library(VAST)
+library(dplyr)
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ##   VAST Model Settings ----
@@ -18,7 +19,7 @@ settings <- FishStatsUtils::make_settings(
   n_x = 200,
   Region = "northern_bering_sea", 
   purpose = "index2",
-  ObsModel = c(2, 1),
+  ObsModel = c(2, 4),
   max_cells = Inf,
   use_anisotropy = FALSE, 
   Options = c('SD_site_logdensity' = FALSE, 'Calculate_Range' = FALSE,
