@@ -218,9 +218,9 @@ for (ispp in spp_list) {
               data.frame(spp = ispp,
                          Year = rep(itime, nrow(FishStatsUtils::northern_bering_sea_grid)),
                          Catch_KG = mean(data_geostat$Catch_KG),
-                         AreaSwept_km2 = FishStatsUtils::northern_bering_sea_grid[, "Area_KM2"],
-                         Lat = FishStatsUtils::northern_bering_sea_grid[, "lat"],
-                         Lon = FishStatsUtils::northern_bering_sea_grid[, "lon"],
+                         AreaSwept_km2 = FishStatsUtils::northern_bering_sea_grid[, "Area_in_survey_km2"],
+                         Lat = FishStatsUtils::northern_bering_sea_grid[, "Lat"],
+                         Lon = FishStatsUtils::northern_bering_sea_grid[, "Lon"],
                          stringsAsFactors = T)
         )
     }
