@@ -25,8 +25,8 @@ library(RColorBrewer)
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
 load(here::here("data/survey_opt_data/optimization_data_nbs.RData"))
 grid_pts <- terra::vect(here::here("data/survey_opt_data/grid_pts_nbs.shp"))
-source("modified_functions/plot_survey_opt_map.R")
-source("modified_functions/calc_expected_CV.R")
+source(here::here("modified_functions/plot_survey_opt_map.R"))
+source(here::here("modified_functions/calc_expected_CV.R"))
 curr_dir <- getwd()
 
 iregion = "nbs"
@@ -122,7 +122,7 @@ for (istrata in stratas[1]) {
                       cvs = as.numeric(calc_expected_CV(sum_stats)),
                       n = sum(sum_stats$Allocation),
                       sol_by_cell = plot_solution)
-  save(list = "result_list", file = "result_list.RData")
+  save(list = "result_list", file = "result_list_nbs.RData")
   
   ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   ##   7) Single-Species Optimization ----
