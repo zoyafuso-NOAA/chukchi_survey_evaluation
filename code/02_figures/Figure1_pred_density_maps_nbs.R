@@ -89,7 +89,7 @@ D_gct_pts <- terra::project(x = D_gct_pts, aea_crs)
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
 {
   # Open png device
-  png(filename = paste0("figures/Figure1_pred_density.png"),
+  png(filename = paste0("figures/Figure1_pred_density_nbs.png"),
       units = "mm", width = 190, height = 200, res = 500)
   
   ## Set the layout of the plot

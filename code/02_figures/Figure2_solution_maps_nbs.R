@@ -19,8 +19,8 @@ library(graticule)
 ##   Import Data ----
 ##   Crop the Alaska shapefile to only include NW AK
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
-load("data/survey_opt_data/optimization_data.RData")
-ak_land <- rgdal::readOGR("data/spatial_data/land_shapefiles/AKland.shp")
+load(here::here("data/survey_opt_data/optimization_data.RData"))
+ak_land <- rgdal::readOGR(here::here("data/spatial_data/land_shapefiles/AKland.shp"))
 cropped_extent <- extent(grid_pts)
 cropped_extent[2] <- cropped_extent[2] + 10000
 ak_land_cropped <- raster::crop(x = ak_land, y = cropped_extent)
@@ -43,7 +43,7 @@ aea_grat_labs <- graticule::graticule_labels(
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
 {
   ## Open png device
-  png(filename = paste0("figures/Figure2_ms_strs_sols.png"),
+  png(filename = here::here(paste0("figures/Figure2_ms_strs_sols_nbs.png")),
       units = "mm", width = 90, height = 125, res = 500)
   
   ## Panel Layout
@@ -55,10 +55,10 @@ aea_grat_labs <- graticule::graticule_labels(
   for (igear in c("otter", "beam")) { ## Loop over gears -- start
     for (istrata in 3:4) { ## Loop over strata -- start
       
-      load(paste0("results/chukchi_", igear, "/survey_opt/Str_", 
-                  istrata, "/result_list.RData"))
-      load(paste0("results/chukchi_", igear, "/survey_opt/Str_",
-                  istrata, "/allocations.RData"))
+      load(here::here(paste0("results/nbs_", igear, "/survey_opt/Str_", 
+                  istrata, "/result_list_nbs.RData")))
+      load(here::here(paste0("results/nbs_", igear, "/survey_opt/Str_",
+                  istrata, "/allocations_nbs.RData")))
       
       ## solution shape object
       solution <- sp::SpatialPointsDataFrame(
