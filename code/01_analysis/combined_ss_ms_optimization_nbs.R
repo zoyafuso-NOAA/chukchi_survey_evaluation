@@ -27,7 +27,6 @@ load(here::here("data/survey_opt_data/optimization_data_nbs.RData"))
 grid_pts <- terra::vect(here::here("data/survey_opt_data/grid_pts_nbs.shp"))
 source(here::here("modified_functions/plot_survey_opt_map.R"))
 source(here::here("modified_functions/calc_expected_CV.R"))
-curr_dir <- getwd()
 
 iregion = "nbs"
 igear = "otter"
@@ -39,7 +38,7 @@ total_n <- seq(from = 55, to = 200, by = 15)
 ##   Conduct Optimization ----
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
 
-for (istrata in stratas[1]) {
+for (istrata in stratas) {
   
   ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   ##   1) Initialize Optimization ----
@@ -70,9 +69,9 @@ for (istrata in stratas[1]) {
   ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   ##   3) Create result directory ----
   ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
-  result_dir <- paste0(curr_dir, "/results/",
+  result_dir <- here::here(paste0("results/",
                        iregion, "_", igear, "/survey_opt",
-                       "/Str_", istrata, "/")
+                       "/Str_", istrata, "/"))
   
   if (!dir.exists(result_dir)) dir.create(result_dir, recursive = TRUE)
   setwd(result_dir)
@@ -122,7 +121,7 @@ for (istrata in stratas[1]) {
                       cvs = as.numeric(calc_expected_CV(sum_stats)),
                       n = sum(sum_stats$Allocation),
                       sol_by_cell = plot_solution)
-  save(list = "result_list", file = "result_list_nbs.RData")
+  save(list = "result_list", file = paste0(result_dir, "/result_list_nbs.RData"))
   
   ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   ##   7) Single-Species Optimization ----
@@ -296,7 +295,7 @@ for (istrata in stratas[1]) {
   ##   9) Save solution image ----
   ##   Save an image of the solution with 200 stations
   ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
-  plot_survey_opt_map(file_name = paste0("solution_nbs.png"),
+  plot_survey_opt_map(file_name = paste0(result_dir, "/solution_nbs.png"),
                       grid_object =  grid_pts,
                       sol_by_cell = plot_solution, 
                       allocations = as.numeric(
@@ -309,6 +308,6 @@ for (istrata in stratas[1]) {
   ##   10) Save allocations ----
   ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
   save(list = c("ss_sample_allocations", "ms_sample_allocations"), 
-       file = "allocations_nbs.RData")
+       file = paste0(result_dir, "/allocations_nbs.RData"))
 }
 
