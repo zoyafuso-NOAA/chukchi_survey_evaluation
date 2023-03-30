@@ -15,7 +15,7 @@ rm(list = ls())
 ##  Import other required packages
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
 library(devtools)
-devtools::install_github(repo = "zoyafuso-NOAA/SamplingStrata")
+#devtools::install_github(repo = "zoyafuso-NOAA/SamplingStrata")
 library(SamplingStrata)
 library(terra)
 library(RColorBrewer)
