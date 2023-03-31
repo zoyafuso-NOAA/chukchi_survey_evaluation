@@ -32,7 +32,7 @@ iregion = "nbs"
 igear = "otter"
 
 stratas <- 3:4
-total_n <- seq(from = 55, to = 200, by = 15)
+total_n <- seq(from = 70, to = 190, by = 15)
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ##   Conduct Optimization ----
