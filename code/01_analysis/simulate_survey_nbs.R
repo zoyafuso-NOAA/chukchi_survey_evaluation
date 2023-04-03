@@ -4,7 +4,7 @@
 ## Description:   Simulate different survey designs under varying levels of 
 ##                      survey effort.
 ##
-##                Survey Designs: 1) Simple Random Desgin
+##                Survey Designs: 1) Simple Random Design
 ##                                2) Fixed Grid Systematic Design
 ##                                3) Stratified Random Design
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -224,7 +224,7 @@ n_strata <- c("otter" = 3, "beam" = 4)[igear]
 n_strata_realized <- 2 # optimization only chose 2 strata
 
 load(here::here(paste0("results/nbs_", igear,
-            "/survey_opt/Str_", n_strata, "/result_list.RData")))
+            "/survey_opt/Str_", n_strata, "/result_list_nbs.RData")))
 load(here::here(paste0("results/nbs_", igear,
             "/survey_opt/Str_", n_strata, "/allocations_nbs.RData")))
 
