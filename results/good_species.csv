@@ -1,19 +1,19 @@
 species_name,taxon,sci_name,beam,otter,taxon_group,taxon_plot,xleft,xright,ybottom,ytop
 T,Alaska plaice,Pleuronectes quadrituberculatus,FALSE,TRUE,fish,Alaska plaice,0.1,0.9,0.35,0.65
-T,Arctic cod,Boreogadus saida,TRUE,TRUE,fish,Arctic cod,0.1,0.9,0.35,0.65
+T,Arctic cod,Boreogadus saida,TRUE,TRUE,fish,Arctic cod,0,1,0.4,0.6
 T,Bering flounder,Hippoglossoides robustus,TRUE,TRUE,fish,Bering flounder,0.1,0.9,0.35,0.65
 F,bryozoans,Phylum: Bryozoa,TRUE,FALSE,invert,bryozoans,0.1,0.9,0.35,0.65
-F,soft corals and sea anemones,Class: Anthozoa,TRUE,TRUE,invert,soft corals & anemones,0.1,0.9,0.35,0.65
-F,eelpouts,Family: Zoarchidae,TRUE,FALSE,fish,eelpouts,0.1,0.9,0.4,0.6
-F,jellyfishes,Class: Scyphozoa,TRUE,TRUE,invert,jellyfishes,0.1,0.9,0.35,0.65
-F,poachers,Family: Agonidae,TRUE,TRUE,fish,poachers,0.1,0.9,0.35,0.6
+F,soft corals and sea anemones,Class: Anthozoa,TRUE,TRUE,invert,soft corals &\n anemones,0.35,0.65,0.35,0.65
+F,eelpouts,Family: Zoarchidae,TRUE,FALSE,fish,eelpouts,0,1,0.4,0.6
+F,jellyfishes,Class: Scyphozoa,TRUE,TRUE,invert,jellyfishes,0.2,0.8,0.35,0.65
+F,poachers,Family: Agonidae,TRUE,TRUE,fish,poachers,0,1,0.4,0.6
 F,pricklebacks,Family: Stichaeidae,TRUE,FALSE,fish,pricklebacks,0.1,0.9,0.4,0.6
-T,purple-orange sea star,Asterias amurensis,TRUE,TRUE,invert,purple-orange sea star,0.2,0.8,0.35,0.65
-T,saffron cod,Eleginus gracilis,TRUE,TRUE,fish,saffron cod,0.1,0.9,0.4,0.6
+T,purple-orange sea star,Asterias amurensis,TRUE,TRUE,invert,purple-orange \n sea star,0.25,0.75,0.35,0.65
+T,saffron cod,Eleginus gracilis,TRUE,TRUE,fish,saffron cod,0,1,0.4,0.6
 F,sculpins,Family: Cottidae,TRUE,TRUE,fish,sculpins,0.1,0.9,0.35,0.65
-F,snailfishes,Family: Liparidae,TRUE,TRUE,fish,snailfishes,0.1,0.9,0.35,0.65
+F,snailfishes,Family: Liparidae,TRUE,TRUE,fish,snailfishes,0.1,0.9,0.4,0.6
 F,snails,Class: Gastropoda,TRUE,TRUE,invert,snails,0.3,0.7,0.35,0.65
 T,snow crab,Chionoecetes opilio,TRUE,TRUE,invert,snow crab,0.1,0.9,0.35,0.65
 F,tunicates,Subphylum: Tunicata,TRUE,FALSE,invert,tunicates,0.1,0.9,0.35,0.65
-T,walleye pollock,Gadus chalcogrammus,FALSE,TRUE,fish,walleye pollock,0.1,0.9,0.35,0.65
+T,walleye pollock,Gadus chalcogrammus,FALSE,TRUE,fish,walleye pollock,0.1,0.9,0.4,0.6
 T,yellowfin sole,Limanda aspera,FALSE,TRUE,fish,yellowfin sole,0.1,0.9,0.35,0.65
