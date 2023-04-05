@@ -18,7 +18,7 @@ library(FishStatsUtils)
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ##   Set draft version
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-draft_version <- 2
+draft_version <- 3
 draft_dir <- paste0("manuscript/Version_", draft_version, "/")
 if(!dir.exists(draft_dir)) dir.create(draft_dir)
 

@@ -1,10 +1,11 @@
 ---
+title: "Appendix B: Spatiotemporal distributions (with diagnostic plots) and abundance indices of taxa used in chukchi survey evaluation"
 output: 
   word_document:
       reference_docx: template-worddoc.docx
 ---
 
-```{r Appendix A, echo = F, message = F, warning = F, results='asis'}
+```{r Appendix B, echo = F, message = F, warning = F, results='asis'}
 good_species <- read.csv("../results/good_species.csv")
 
 string = c()
@@ -26,8 +27,8 @@ for (ispp in 1:nrow(good_species)){
   
   string = paste0(
     string,
-    "![](../figures/Appendix_A/VAST_output_", taxon_name, ".png)\n",
-    "Appendix A", fig_num, ": VAST output for ", taxon_name, 
+    "![](../figures/Appendix_B/VAST_output_", taxon_name, ".png)\n",
+    "Appendix B", fig_num, ": VAST output for ", taxon_name, 
     " (", sci_name, ") for the ", which_gear,
     ". From left to right, plots are generally formatted as: ",
     "A) predicted density with observed densities superimposed, ",
