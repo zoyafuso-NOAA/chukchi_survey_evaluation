@@ -91,13 +91,14 @@ for (ispp in nbs_spp[!nbs_spp %in% "urchins"]) {
   temp_df <- subset(x = index, subset = Taxon == ispp)
   
   plot(1, type = "n", 
-       xlim = c(1985, 2025),
-       ylim = c(0, max(temp_df$upper_sd * 1.1)), 
+       xlim = c(1985, 2022),
+       ylim = c(0, max(temp_df$upper_sd * 1.01)),
+       yaxs = "i",
        las = 1, xlab = "", ylab = "")
   
   for (isurvey in which_surveys) {
     points(Estimate ~ Time, data = temp_df, subset = Survey == isurvey, 
-           pch = 16, 
+           pch = 20, 
            col = c("nbs_otter" = "black", "chukchi_otter" = "blue")[isurvey])
     lines(Estimate ~ Time, data = temp_df, subset = Survey == isurvey, 
            col = c("nbs_otter" = "black", "chukchi_otter" = "blue")[isurvey])
