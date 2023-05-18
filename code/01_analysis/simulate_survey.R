@@ -13,19 +13,21 @@ rm(list = ls())
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ##   Import Libraries ----
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
-library(sp)
-library(rgeos)
-library(raster)
-library(rgdal)
-library(viridis )
+# library(sp)
+# library(rgeos)
+# library(raster)
+# library(rgdal)
+# library(viridis)
 library(FishStatsUtils)
 library(terra)
+library(sf)
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## Load input data ----
 ## Define areas of cells, total area
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 load("data/survey_opt_data/optimization_data.RData")
+grid_pts <- terra::vect(x = "data/survey_opt_data/grid_pts.shp")
 cell_area <- FishStatsUtils::chukchi_sea_grid[, "Area_in_survey_km2"]
 total_area <- sum(cell_area)
 
@@ -33,9 +35,9 @@ total_area <- sum(cell_area)
 ##   Create an outline of the Chukchi grid in aea projection. This mask is used
 ##       when creating the systematic grids. 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-chukchi_mask <-
-  rgdal::readOGR("data/spatial_data/survey_boundary/CHUKCHI_2012.shp")
-crs(chukchi_mask) <- aea_crs
+chukchi_mask <- 
+  terra::vect("data/spatial_data/survey_boundary/CHUKCHI_2012.shp")
+terra::crs(chukchi_mask) <- aea_crs
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## Set constants ----
@@ -47,11 +49,11 @@ crs(chukchi_mask) <- aea_crs
 
 igear = c("otter", "beam")[2]
 
-n_spp <-  get(paste0("n_spp_", igear))
-spp_list <-  get(paste0("spp_list_", igear))
+n_spp <-  get(x = paste0("n_spp_", igear))
+spp_list <-  get(x = paste0("spp_list_", igear))
 iyear <- c("beam" = "2019", "otter" = "2012")[igear]
 
-true_index <- get(paste0("true_index_", igear))
+true_index <- get(x = paste0("true_index_", igear))
 true_index <- true_index[nrow(true_index), ]
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -120,14 +122,9 @@ sys_settings <- NULL
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ##   Create Chukchi mask ----
 ##   Create an outline of the Chukchi grid in aea projection
-##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
-chukchi_mask <-
-  rgdal::readOGR("data/spatial_data/survey_boundary/CHUKCHI_2012.shp")
-crs(chukchi_mask) <- aea_crs
-grid_pts_aea <- sp::SpatialPointsDataFrame(coords = grid_pts@coords,
-                                           data = data.frame(id = 1:n_cells),
-                                           proj4string = aea_crs)
-
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+grid_pts_aea <- grid_pts
+grid_pts_aea$id <- 1:n_cells
 
 set.seed(54904)
 while (temp_res >= 35000) {
@@ -138,61 +135,86 @@ while (temp_res >= 35000) {
           dimnames = list(spp_list, NULL))
   
   ## Make station grid based on latlon coords, random start
-  temp_grid <- sp::makegrid(x = grid_pts_aea, 
-                            cellsize = temp_res, 
-                            pretty = F)
-  temp_grid <- sp::SpatialPoints(coords = coordinates(temp_grid),
-                                 proj4string = aea_crs)
-  temp_grid <- terra::intersect(x = temp_grid, y = chukchi_mask)
+  temp_grid <- sf::st_make_grid(x = sf::st_as_sf(grid_pts), 
+                                cellsize = temp_res,
+                                what = "centers")
+  temp_grid <- terra::vect(temp_grid)
+  temp_grid$id <- 1:nrow(temp_grid)
   
-  plot(temp_grid)
+  dim_grid <- apply(X = terra::crds(temp_grid), 
+                     MARGIN = 2, 
+                     FUN = function(x) length(unique(x)))
+  
+  ## Calculate indices of orthogonally adjacent stations for each station
+  ## based on the dimensions of the grid
+  orth_neigh <- matrix(nrow = nrow(temp_grid), ncol = 4, 
+                       dimnames = list(paste0("ID_", 1:nrow(temp_grid)), 
+                                       c("left", "right", "bottom", "top")))
+  
+  orth_neigh[, "right"] <- (1:nrow(temp_grid)) + 1
+  orth_neigh[, "left"] <-  (1:nrow(temp_grid)) - 1
+  orth_neigh[, "top"] <-  (1:nrow(temp_grid)) + dim_grid["x"]
+  orth_neigh[, "bottom"] <-  (1:nrow(temp_grid)) - dim_grid["x"]
+  
+  orth_neigh[orth_neigh < 1 | orth_neigh > prod(dim_grid)] <- NA
+  orth_neigh[(1:nrow(temp_grid)) %% dim_grid["x"] == 0, "right"] <- NA
+  orth_neigh[(1:nrow(temp_grid)) %% dim_grid["x"] == 1, "left"] <- NA
+
+  ## Mask with chukchi grid
+  sys_chukchi_grid <- terra::intersect(x = temp_grid, y = chukchi_mask)
+  orth_neigh <- orth_neigh[sys_chukchi_grid$id, ]
+  orth_neigh[!orth_neigh %in% sys_chukchi_grid$id] <- NA
+  
+  # for (irow in 1:nrow(temp_grid)) {
+  #   plot(sys_chukchi_grid)
+  #   points(sys_chukchi_grid[irow, ], pch = 16, col = "red", cex = 2)
+  #   points(temp_grid[na.omit(orth_neigh[irow, ]),], 
+  #          pch = 16, col = "blue", cex = 2)
+  #   Sys.sleep(time = 0.5)
+  # }
+    
+  # plot(temp_grid)
   
   ## Calculate sample size
-  temp_n <- length(temp_grid)
+  temp_n <- length(sys_chukchi_grid)
   sys_settings <- rbind(sys_settings,
                         data.frame(n = temp_n,
                                    res = temp_res))
   
   ## Calculate the grid cell that falls under the each station
-  grid_idx <- apply(X = rgeos::gDistance(spgeom1 = grid_pts_aea,
-                                         spgeom2 = temp_grid,
-                                         byid = TRUE),
-                    MARGIN = 1,
+  grid_idx <- apply(X = terra::distance(x = grid_pts_aea,
+                                         y = sys_chukchi_grid),
+                    MARGIN = 2,
                     FUN = which.min)
+
   
-  ## Calculate the nearest neighbor stations for each station
-  distances <- as.matrix(dist(grid_pts_aea[grid_idx, ]@coords))
-  min_distances <- apply(X = distances,
-                         MARGIN = 1,
-                         FUN = function(x) {
-                           y = round(x[x > 0])
-                           return(names(which( y == min(y) )))
-                         })
-  
-  neighbor_var <- matrix(nrow = length(min_distances), ncol = n_spp,
-                         dimnames = list(NULL, spp_list))
   
   for (iter in 1:n_iters) {
-    
-    for (icell in 1:length(min_distances) ){  ## Loop over stations -- start
+    neighbor_var <- matrix(nrow = length(grid_idx), 
+                           ncol = n_spp)
+    for (icell in 1:length(grid_idx) ){  ## Loop over stations -- start
       
       ## Pull the station indices of the station and its neighbors
-      idx <- as.integer(c(icell, min_distances[[icell]]))
+      # idx <- as.integer(c(icell, min_distances[[icell]]))
+      # idx <- grid_idx[icell]
       
       ## Pull the location of the idx on the grid from sys_idx and get the
       ## simulated densities
-      neighbors <- ms_dens[, grid_idx[idx], iter]
+      neighbors <- c(sys_chukchi_grid$id[icell], na.omit(orth_neigh[icell, ]))
+      
+      idx <- grid_idx[sys_chukchi_grid$id %in% neighbors]
       
       ## Calculate the neighborhood variance of the station
-      neighbor_var[icell, ] <-  apply(X = neighbors,
+      neighbor_var[icell, ] <-  apply(X = ms_dens[, idx, iter],
                                       MARGIN = 1,
                                       FUN = function(x) mean((x - mean(x))^2))
     } ## Loop over stations -- end
     
+     
     ## Calculate survey statistics
     sys_sample <- ms_dens[, grid_idx, iter]
     sys_mean <- rowMeans(ms_dens[, grid_idx, iter])
-    sys_sd_LO5 <- sqrt(colSums(neighbor_var) / length(min_distances)^2)
+    sys_sd_LO5 <- sqrt(colSums(neighbor_var) / length(min_distances))
     sys_index <- rowMeans(sys_sample) * total_area
     sys_sd <- sqrt(apply(X = sys_sample, MARGIN = 1, FUN = var) *
                      total_area^2 / temp_n)
