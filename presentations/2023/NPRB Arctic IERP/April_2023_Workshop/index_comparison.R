@@ -23,7 +23,10 @@ chukchi_otter_dir <- googledrive::as_id("1J1UW1Q_UkO-tVaATpm_nWYdXfw6Rijvw")
 nbs_otter_ls <- googledrive::drive_ls(path = nbs_otter_dir)
 chukchi_otter_ls <- googledrive::drive_ls(path = chukchi_otter_dir)
 
-nbs_spp <- sort(nbs_otter_ls$name)
+# nbs_spp <- sort(nbs_otter_ls$name)
+nbs_spp <- c("Pacific cod", "walleye pollock", "yellowfin sole",
+             "bivalves", "Pacific herring",  "snow crab",
+             "Arctic cod", "saffron cod")
 chukchi_spp <- sort(chukchi_otter_ls$name)
 
 nbs_otter_years <- c(1985, 1988, 1991, 2010, 2017:2019, 2021:2022)
@@ -84,7 +87,11 @@ index$Estimate <- index$Estimate / 1e6
 index$lower_sd <- index$lower_sd / 1e6
 index$upper_sd <- index$upper_sd / 1e6
 
-for (ispp in nbs_spp[!nbs_spp %in% "urchins"]) {
+{jpeg(filename = "presentations/2023/NPRB Arctic IERP/April_2023_Workshop/index.comparison.jpg", width = 10, height = 4, units = "in", res = 500)
+par(mfrow = c(2, 5), mar = c(2, 3, 2, 1))
+for (ispp in c("Pacific cod", "walleye pollock", "yellowfin sole",
+               "Arctic cod", "snow crab", "Pacific herring", 
+               "saffron cod", "bivalves")) {
   which_surveys <- c("nbs_otter", "chukchi_otter")[c(ispp %in% nbs_spp, 
                                                      ispp %in% chukchi_spp)] 
   
@@ -111,3 +118,9 @@ for (ispp in nbs_spp[!nbs_spp %in% "urchins"]) {
   
   mtext(side = 3, text = ispp)
 }
+
+plot(1, type = "n", axes = F)
+legend("center", legend = c("NBS", "Chukchi"), pch = 20, lty = 1, 
+       col = c("nbs_otter" = "black", "chukchi_otter" = "blue"),
+       cex = 1.5, bty = "n", title = "83-112 Trawl")
+dev.off()}
