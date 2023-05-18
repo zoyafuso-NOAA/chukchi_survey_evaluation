@@ -18,7 +18,7 @@ library(FishStatsUtils)
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ##   Set draft version
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-draft_version <- 4
+draft_version <- 3
 draft_dir <- paste0("manuscript/Version_", draft_version, "/")
 if(!dir.exists(draft_dir)) dir.create(draft_dir)
 
@@ -29,9 +29,6 @@ file.copy(from = "figures/",
           to = draft_dir,
           recursive = TRUE)
 
-n_figs <- length(x = grep(x = dir("figures/"), pattern = ".jpeg"))
-n_tables <- 1
-  
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ##   Render the main manuscript text
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -46,20 +43,19 @@ rmarkdown::render(input = "manuscript/Oyafuso_etal_Chukchi_MS.Rmd",
                   output_file = paste0("../", draft_dir,
                                        "Oyafuso_Chukchi Survey Designv", 
                                        draft_version, "_", todays_date,".docx"),
-                  params = list(draft_dir = draft_dir, 
-                                n_figs = n_figs, n_tables = n_tables))
+                  params = list(draft_dir = draft_dir))
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ##   Render Appendix A and B
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-# rmarkdown::render(input = "manuscript/Oyafuso_etal_Chukchi_Appendix_A.Rmd",
-#                   output_format = "word_document",
-#                   output_dir =  draft_dir,
-#                   output_file = "Appendix_A.docx")
-# 
-# rmarkdown::render(input = "manuscript/Oyafuso_etal_Chukchi_Appendix_B.Rmd",
-#                   output_format = "word_document",
-#                   output_dir = draft_dir,
-#                   output_file = "Appendix_B.docx",
-#                   params = list(draft_dir = draft_dir))
+rmarkdown::render(input = "manuscript/Oyafuso_etal_Chukchi_Appendix_A.Rmd",
+                  output_format = "word_document",
+                  output_dir =  draft_dir,
+                  output_file = "Appendix_A.docx")
+
+rmarkdown::render(input = "manuscript/Oyafuso_etal_Chukchi_Appendix_B.Rmd",
+                  output_format = "word_document",
+                  output_dir = draft_dir,
+                  output_file = "Appendix_B.docx",
+                  params = list(draft_dir = draft_dir))
