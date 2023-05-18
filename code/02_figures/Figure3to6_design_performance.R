@@ -29,7 +29,7 @@ for (igear in c("otter", "beam")) {
                          "beam_bias" = 6)
     
     file_name <- paste0("figures/Figure", fig.number, "_", 
-                        igear, "_", iplot, ".png")
+                        igear, "_", iplot, ".jpeg")
     metrics <- 
       list(performance = c("True CV" = "true_cv", 
                            "RRMSE of CV" = "rrmse_cv"),
@@ -37,8 +37,8 @@ for (igear in c("otter", "beam")) {
                     "% Bias of CV Relative to True CV" = "rb_cv"))[[iplot]]
     
     #   Open device
-    png(filename = file_name, res = 500, family = "serif", units = "in", 
-        width = 19.0 / 2.54, 
+    jpeg(filename = file_name, res = 500, family = "serif", 
+         units = "in", width = 19.0 / 2.54, 
         height = c("otter" = 16 / 2.54, "beam" = 16 / 2.54)[igear] )
     
     ##   Plot layout 
@@ -115,13 +115,13 @@ for (igear in c("otter", "beam")) {
              labels = NA,
              at = pretty(ylim_, n = 3))
         box()
-        if (iplot == "bias") abline(h = 0)
+        if (iplot == "bias") abline(h = 0, col = "darkgrey", lty = "dashed")
         
         ## Plot species subtitle
         if (imetric == 1)
           text(x = 200,
                y = ylim_[2] * c("performance" = 1.15, "bias" = 1.3)[iplot],
-               labels = spp_name[ispp],
+               labels = paste0(LETTERS[ispp], ") ", spp_name[ispp]),
                font = 2,
                xpd = NA)
         
