@@ -1,5 +1,5 @@
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-## Project:       Appendix A: VAST output
+## Project:       Appendix B: VAST output
 ## Author:        Zack Oyafuso (zack.oyafuso@noaa.gov)
 ## Description:   Plot predicted density, index, qq plots for each species/gear
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -8,34 +8,33 @@ rm(list = ls())
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ##   Import relevant libraries   ----
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
-library(rgdal)
-library(sp)
-library(raster)
+library(terra)
 library(RColorBrewer)
 library(gap)
 library(plotrix)
-library(VAST)
+library(FishStatsUtils)
 library(jpeg)
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ##   Import data and constants ----
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-load("data/survey_opt_data/optimization_data.RData")
-AK_land <- rgdal::readOGR(dsn = "data/spatial_data/land_shapefiles/AKland.shp")
-cropped_extent <- extent(grid_pts)
+load(file = "data/survey_opt_data/optimization_data.RData")
+AK_land <- terra::vect(x = "data/spatial_data/land_shapefiles/AKland.shp")
+grid_pts <- terra::vect(x = "data/survey_opt_data/grid_pts.shp")
+cropped_extent <- terra::ext(grid_pts)
 cropped_extent[2] <- cropped_extent[2] + 10000
-ak_land_cropped <- raster::crop(x = AK_land, y = cropped_extent)
+ak_land_cropped <- terra::crop(x = AK_land, y = cropped_extent)
 good_species <- read.csv(file = "results/good_species.csv")
 
 ## Plotting colors
-col_otter <- brewer.pal(n = 9, name = "Blues")
-col_beam <- brewer.pal(n = 9, name = "Greens")
+col_otter <- RColorBrewer::brewer.pal(n = 9, name = "Blues")
+col_beam <- RColorBrewer::brewer.pal(n = 9, name = "Greens")
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ##   Result directory ----
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
-if(!dir.exists("figures/Appendix_A/"))
-  dir.create("figures/Appendix_A/")
+if(!dir.exists(paths = "figures/Appendix_B/"))
+  dir.create(path = "figures/Appendix_B/")
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ##   Collate density ----
@@ -50,7 +49,7 @@ for (igear in c("otter", "beam")) {
                                     year = c(2012, 2017, 2019)))[[igear]]
   
   ## Species that gear sampled
-  species <- read.csv("results/good_species.csv")
+  species <- read.csv(file = "results/good_species.csv")
   species_idx <- species[, igear]
   species <- species[species_idx, ]$taxon
   
@@ -74,9 +73,10 @@ for (igear in c("otter", "beam")) {
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ##   Plot ----
-##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
-for (irow in 1:nrow(good_species)){
-  
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+
+for (irow in 1:nrow(x = good_species)) {
+
   ## Taxon constants
   ispp_name <- good_species$taxon[irow]
   ispp_name_plot <- good_species$taxon_plot[irow]
@@ -87,7 +87,7 @@ for (irow in 1:nrow(good_species)){
   n_gears <- length(available_gears)
   
   ## Open plot device
-  png(filename = paste0("figures/Appendix_A/VAST_output_", ispp_name, ".png"),
+  png(filename = paste0("figures/Appendix_B/VAST_output_", ispp_name, ".png"),
       width = 190, units = "mm", res = 500, family = "serif",
       height = switch(paste0(available_gears, collapse = ""),
                       "beam" =  40, "otter" = 45,
@@ -147,8 +147,8 @@ for (irow in 1:nrow(good_species)){
     par(mar = c(0, 0, 0, 0))
     
     ## Load full VAST result
-    fit <- readRDS(paste0("results/chukchi_", igear, "/vast_fits/", 
-                          ispp_name, "/fit_full.rds"))
+    fit <- readRDS(file = paste0("results/chukchi_", igear, "/vast_fits/", 
+                                 ispp_name, "/fit_full.rds"))
     
     ## Years that gear was used
     years <- list("otter" = data.frame(idx = c(1, 23),
@@ -173,18 +173,18 @@ for (irow in 1:nrow(good_species)){
                              include.lowest = TRUE,
                              right = FALSE))
       
-      chukchi_shp <- 
-        sp::SpatialPointsDataFrame(coords = chukchi_sea_grid[, c("Lon", "Lat")], 
-                                   proj4string = latlon_crs,
-                                   data = plot_this)
-      chukchi_shp <- sp::spTransform(x = chukchi_shp, CRSobj = aea_crs)
+      chukchi_shp <- terra::vect(x = cbind(chukchi_sea_grid,
+                                           plot_this), 
+                                 geom = c("Lon", "Lat"), 
+                                 crs = latlon_crs)
+      chukchi_shp <- terra::project(x = chukchi_shp, aea_crs)
       
-      chukchi_ras <- raster::raster(x = chukchi_shp, resolution = 4000)
-      chukchi_ras <- raster::rasterize(x = chukchi_shp,
-                                       y = chukchi_ras, 
-                                       field = "X1")
-      
-      image(chukchi_ras, asp = 1, col = get(paste0("col_", igear)), 
+      chukchi_ras <- terra::rast(x = chukchi_shp, resolution = 4000)
+      chukchi_ras <- terra::rasterize(x = chukchi_shp,
+                                      y = chukchi_ras, 
+                                      field = "X1")
+
+      image(x = chukchi_ras, asp = 1, col = get(paste0("col_", igear)), 
             axes = F, ann = F)
       box()
       
@@ -192,30 +192,31 @@ for (irow in 1:nrow(good_species)){
       assign(x = paste0("obs_dens_", igear), 
              value = subset(x = fit$data_frame[fit$data_list$PredTF_i == 0, ], 
                             subset = t_i == years$year[iyear]))
-      latlon_locs <- 
-        sp::SpatialPoints(coords = get(paste0("obs_dens_", 
-                                              igear))[, c("Lon_i", "Lat_i")],
-                          proj4string = latlon_crs)
-      aea_locs <- sp::spTransform(x = latlon_locs, CRSobj = aea_crs)
+      latlon_locs <- terra::vect(x = get(paste0("obs_dens_", igear)),
+                                 geom = c("Lon_i", "Lat_i"),
+                                 crs = latlon_crs)
+      aea_locs <- terra::project(x = latlon_locs, aea_crs)
+
       obs_dens <- get(paste0("obs_dens_", igear))$b_i
       points(aea_locs[obs_dens == 0], pch = 3, cex = 0.5)
-      points(aea_locs[obs_dens < 1 & obs_dens > 0], cex = 0.1)
-      points(aea_locs[obs_dens > 0], cex = log10(obs_dens[obs_dens > 0]) / 2)
+      points(aea_locs[obs_dens < 1 & obs_dens > 0], cex = 0.1, pch = 1)
+      points(aea_locs[obs_dens > 0], 
+             cex = log10(obs_dens[obs_dens > 0]) / 2, pch = 1)
       
       ## Plot land
       plot(ak_land_cropped, add = T, border = F, col = "tan")
       
       ## Plot species/gear label
-      text(x = extent(chukchi_ras)[1] + diff(extent(chukchi_ras)[1:2])*0.75,
-           y = extent(chukchi_ras)[3] + diff(extent(chukchi_ras)[3:4])*0.3,
+      text(x = cropped_extent[1] + diff(cropped_extent[1:2])*0.75,
+           y = cropped_extent[3] + diff(cropped_extent[3:4])*0.3,
            labels = paste0(igear, " trawl\n", years$year[iyear]),
            cex = 1)
     } 
     
     ## Index
-    index <- read.csv(paste0("results/chukchi_", igear, "/vast_fits/", 
-                             ispp_name, 
-                             "/diagnostics/Index.csv" ))[years$idx, ]
+    index <- read.csv(file = paste0("results/chukchi_", igear, "/vast_fits/", 
+                                    ispp_name, 
+                                    "/diagnostics/Index.csv" ))[years$idx, ]
     
     index_est <- rbind(index$Estimate - index$Std..Error.for.Estimate,
                        index$Estimate,
@@ -252,8 +253,8 @@ for (irow in 1:nrow(good_species)){
     box(which = "figure")
     
     ## Calculate DHarma Residuals
-    load(paste0("results/chukchi_", igear, "/vast_fits/",
-                ispp_name, "/diagnostics/diagnostics.RData"))
+    load(file = paste0("results/chukchi_", igear, "/vast_fits/",
+                       ispp_name, "/diagnostics/diagnostics.RData"))
     dharmaRes <- diagnostics$dharmaRes
     
     ## QQ Plot
