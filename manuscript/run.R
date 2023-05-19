@@ -53,13 +53,13 @@ rmarkdown::render(input = "manuscript/Oyafuso_etal_Chukchi_MS.Rmd",
 ##   Render Appendix A and B
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-# rmarkdown::render(input = "manuscript/Oyafuso_etal_Chukchi_Appendix_A.Rmd",
-#                   output_format = "word_document",
-#                   output_dir =  draft_dir,
-#                   output_file = "Appendix_A.docx")
-# 
-# rmarkdown::render(input = "manuscript/Oyafuso_etal_Chukchi_Appendix_B.Rmd",
-#                   output_format = "word_document",
-#                   output_dir = draft_dir,
-#                   output_file = "Appendix_B.docx",
-#                   params = list(draft_dir = draft_dir))
+rmarkdown::render(input = "manuscript/Oyafuso_etal_Chukchi_Appendix_A.Rmd",
+                  output_format = "word_document",
+                  output_dir =  draft_dir,
+                  output_file = "Appendix_A.docx")
+
+rmarkdown::render(input = "manuscript/Oyafuso_etal_Chukchi_Appendix_B.Rmd",
+                  output_format = "word_document",
+                  output_dir = draft_dir,
+                  output_file = "Appendix_B.docx",
+                  params = list(draft_dir = draft_dir))
