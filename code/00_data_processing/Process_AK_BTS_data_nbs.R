@@ -110,7 +110,7 @@ dat <- subset(x = dat,
                          SPECIES_CODE, 
                          CPUE_KG, CPUE_N, AREA_SWEPT))
 
-GEAR_CAT$dat = as.factor("otter")
+dat$GEAR_CAT = as.factor("otter")
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ##   Add zeros to df ----
