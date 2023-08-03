@@ -110,6 +110,8 @@ dat <- subset(x = dat,
                          SPECIES_CODE, 
                          CPUE_KG, CPUE_N, AREA_SWEPT))
 
+GEAR_CAT$dat = as.factor("otter")
+
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ##   Add zeros to df ----
 ##   Create a wide df with zeros filled for stations where species not observed
@@ -117,7 +119,7 @@ dat <- subset(x = dat,
 cpue_wide <- tidyr::spread(
   data = dat[, c("YEAR", "MONTH", "DAY", "DATE",
                  "HAULJOIN", "CPUE_KG", "AREA_SWEPT",
-                 "SPECIES_CODE")], 
+                 "SPECIES_CODE", "GEAR_CAT")], 
   key = SPECIES_CODE, 
   value = "CPUE_KG", 
   fill = 0)
@@ -130,7 +132,7 @@ cpue_wide <- cpue_wide[order(cpue_wide$HAULJOIN), ]
 station_data <- dat[!duplicated(dat$HAULJOIN) ,
                     c("HAULJOIN", "SURVEY_NAME", 
                       "DATE", "YEAR", "MONTH", "DAY", 
-                      "GEAR_DEPTH", "GEAR_TEMPERATURE",  
+                      "GEAR_CAT", "GEAR_DEPTH", "GEAR_TEMPERATURE",  
                       "MEAN_LONGITUDE", "MEAN_LATITUDE") ]
 
 station_data <- station_data[order(station_data$HAULJOIN), ]
@@ -165,11 +167,11 @@ for (irow in 1:nrow(solo_spp)) {
                                    species_code = ispp_code))
   
   if (ispp_code %in% names(data_wide)) {
-    data_long <- data_wide[, c("YEAR", "MONTH", "DAY", "DATE", 
+    data_long <- data_wide[, c("YEAR", "MONTH", "DAY", "DATE", "GEAR_CAT", 
                                "MEAN_LONGITUDE", "MEAN_LATITUDE", "HAULJOIN", 
                                "GEAR_DEPTH", "GEAR_TEMPERATURE", 
                                "AREA_SWEPT", ispp_code)]
-    names(data_long) <- c("year", "month", "day", "date", "lon", "lat", 
+    names(data_long) <- c("year", "month", "day", "date", "gear", "lon", "lat", 
                           "hauljoin", "bot_depth", "bot_temp", 
                           "actual_area_swept", "cpue_kg_km2")
     
@@ -210,12 +212,12 @@ for (irow in 1:nrow(aggregate_species)) {
     sub_df <- as.matrix(data_wide[, paste(ispp_code)])
     
     data_long <- cbind(data_wide[, c("YEAR", "MONTH", "DAY", "DATE", 
-                                     "MEAN_LONGITUDE", 
+                                     "GEAR_CAT", "MEAN_LONGITUDE", 
                                      "MEAN_LATITUDE", "HAULJOIN", 
                                      "GEAR_DEPTH", "GEAR_TEMPERATURE", 
                                      "AREA_SWEPT")],
                        cpue_kg_km2 = rowSums(sub_df))
-    names(data_long) <- c("year", "month", "day", "date", "lon", "lat",
+    names(data_long) <- c("year", "month", "day", "date", "gear", "lon", "lat",
                           "hauljoin", "bot_depth", "bot_temp", 
                           "actual_area_swept", "cpue_kg_km2")
     
