@@ -14,7 +14,8 @@ select * from racebase.haul
       or (cruise = 201801 and haul_type = 13 and (stratum in (0,81,70,71) or stratum is NULL))
       or (cruise = 201902 and haul_type = 3 and (stratum in (81,70,71)))
       or (cruise = 202102 and haul_type = 3 and (stratum in (81,70,71)))
-      or (cruise = 202202 and haul_type = 3 and (stratum in (81,70,71))))
+      or (cruise = 202202 and haul_type = 3 and (stratum in (81,70,71)) or stratum is NULL)
+      or (cruise = 202302 and haul_type = 3 and (stratum in (81,70,71)) or stratum is NULL))
     and region = 'BS'
     and performance >= 0
     and not(cruise = 198808 and vessel = 21 and haul in (9,14,105,106,107,108,113,114,115))
