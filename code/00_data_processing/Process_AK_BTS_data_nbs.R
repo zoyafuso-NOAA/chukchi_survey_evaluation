@@ -18,19 +18,21 @@ library(getPass)
 get.connected <- function(schema='AFSC'){(echo=FALSE)
   username <- getPass(msg = "Enter your ORACLE Username: ")
   password <- getPass(msg = "Enter your ORACLE Password: ")
-  channel  <- RODBC::odbcDriverConnect(paste0("Driver={Oracle in OraClient12Home1};Dbq=", schema, ";Uid=", username, ";Pwd=", password, ";"))
+  channel  <- RODBC::odbcDriverConnect(paste0("Driver={Oracle in OraClient12Home1};Dbq=", 
+                                              schema, ";Uid=", username, ";Pwd=", password, ";"))
 }
 channel <- get.connected()
 
 sql_to_rqry <- function(sql_path) {
   in_string <- readr::read_file(sql_path)
   in_string <- sub("/*.*/", "", in_string)
-  out_string <- stringr::str_replace_all(in_string, pattern = "\r\n", replacement = " ") # or pattern = "\n" for some files
+  out_string <- stringr::str_replace_all(in_string, 
+                                         pattern = "\r\n", replacement = " ") 
   return(out_string)
 }
 
 haul <- data.frame(RODBC::sqlQuery(channel, sql_to_rqry("code/00_data_processing/nbs_hauls_query_kotwicki_forR.sql")))
-#saveRDS(haul, "data/fish_data/AK_BTS_OtterAndBeam/nbs_kotwicki_hauls.rds")
+saveRDS(haul, "data/fish_data/AK_BTS_OtterAndBeam/nbs_kotwicki_hauls.rds")
 # or, once query above is conducted and saved, can load directly via
 #haul <-  readRDS("data/fish_data/AK_BTS_OtterAndBeam/nbs_kotwicki_hauls.rds")
 
@@ -106,8 +108,8 @@ dat <- subset(x = dat,
                          STATIONID, MEAN_LONGITUDE, MEAN_LATITUDE,
                          DATE, MONTH, DAY, YEAR,
                          GEAR_DEPTH, GEAR_TEMPERATURE,
-                         SPECIES_CODE, WEIGHT,
-                         CPUE_KG, CPUE_N, AREA_SWEPT))
+                         SPECIES_CODE,
+                         CPUE_KG, AREA_SWEPT))
 
 dat$GEAR_CAT = as.factor("otter")
 
@@ -117,7 +119,7 @@ dat$GEAR_CAT = as.factor("otter")
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 cpue_wide <- tidyr::spread(
   data = dat[, c("YEAR", "MONTH", "DAY", "DATE",
-                 "HAULJOIN", "WEIGHT", "CPUE_KG", "CPUE_N","AREA_SWEPT",
+                 "HAULJOIN", "CPUE_KG", "AREA_SWEPT",
                  "SPECIES_CODE", "GEAR_CAT")], 
   key = SPECIES_CODE, 
   value = "CPUE_KG", 
@@ -170,10 +172,10 @@ for (irow in 1:nrow(solo_spp)) {
   if (ispp_code %in% names(data_wide)) {
     data_long <- data_wide[, c("YEAR", "MONTH", "DAY", "DATE", "GEAR_CAT", 
                                "MEAN_LONGITUDE", "MEAN_LATITUDE", "HAULJOIN", 
-                               "GEAR_DEPTH", "GEAR_TEMPERATURE", "WEIGHT",
+                               "GEAR_DEPTH", "GEAR_TEMPERATURE", 
                                "AREA_SWEPT", ispp_code)]
     names(data_long) <- c("year", "month", "day", "date", "gear", "lon", "lat", 
-                          "hauljoin", "bot_depth", "bot_temp", "catch_kg",
+                          "hauljoin", "bot_depth", "bot_temp", 
                           "area_swept_km2", "cpue_kg_km2")
     
     ## Remove species column from data_wide
@@ -216,10 +218,10 @@ for (irow in 1:nrow(aggregate_species)) {
                                      "GEAR_CAT", "MEAN_LONGITUDE", 
                                      "MEAN_LATITUDE", "HAULJOIN", 
                                      "GEAR_DEPTH", "GEAR_TEMPERATURE", 
-                                     "WEIGHT", "AREA_SWEPT")],
+                                     "AREA_SWEPT")],
                        cpue_kg_km2 = rowSums(sub_df))
     names(data_long) <- c("year", "month", "day", "date", "gear", "lon", "lat",
-                          "hauljoin", "bot_depth", "bot_temp", "catch_kg",
+                          "hauljoin", "bot_depth", "bot_temp", 
                           "area_swept_km2", "cpue_kg_km2")
     
     ## Remove species column from data_wide

@@ -104,7 +104,7 @@ dat <- subset(x = dat,
                          DATE, MONTH, DAY, YEAR,
                          GEAR_DEPTH, GEAR_TEMPERATURE,
                          SPECIES_CODE, WEIGHT,
-                         CPUE_KG, CPUE_N, AREA_SWEPT))
+                         CPUE_KG, AREA_SWEPT))
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ##   Add zeros to df ----
@@ -112,7 +112,7 @@ dat <- subset(x = dat,
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 cpue_wide <- tidyr::spread(
   data = dat[, c("YEAR", "MONTH", "DAY", "DATE",
-                 "HAULJOIN", "WEIGHT", "CPUE_KG", "CPUE_N","AREA_SWEPT",
+                 "HAULJOIN", "CPUE_KG", "AREA_SWEPT",
                  "SPECIES_CODE", "GEAR_CAT")], 
   key = SPECIES_CODE, 
   value = "CPUE_KG", 
@@ -165,10 +165,10 @@ for (irow in 1:nrow(solo_spp)) {
   if (ispp_code %in% names(data_wide)) {
     data_long <- data_wide[, c("YEAR", "MONTH", "DAY", "DATE", "GEAR_CAT", 
                                "MEAN_LONGITUDE", "MEAN_LATITUDE", "HAULJOIN", 
-                               "GEAR_DEPTH", "GEAR_TEMPERATURE", "WEIGHT",
+                               "GEAR_DEPTH", "GEAR_TEMPERATURE", 
                                "AREA_SWEPT", ispp_code)]
     names(data_long) <- c("year", "month", "day", "date", "gear", "lon", "lat", 
-                          "hauljoin", "bot_depth", "bot_temp", "catch_kg",
+                          "hauljoin", "bot_depth", "bot_temp", 
                           "area_swept_km2", "cpue_kg_km2")
     
     ## Remove species column from data_wide
@@ -211,10 +211,10 @@ for (irow in 1:nrow(aggregate_species)) {
                                      "GEAR_CAT", "MEAN_LONGITUDE", 
                                      "MEAN_LATITUDE", "HAULJOIN", 
                                      "GEAR_DEPTH", "GEAR_TEMPERATURE", 
-                                     "WEIGHT", "AREA_SWEPT")],
+                                     "AREA_SWEPT")],
                        cpue_kg_km2 = rowSums(sub_df))
     names(data_long) <- c("year", "month", "day", "date", "gear", "lon", "lat",
-                          "hauljoin", "bot_depth", "bot_temp", "catch_kg",
+                          "hauljoin", "bot_depth", "bot_temp",
                           "area_swept_km2", "cpue_kg_km2")
     
     ## Remove species column from data_wide
