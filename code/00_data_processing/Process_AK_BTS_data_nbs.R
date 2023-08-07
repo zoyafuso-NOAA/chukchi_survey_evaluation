@@ -3,7 +3,6 @@
 ## Author:        Zack Oyafuso (zack.oyafuso@noaa.gov), 
 ##                Lewis Barnett (lewis.barnett@noaa.gov)
 ###############################################################################
-rm(list = ls())
 
 ##################################################
 ####   Import Libraries
@@ -107,7 +106,7 @@ dat <- subset(x = dat,
                          STATIONID, MEAN_LONGITUDE, MEAN_LATITUDE,
                          DATE, MONTH, DAY, YEAR,
                          GEAR_DEPTH, GEAR_TEMPERATURE,
-                         SPECIES_CODE, 
+                         SPECIES_CODE, WEIGHT,
                          CPUE_KG, CPUE_N, AREA_SWEPT))
 
 dat$GEAR_CAT = as.factor("otter")
@@ -118,13 +117,14 @@ dat$GEAR_CAT = as.factor("otter")
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 cpue_wide <- tidyr::spread(
   data = dat[, c("YEAR", "MONTH", "DAY", "DATE",
-                 "HAULJOIN", "CPUE_KG", "AREA_SWEPT",
+                 "HAULJOIN", "WEIGHT", "CPUE_KG", "CPUE_N","AREA_SWEPT",
                  "SPECIES_CODE", "GEAR_CAT")], 
   key = SPECIES_CODE, 
   value = "CPUE_KG", 
   fill = 0)
 
-cpue_wide <- cpue_wide[order(cpue_wide$HAULJOIN), ]
+cpue_wide <- cpue_wide[order(cpue_wide$GEAR_CAT,
+                             cpue_wide$HAULJOIN), ]
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ##   Attach station specific data to data_wide ----
@@ -135,7 +135,8 @@ station_data <- dat[!duplicated(dat$HAULJOIN) ,
                       "GEAR_CAT", "GEAR_DEPTH", "GEAR_TEMPERATURE",  
                       "MEAN_LONGITUDE", "MEAN_LATITUDE") ]
 
-station_data <- station_data[order(station_data$HAULJOIN), ]
+station_data <- station_data[order(station_data$GEAR_CAT,
+                                   station_data$HAULJOIN), ]
 
 data_wide <- cbind(station_data, cpue_wide)
 
@@ -169,11 +170,11 @@ for (irow in 1:nrow(solo_spp)) {
   if (ispp_code %in% names(data_wide)) {
     data_long <- data_wide[, c("YEAR", "MONTH", "DAY", "DATE", "GEAR_CAT", 
                                "MEAN_LONGITUDE", "MEAN_LATITUDE", "HAULJOIN", 
-                               "GEAR_DEPTH", "GEAR_TEMPERATURE", 
+                               "GEAR_DEPTH", "GEAR_TEMPERATURE", "WEIGHT",
                                "AREA_SWEPT", ispp_code)]
     names(data_long) <- c("year", "month", "day", "date", "gear", "lon", "lat", 
-                          "hauljoin", "bot_depth", "bot_temp", 
-                          "actual_area_swept", "cpue_kg_km2")
+                          "hauljoin", "bot_depth", "bot_temp", "catch_kg",
+                          "area_swept_km2", "cpue_kg_km2")
     
     ## Remove species column from data_wide
     data_wide <- data_wide[!names(data_wide) %in% paste(ispp_code)]
@@ -215,11 +216,11 @@ for (irow in 1:nrow(aggregate_species)) {
                                      "GEAR_CAT", "MEAN_LONGITUDE", 
                                      "MEAN_LATITUDE", "HAULJOIN", 
                                      "GEAR_DEPTH", "GEAR_TEMPERATURE", 
-                                     "AREA_SWEPT")],
+                                     "WEIGHT", "AREA_SWEPT")],
                        cpue_kg_km2 = rowSums(sub_df))
     names(data_long) <- c("year", "month", "day", "date", "gear", "lon", "lat",
-                          "hauljoin", "bot_depth", "bot_temp", 
-                          "actual_area_swept", "cpue_kg_km2")
+                          "hauljoin", "bot_depth", "bot_temp", "catch_kg",
+                          "area_swept_km2", "cpue_kg_km2")
     
     ## Remove species column from data_wide
     data_wide <- data_wide[!names(data_wide) %in% paste(ispp_code)]

@@ -3,7 +3,6 @@
 ## Author:        Zack Oyafuso (zack.oyafuso@noaa.gov)
 ##                Lewis Barnett (lewis.barnett@noaa.gov)
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-rm(list = ls())
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ##   Import Libraries ----
@@ -104,7 +103,7 @@ dat <- subset(x = dat,
                          STATIONID, MEAN_LONGITUDE, MEAN_LATITUDE,
                          DATE, MONTH, DAY, YEAR,
                          GEAR_DEPTH, GEAR_TEMPERATURE,
-                         SPECIES_CODE, 
+                         SPECIES_CODE, WEIGHT,
                          CPUE_KG, CPUE_N, AREA_SWEPT))
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -113,7 +112,7 @@ dat <- subset(x = dat,
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 cpue_wide <- tidyr::spread(
   data = dat[, c("YEAR", "MONTH", "DAY", "DATE",
-                 "HAULJOIN", "CPUE_KG", "AREA_SWEPT",
+                 "HAULJOIN", "WEIGHT", "CPUE_KG", "CPUE_N","AREA_SWEPT",
                  "SPECIES_CODE", "GEAR_CAT")], 
   key = SPECIES_CODE, 
   value = "CPUE_KG", 
@@ -166,11 +165,11 @@ for (irow in 1:nrow(solo_spp)) {
   if (ispp_code %in% names(data_wide)) {
     data_long <- data_wide[, c("YEAR", "MONTH", "DAY", "DATE", "GEAR_CAT", 
                                "MEAN_LONGITUDE", "MEAN_LATITUDE", "HAULJOIN", 
-                               "GEAR_DEPTH", "GEAR_TEMPERATURE", 
+                               "GEAR_DEPTH", "GEAR_TEMPERATURE", "WEIGHT",
                                "AREA_SWEPT", ispp_code)]
     names(data_long) <- c("year", "month", "day", "date", "gear", "lon", "lat", 
-                          "hauljoin", "bot_depth", "bot_temp", 
-                          "actual_area_swept", "cpue_kg_km2")
+                          "hauljoin", "bot_depth", "bot_temp", "catch_kg",
+                          "area_swept_km2", "cpue_kg_km2")
     
     ## Remove species column from data_wide
     data_wide <- data_wide[!names(data_wide) %in% paste(ispp_code)]
@@ -212,11 +211,11 @@ for (irow in 1:nrow(aggregate_species)) {
                                      "GEAR_CAT", "MEAN_LONGITUDE", 
                                      "MEAN_LATITUDE", "HAULJOIN", 
                                      "GEAR_DEPTH", "GEAR_TEMPERATURE", 
-                                     "AREA_SWEPT")],
+                                     "WEIGHT", "AREA_SWEPT")],
                        cpue_kg_km2 = rowSums(sub_df))
     names(data_long) <- c("year", "month", "day", "date", "gear", "lon", "lat",
-                          "hauljoin", "bot_depth", "bot_temp", 
-                          "actual_area_swept", "cpue_kg_km2")
+                          "hauljoin", "bot_depth", "bot_temp", "catch_kg",
+                          "area_swept_km2", "cpue_kg_km2")
     
     ## Remove species column from data_wide
     data_wide <- data_wide[!names(data_wide) %in% paste(ispp_code)]
