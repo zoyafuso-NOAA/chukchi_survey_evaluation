@@ -2,7 +2,6 @@
 ## Project:       Synthesize Alaska Bottom Trawl Arctic beam trawl survey data 
 ## Author:        Zack Oyafuso (zack.oyafuso@noaa.gov)
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-rm(list = ls())
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ##   Import Libraries ----
@@ -18,6 +17,7 @@ main_haul <- as.data.frame(readxl::read_xlsx(
 main_haul <- subset(main_haul, 
                       select = c("Year" , "EVENT_EVENT_NUMBER",
                                  "BOTTOM_DEPTH_m", "AREA_SWEPT_KM_2",
+                                 "TIMESTAMP_ON_BOTTOM_GMT",
                                  "LAT_DD_ON_BOTTOM", "LON_DD_ON_BOTTOM",
                                  "Surface_temp_C", "Surface_sal", 
                                  "bottom_temp_C", "bottom_sal") )
@@ -56,23 +56,29 @@ main_catch <- aggregate(catch_kg ~ species_code + station_id,
 idx <- match(main_catch$station_id,
              main_haul$EVENT_EVENT_NUMBER)
 
-main_catch[, c("year", "station_id", "area_swept_km2", "lat", "lon",
-                 "bot_temp", "bot_depth")] <-
+main_catch[, c("year", "station_id", "area_swept_km2", "date",
+               "lat", "lon", "bot_temp", "bot_depth")] <-
   main_haul[idx, c("Year", "EVENT_EVENT_NUMBER", "AREA_SWEPT_KM_2",
-                     "LAT_DD_ON_BOTTOM", "LON_DD_ON_BOTTOM", 
-                     "bottom_temp_C", "BOTTOM_DEPTH_m")]
+                   "TIMESTAMP_ON_BOTTOM_GMT",
+                   "LAT_DD_ON_BOTTOM", "LON_DD_ON_BOTTOM", 
+                   "bottom_temp_C", "BOTTOM_DEPTH_m")]
 main_catch$cpue_kg_km2 <- main_catch$catch_kg / main_catch$area_swept_km2
+
+main_catch$date <- as.Date(x = main_catch$date, format = "%d-%b-%y")
+main_catch$month <- lubridate::month(x = main_catch$date)
+main_catch$day <- lubridate::day(x = main_catch$date)
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ##   Widen data ----
 ##   Create a wide df with zeros filled for stations where species not observed
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
 data_wide <- tidyr::spread(data = subset(main_catch,
-                                         select = -c(catch_kg, area_swept_km2)),
+                                         select = -catch_kg),
                            key = "species_code", 
                            value = "cpue_kg_km2",
                            fill = 0)
 data_wide <- data_wide[!is.na(data_wide$year), ]
+data_wide$gear <- "beam"
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ##   Create datasets ----
@@ -100,7 +106,8 @@ for (irow in 1:nrow(solo_spp)) {
                                    species_code = ispp_code))
   
   if (ispp_code %in% names(data_wide)) {
-    data_long <- cbind(data_wide[, c("station_id", "year", 
+    data_long <- cbind(data_wide[, c("station_id", "year", "month",
+                                     "day", "date", "area_swept_km2", "gear",
                                      "lat", "lon", "bot_temp", "bot_depth")],
                        cpue_kg_km2 = data_wide[, paste(ispp_code)])
 
@@ -141,7 +148,8 @@ for (irow in 1:nrow(aggregate_species)) {
     
     sub_df <- as.matrix(data_wide[, paste(ispp_code)])
     
-    data_long <- cbind(data_wide[, c("station_id", "year",  
+    data_long <- cbind(data_wide[, c("station_id", "year", "month",
+                                     "day", "date", "area_swept_km2", "gear",
                                      "lat", "lon", "bot_temp", "bot_depth")],
                        cpue_kg_km2 = rowSums(sub_df))
     
