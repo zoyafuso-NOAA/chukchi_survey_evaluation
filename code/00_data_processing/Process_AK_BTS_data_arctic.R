@@ -171,6 +171,8 @@ for (irow in 1:nrow(solo_spp)) {
                           "hauljoin", "bot_depth", "bot_temp", 
                           "area_swept_km2", "cpue_kg_km2")
     
+    data_long$common_name <- ispp
+    
     ## Remove species column from data_wide
     data_wide <- data_wide[!names(data_wide) %in% paste(ispp_code)]
     
@@ -216,6 +218,8 @@ for (irow in 1:nrow(aggregate_species)) {
     names(data_long) <- c("year", "month", "day", "date", "gear", "lon", "lat",
                           "hauljoin", "bot_depth", "bot_temp",
                           "area_swept_km2", "cpue_kg_km2")
+    
+    data_long$common_name <- ispp
     
     ## Remove species column from data_wide
     data_wide <- data_wide[!names(data_wide) %in% paste(ispp_code)]
