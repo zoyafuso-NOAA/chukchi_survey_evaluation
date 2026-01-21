@@ -11,6 +11,7 @@ library(FishStatsUtils)
 library(terra)
 library(plotrix)
 library(akgfmaps)
+library(viridisLite)
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ##   Import Spatial Objects
@@ -40,8 +41,10 @@ googledrive::drive_auth()
 nbs_otter_dir <- googledrive::as_id("1eERDrW32SGU9hABm7bRC7y5gnUAUafeg")
 nbs_otter_ls <- googledrive::drive_ls(path = nbs_otter_dir)
 nbs_spp <- sort(nbs_otter_ls$name)
-# nbs_otter_years <- c(1985, 1988, 1991, 2010, 2017:2019, 2021:2022)
-nbs_otter_years <- c(1985, 1991, 2010, 2017, 2022)
+nbs_spp <- nbs_spp[nbs_spp != "urchins"]
+nbs_otter_years <- c(1985, 1988, 1991, 2010, 2017:2019, 2021:2022)
+#nbs_otter_years <- c(2010, 2017:2019, 2021:2022)
+#nbs_otter_years <- c(1985, 1991, 2010, 2017, 2022)
 # nbs_spp <- c("Pacific cod", "walleye pollock", "yellowfin sole",
 #              "bivalves", "Pacific herring",  "snow crab",
 #              "Arctic cod", "saffron cod")
@@ -69,11 +72,11 @@ for (ispp in nbs_spp) {
   D_gct <- fit$Report$D_gct[, 1, paste(nbs_otter_years)]
   
   ## Scale D_gct 
-  scaled_D_gct <- D_gct / max(D_gct)
+  #scaled_D_gct <- D_gct / max(D_gct)
   
   ## Setup temporary shapefile with densities
   temp_nbs_pts <- nbs_pts
-  temp_nbs_pts[, dimnames(D_gct)[["Time"]] ] <- scaled_D_gct
+  temp_nbs_pts[, dimnames(D_gct)[["Time"]] ] <- D_gct
   
   jpeg(filename = paste0("presentations/2023/NPRB Arctic IERP/",
                          "April_2023_Workshop/nbs_dists/", ispp, "_nbs.jpg"), 
@@ -88,7 +91,8 @@ for (ispp in nbs_spp) {
     
     ## Plot
     image(nbs_ras, axes = F, 
-          col = RColorBrewer::brewer.pal(n = 9, name = "Blues"))
+          col = turbo(1000),
+          zlim = as.numeric(c(min(D_gct), max(D_gct))))
     
     mtext(side = 3, text = iyear)
     plot(ak_land_cropped, add = TRUE, col = "tan", border = "tan")
@@ -99,7 +103,7 @@ for (ispp in nbs_spp) {
     xl = 5, xr = 95,
     yb = 10, yt = 20,
     legend = round(quantile(D_gct), 0),
-    rect.col = RColorBrewer::brewer.pal(n = 9, name = "Blues"),
+    rect.col = turbo(1000),
     gradient = "x",
     align = "rb",
     cex = 0.5)

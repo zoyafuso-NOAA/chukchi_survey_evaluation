@@ -21,8 +21,9 @@ library(FishStatsUtils)
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 spp_settings <- read.csv(file = here::here("results/good_species.csv"), 
                          stringsAsFactors = F)
-load(file = here::here("data/survey_opt_data/optimization_data.RData"))
+load(file = here::here("data/survey_opt_data/optimization_data_nbs.RData"))
 ak_land <- terra::vect(x = here::here("data/spatial_data/land_shapefiles/AKland.shp"))
+grid_pts <- terra::vect(x = "data/survey_opt_data/grid_pts_nbs.shp")
 cropped_extent <- terra::ext(grid_pts)
 cropped_extent[2] <- cropped_extent[2] + 10000
 ak_land_cropped <- terra::crop(x = ak_land, y = cropped_extent)
